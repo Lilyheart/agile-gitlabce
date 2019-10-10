@@ -34,7 +34,21 @@
             <input type="text" class="form-control" id="gitlab_key" placeholder="API Key">
           </div>
         </div>
-        <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="getProjects()">Get Projects</button>
+        <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="getProjects('user')">Get Projects</button>
+        <hr />
+      </div>
+
+      <div id="show_repo_options" class="row justify-content-end">
+        <div class="col-8">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" name="filter" type="radio" id="radio1" value="my"  onclick="getProjects('user')" checked>
+            <label class="form-check-label" for="radio1">Show only my repos</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" name="filter" type="radio" id="radio2" value="all" onclick="getProjects('all')" >
+            <label class="form-check-label" for="radio2">Show all repos</label>
+          </div>
+        </div>
       </div>
 
       <div id="loading_projects">
@@ -46,20 +60,6 @@
       </div>
 
       <div id="gitlab_get_project">
-        <hr />
-
-        <div id="show_repo_options" class="row justify-content-end">
-          <!-- <div class="col-8">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option1" checked>
-              <label class="form-check-label" for="inlineRadio1">Show only my repos</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option2">
-              <label class="form-check-label" for="inlineRadio2">Show all repos</label>
-            </div>
-          </div> -->
-        </div>
         <div class="form-group row">
           <label for="project_id" class="col-sm-4 col-form-label">Project ID:</label>
           <div class="col-sm-8">
@@ -85,6 +85,7 @@
           </tbody>
         </table>
       </div>
+
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
