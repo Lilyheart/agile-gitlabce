@@ -113,7 +113,7 @@ async function getProjects(projFilter) {
   }
 }
 
-function getIssues() {
+async function getIssues() {
   // Unhide next section
   document.getElementById("gitlab_show_issues").style.display = "block";
 
@@ -124,16 +124,21 @@ function getIssues() {
   // Reset table
   $(".issueTable tr").remove();
 
+  // Get number of project pages
+  projectPages = get_header_value(url, "x-total-pages")
+
   // Get Data
-  $.getJSON(url, function(data) {
-    for (var i = 0; i < data.length; i++) {
-        tr = $('<tr/>');
-        tr.append("<td>" + data[i].title + "</td>");
-        tr.append("<td>" + data[i].state + "</td>");
-        tr.append("<td>" + data[i].time_stats.human_time_estimate + "</td>");
-        $('.issueTable').append(tr);
-    }
-  });
+  for(i=1; i <= projectPages; i++) {
+    await $.getJSON(url, function(data) {
+      for (var i = 0; i < data.length; i++) {
+          tr = $('<tr/>');
+          tr.append("<td>" + data[i].title + "</td>");
+          tr.append("<td>" + data[i].state + "</td>");
+          tr.append("<td>" + data[i].time_stats.human_time_estimate + "</td>");
+          $('.issueTable').append(tr);
+      }
+    });
+  }
 }
 
 $( document ).ready(function() {
