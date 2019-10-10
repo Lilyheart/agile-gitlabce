@@ -42,18 +42,18 @@ h2 a:hover {
   height: 100%;
 }
 .btn, button, button:focus {
-  border: none;
-  border-radius: 0;
-  background: none;
-  padding: 0 6px;
+  /* border: none; */
+  /* border-radius: 0; */
+  background: steelblue;
+  /* padding: 0 6px; */
   /* text-transform: uppercase; */
-  height: 100%;
-  font-weight: 700;
-  color: steelblue;
-  letter-spacing: .7px;
-  font-size: inherit;
-  transition: all .3s;
-  outline: none;
+  /* height: 100%; */
+  /* font-weight: 700; */
+  color: white;
+  /* letter-spacing: .7px; */
+  /* font-size: inherit; */
+  /* transition: all .3s; */
+  /* outline: none; */
 }
 .dropdown-menu > li > a:hover,
 .selected,
