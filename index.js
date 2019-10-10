@@ -30,22 +30,12 @@ async function get_curr_username() {
   });
 }
 
-async function getProjects() {
-  // Load loading spinner
+async function get_all_projects() {
   document.getElementById("loading_projects").style.display = "block";
   document.getElementById("gitlab_get_project").style.display = "none";
+  document.getElementById("gitlab_show_issues").style.display = "none";
 
-  // Get and set variables
-  base_url = document.getElementById("base_url").value;
-  gitlab_key = document.getElementById("gitlab_key").value;
   var url = base_url + "projects?private_token=" + gitlab_key;
-
-  // Set or clear username
-  if (gitlab_key.length == 0) {
-    curr_username = null;
-  } else {
-    get_curr_username();
-  }
 
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
@@ -64,6 +54,53 @@ async function getProjects() {
         dropdown.append($('<option></option>').attr('value', entry.id).text(proj_name));
       })
     });
+  }
+}
+
+async function get_user_projects() {
+  var url = base_url + "users/" + curr_username + "/projects?private_token=" + gitlab_key;
+
+  // Get number of project pages
+  projectPages = get_header_value(url, "x-total-pages")
+
+  // Set up drowndown
+  let dropdown = $('#project-dropdown');
+  dropdown.empty();
+  dropdown.append('<option selected="true" disabled>Choose Project</option>');
+  dropdown.prop('selectedIndex', 0);
+
+  // Fill dropdown
+  for(i=1; i <= projectPages; i++) {
+    await $.getJSON(url + "&page=" + i, function (data) {
+      $.each(data, function (key, entry) {
+        var proj_name = entry.name
+        dropdown.append($('<option></option>').attr('value', entry.id).text(proj_name));
+      })
+    });
+  }
+}
+
+async function getProjects(projFilter) {
+  // Load loading spinner
+  document.getElementById("loading_projects").style.display = "block";
+  document.getElementById("gitlab_get_project").style.display = "none";
+  document.getElementById("gitlab_show_issues").style.display = "none";
+
+  // Get and set variables
+  base_url = document.getElementById("base_url").value;
+  gitlab_key = document.getElementById("gitlab_key").value;
+
+  // Set or clear username
+  if (gitlab_key.length == 0) {
+    curr_username = null;
+  } else {
+    await get_curr_username();
+  }
+
+  if(projFilter == "all" || curr_username == null) {
+    await get_all_projects()
+  } else {
+    await get_user_projects()
   }
 
   // Unhide next section
@@ -101,6 +138,7 @@ function getIssues() {
 
 $( document ).ready(function() {
   // Hide other sections
+  document.getElementById("show_repo_options").style.display = "none";
   document.getElementById("loading_projects").style.display = "none";
   document.getElementById("gitlab_get_project").style.display = "none";
   document.getElementById("gitlab_show_issues").style.display = "none";
