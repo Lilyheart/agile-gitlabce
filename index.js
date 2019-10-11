@@ -37,6 +37,8 @@ async function get_all_projects() {
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
 
+  console.log("Total pages to get: " + projectPages)
+
   // Set up drowndown
   let dropdown = $('#project-dropdown');
   dropdown.empty();
@@ -60,6 +62,8 @@ async function get_user_projects() {
 
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
+
+  console.log("Total pages to get: " + projectPages)
 
   // Set up drowndown
   let dropdown = $('#project-dropdown');
