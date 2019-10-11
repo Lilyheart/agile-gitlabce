@@ -32,10 +32,6 @@ async function get_curr_username() {
 }
 
 async function get_all_projects() {
-  document.getElementById("loading_projects").style.display = "block";
-  document.getElementById("gitlab_get_project").style.display = "none";
-  document.getElementById("gitlab_show_issues").style.display = "none";
-
   var url = base_url + "projects?order_by=name&sort=asc&private_token=" + gitlab_key;
 
   // Get number of project pages
@@ -86,6 +82,7 @@ async function get_user_projects() {
 async function getProjects(projFilter) {
   // Load loading spinner
   document.getElementById("loading_projects").style.display = "block";
+  document.getElementById("show_repo_options").style.display = "none";
   document.getElementById("gitlab_get_project").style.display = "none";
   document.getElementById("gitlab_show_issues").style.display = "none";
 
@@ -135,11 +132,18 @@ async function getIssues() {
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function(data) {
       for (var i = 0; i < data.length; i++) {
-          tr = $('<tr/>');
-          tr.append("<td>" + data[i].title + "</td>");
-          tr.append("<td>" + data[i].state + "</td>");
-          tr.append("<td>" + data[i].time_stats.human_time_estimate + "</td>");
-          $('.issueTable').append(tr);
+        var time_est;
+        if(data[i].time_stats.human_time_estimate == null) {
+          time_est = "";
+        } else {
+          time_est = data[i].time_stats.human_time_estimate;
+        }
+        // Set table data
+        tr = $('<tr/>');
+        tr.append("<td><a href='" + data[i].web_url + "' target='_blank'>" + data[i].title + "</a></td>");
+        tr.append("<td>" + data[i].state + "</td>");
+        tr.append("<td>" + time_est + "</td>");
+        $('.issueTable').append(tr);
       }
     });
   }

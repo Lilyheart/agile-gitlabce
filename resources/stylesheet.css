@@ -155,7 +155,11 @@ a:hover.linkheader {
 .indent {
   padding-left: 40px;
 }
-.citation {
-  font-weight: bold;
-  font-size: 1.2em;
+td a {
+    color: white;
+    display:block;
+    width:100%;
+}
+td a:hover {
+  color: white;
 }
