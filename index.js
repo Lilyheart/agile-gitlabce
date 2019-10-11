@@ -115,14 +115,16 @@ async function getProjects(projFilter) {
 
 async function getIssues() {
   // Unhide next section
-  document.getElementById("gitlab_show_issues").style.display = "block";
+  document.getElementById("loading_issues").style.display = "block";
+  document.getElementById("gitlab_show_issues").style.display = "none";
 
   // Get and set variables
   project_id = document.getElementById("project-dropdown").value;
   var url = base_url + "projects/" + project_id + "/issues?private_token=" + gitlab_key
 
   // Reset table
-  $(".issueTable tr").remove();
+  $("#issuestable").dataTable().fnDestroy()
+  $("#issuestablerows tr").remove();
 
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
@@ -147,6 +149,9 @@ async function getIssues() {
       }
     });
   }
+  $('#issuestable').DataTable();
+  document.getElementById("loading_issues").style.display = "none";
+  document.getElementById("gitlab_show_issues").style.display = "block";
 }
 
 $( document ).ready(function() {
@@ -154,5 +159,9 @@ $( document ).ready(function() {
   document.getElementById("show_repo_options").style.display = "none";
   document.getElementById("loading_projects").style.display = "none";
   document.getElementById("gitlab_get_project").style.display = "none";
+  document.getElementById("loading_issues").style.display = "none";
   document.getElementById("gitlab_show_issues").style.display = "none";
+
+  // Set up table
+  // $('#issuestable').DataTable();
 });
