@@ -115,11 +115,6 @@ button:hover {
 .header a {
   color: steelblue;
 }
-.container {
-  margin: 0 auto;
-  padding-top: 40px;
-  max-width: 700px;
-}
 p {
   padding: 0 20px;
 }
