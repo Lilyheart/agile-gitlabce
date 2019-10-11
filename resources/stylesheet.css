@@ -1,3 +1,6 @@
+html {
+  overflow-y: scroll;
+}
 body {
   background-color: #232323;
   color: white;
@@ -173,4 +176,20 @@ td a:hover {
   background-color: white;
   border-color: white;
   color: steelblue;
+}
+.tab-pane {
+	margin-top: 15px;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  margin-left: 5px;
+  background-color: steelblue;
+  border-color: steelblue;
+  border-bottom: white;
+  color: white;
+}
+.nav-tabs .nav-link {
+  margin-left: 5px;
+  background-color: darkgrey;
+  color: white;
 }

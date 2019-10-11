@@ -156,6 +156,12 @@ async function getIssues() {
   $('#issuestable').DataTable();
   document.getElementById("loading_issues").style.display = "none";
   document.getElementById("gitlab_show_issues").style.display = "block";
+  // Enable tabs
+  document.getElementById("issues-tab").classList.add("active");
+  document.getElementById("issues-tab").classList.remove("disabled");
+  document.getElementById("burndown-tab").classList.remove("disabled");
+  // document.getElementById("members-tab").classList.remove("disabled");
+  // document.getElementById("settings-tab").classList.remove("disabled");
 }
 
 $( document ).ready(function() {
