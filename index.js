@@ -129,7 +129,7 @@ async function getIssues() {
 
   // Get Data
   for(i=1; i <= projectPages; i++) {
-    await $.getJSON(url, function(data) {
+    await $.getJSON(url + "&page=" + i, function(data) {
       for (var i = 0; i < data.length; i++) {
           tr = $('<tr/>');
           tr.append("<td>" + data[i].title + "</td>");
