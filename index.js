@@ -25,6 +25,7 @@ function get_header_value(url, header_value) {
 async function get_curr_username() {
   var url = base_url + "user?private_token=" + gitlab_key
 
+  console.log("Obtaining data at: " + url)
   await $.getJSON(url, function(data) {
     curr_username = data.username
   });
@@ -35,7 +36,7 @@ async function get_all_projects() {
   document.getElementById("gitlab_get_project").style.display = "none";
   document.getElementById("gitlab_show_issues").style.display = "none";
 
-  var url = base_url + "projects?private_token=" + gitlab_key;
+  var url = base_url + "projects?order_by=name&sort=asc&private_token=" + gitlab_key;
 
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
@@ -46,6 +47,7 @@ async function get_all_projects() {
   dropdown.append('<option selected="true" disabled>Choose Project</option>');
   dropdown.prop('selectedIndex', 0);
 
+  console.log("Obtaining data at: " + url + "&page=1")
   // Fill dropdown
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function (data) {
@@ -58,7 +60,7 @@ async function get_all_projects() {
 }
 
 async function get_user_projects() {
-  var url = base_url + "users/" + curr_username + "/projects?private_token=" + gitlab_key;
+  var url = base_url + "users/" + curr_username + "/projects?order_by=name&sort=asc&private_token=" + gitlab_key;
 
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
@@ -69,6 +71,7 @@ async function get_user_projects() {
   dropdown.append('<option selected="true" disabled>Choose Project</option>');
   dropdown.prop('selectedIndex', 0);
 
+  console.log("Obtaining data at: " + url + "&page=1")
   // Fill dropdown
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function (data) {
@@ -127,6 +130,7 @@ async function getIssues() {
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
 
+  console.log("Obtaining data at: " + url + "&page=1")
   // Get Data
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function(data) {
