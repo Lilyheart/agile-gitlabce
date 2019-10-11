@@ -163,3 +163,14 @@ td a {
 td a:hover {
   color: white;
 }
+.page-item.active .page-link {
+  background-color: steelblue;
+  border-color: steelblue;
+  color: white;
+}
+
+.page-item.disabled .page-link {
+  background-color: white;
+  border-color: white;
+  color: steelblue;
+}
