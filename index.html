@@ -24,9 +24,6 @@
   <body>
 
     <div class="head" id="head"></div>
-    <script>
-      $("#head").load("resources/header.html");
-    </script>
     <div id="container" class="container-fluid">
       <div class="row">
         <!-- Large screens 1/3 - 2/3, Small screens Stacked -->
@@ -79,12 +76,12 @@
             <div class="form-group row">
               <label for="project_id" class="col-sm-4 col-form-label">Project ID:</label>
               <div class="col-sm-8">
-                <select id="project-dropdown" class="drowndown custom-select" name="project_id">
+                <select id="project-dropdown" class="drowndown custom-select" name="project_id" onchange="enableIssueBtn()">
                   <option selected="true" disabled>Load Projects first</option>
                 </select>
               </div>
             </div>
-            <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="getIssues()">Get Issues</button>
+            <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block" onclick="getIssues()">Get Issues</button>
           </div>
         </div>
 
@@ -120,7 +117,7 @@
               </div>
 
               <div id="gitlab_show_issues">
-                <table id="issuestable" class="table table-dark table-hover">
+                <table id="issuestable" class="table table-dark table-hover" style="width:100%;">
                   <thead>
                     <tr>
                       <th>Title</th>

@@ -2,6 +2,7 @@ var base_url;
 var gitlab_key;
 var project_id;
 var curr_username;
+var issue_list = [];
 
 function get_header_value(url, header_value) {
   let request = new XMLHttpRequest();
@@ -35,6 +36,9 @@ async function update_curr_username() {
 }
 
 async function get_project_list(url) {
+  project_list = [];
+  url = url + "projects?order_by=name&sort=asc&simple=true&private_token=" + gitlab_key
+
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
   console.log("Total pages to fetch: " + projectPages)
@@ -49,6 +53,8 @@ async function get_project_list(url) {
   console.log("Obtaining data at: " + url + "&page=1")
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function (data) {
+      // TODO Alphabetize project list THEN make option list
+      project_list = project_list.concat(data)
       $.each(data, function (key, entry) {
         let proj_name;
         if (curr_username == null || curr_username.length == 0) {
@@ -60,6 +66,7 @@ async function get_project_list(url) {
       })
     });
   }
+
 }
 
 async function getProjects(projFilter) {
@@ -75,17 +82,24 @@ async function getProjects(projFilter) {
 
   // Build URL and get project list
   if(projFilter == "all" || curr_username == null) {
-    url = base_url + "projects?order_by=name&sort=asc&private_token=" + gitlab_key;
+    url = base_url;
   } else {
-    url = base_url + "users/" + curr_username + "/projects?order_by=name&sort=asc&private_token=" + gitlab_key;
+    url = base_url + "users/" + curr_username + "/";
   }
-  get_project_list(url)
 
+  await get_project_list(url)
+
+  $('#btnGetIssues').prop('disabled', true);
   set_phase("project_end")
+}
+
+function enableIssueBtn() {
+  $('#btnGetIssues').prop('disabled', false);
 }
 
 async function getIssues() {
   set_phase("issue_start")
+  issue_list = [];
 
   // Get and set variables
   project_id = document.getElementById("project-dropdown").value;
@@ -97,29 +111,30 @@ async function getIssues() {
 
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
+  console.log("Total pages to fetch: " + projectPages)
 
   // Get Data
   console.log("Obtaining data at: " + url + "&page=1")
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function(data) {
-      for (let i = 0; i < data.length; i++) {
-        let time_est;
-        if(data[i].time_stats.human_time_estimate == null) {
-          time_est = "";
-        } else {
-          time_est = data[i].time_stats.human_time_estimate;
-        }
-        // Set table data
-        tr = $('<tr/>');
-        tr.append("<td><a href='" + data[i].web_url + "' target='_blank'>" + data[i].title + "</a></td>");
-        tr.append("<td>" + data[i].state + "</td>");
-        tr.append("<td>" + time_est + "</td>");
-        $('.issueTable').append(tr);
-      }
+      issue_list = issue_list.concat(data)
     });
   }
 
-  $('#issuestable').DataTable();
+  $('#issuestable').DataTable({
+    data: issue_list,
+    columns: [
+      { "data": "title"},
+      { "data": "state"},
+      { "data": "time_stats.human_time_estimate"}
+    ],
+    "columnDefs": [{
+      "render": function ( data, type, row ) {
+        return "<a href='" + row.web_url + "' target='_blank'>" + row.title + "</a>"
+      },
+      "targets": 0
+    }]
+  });
   set_phase("issue_end")
 }
 
@@ -166,6 +181,7 @@ function set_phase(new_phase) {
   if (new_phase == "issue_end") {
     document.getElementById("issues-tab").classList.add("active");
     document.getElementById("issues-tab").classList.remove("disabled");
+    document.getElementById("burndown-tab").classList.remove("disabled");
   } else {
     document.getElementById("issues-tab").classList.remove("active");
     document.getElementById("issues-tab").classList.add("disabled");
@@ -176,5 +192,6 @@ function set_phase(new_phase) {
 }
 
 $( document ).ready(function() {
+  $("#head").load("resources/header.html");
   set_phase("start")
 });
