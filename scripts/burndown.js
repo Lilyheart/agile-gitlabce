@@ -23,8 +23,13 @@ function update_burndown_data() {
     $("#burndown").highcharts({
       title: {text: "Project Burndown Chart"},
       xAxis: {
+        type: 'datetime',
         title: {text: "Date"},
-        categories: completedTasks.map((x,i) => i + 1 + " day"),
+        tickInterval: 86400000,
+        labels: {
+          format: '{value:%m/%d/%Y}',
+          rotation: -30
+        }
       },
       yAxis: {
         title: {text: "Hours"},

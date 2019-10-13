@@ -8,7 +8,13 @@ This project is to fill in the missing gaps regarding the Agile workflow in a CE
 
 ## Deployed
 
-The thing is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on GitHub pages.
+The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on GitHub pages.
+
+## To code
+- [ ] Report by milestone
+- [ ] Handle issues that used `/remove_time_spent `
+- [ ] Handle issues that used `/remove_estimate `
+- [ ] Change tick level of x axis if to many dates to display
 
 ## Installation
 
