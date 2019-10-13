@@ -3,21 +3,38 @@ var completedTasks = [];
 var idealDaily;
 var idealEffort = [];
 var remainEffort = [];
+var issue_notes_list = [];
 
-function update_burndown_data() {
-  startHours = 60;
-  completedTasks = [0, 4, 3, 11, 7, 10, 3, 4, 8, 1, 1, 5, 0, 3];
-  idealDaily = startHours / (completedTasks.length - 1);
+async function get_issue_notes(url) {
+  // Get number of project pages
+  projectPages = get_header_value(url, "x-total-pages")
 
-  for (var i = 0; i < completedTasks.length; i++) {
-    if(i != 0) {
-      idealEffort.push(Math.max(0, Math.round((idealEffort[i - 1] - idealDaily) * 100) / 100))
-      remainEffort.push(remainEffort[i - 1] - completedTasks[i])
-    } else {
-      idealEffort.push(startHours)
-      remainEffort.push(startHours - completedTasks[i])
-    }
+  // Get Data
+  console.log("Obtaining data at: " + url + "&page=1 of " + projectPages + " page(s)")
+  for(i=1; i <= projectPages; i++) {
+    await $.getJSON(url + "&page=" + i, function(data) {
+      issue_notes_list = issue_notes_list.concat(data)
+    });
   }
+}
+
+async function get_data() {
+  issue_notes_list = [];
+
+  // Get data from issues
+  for (var issue in issue_list) {
+    startHours += issue_list[issue].time_stats.time_estimate / 3600;
+
+    let issue_iid = issue_list[issue].iid
+    url = base_url + "projects/" + project_id + "/issues/" + issue_iid + "/notes?private_token=" + gitlab_key;
+
+    await get_issue_notes(url);
+  }
+
+}
+
+async function update_burndown_data() {
+  await get_data()
 
   $(function () {
     $("#burndown").highcharts({

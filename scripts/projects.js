@@ -5,7 +5,6 @@ async function get_project_list(url) {
 
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
-  console.log("Total pages to fetch: " + projectPages)
 
   // Set up drowndown
   let dropdown = $('#project-dropdown');
@@ -14,7 +13,7 @@ async function get_project_list(url) {
   dropdown.prop('selectedIndex', 0);
 
   // Fill dropdown
-  console.log("Obtaining data at: " + url + "&page=1")
+  console.log("Obtaining data at: " + url + "&page=1 of " + projectPages + " page(s)")
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function (data) {
       // TODO Alphabetize project list THEN make option list

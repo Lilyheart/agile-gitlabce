@@ -28,11 +28,10 @@ async function load_issue_table(url) {
 async function get_issues_list(url) {
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
-  console.log("Total pages to fetch: " + projectPages)
 
   // Get Data
   issue_list = [];
-  console.log("Obtaining data at: " + url + "&page=1")
+  console.log("Obtaining data at: " + url + "&page=1 of " + projectPages + " page(s)")
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function(data) {
       issue_list = issue_list.concat(data)
