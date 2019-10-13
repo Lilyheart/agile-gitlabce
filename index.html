@@ -92,10 +92,10 @@
 					    <a class="nav-link disabled" id="issues-tab" data-toggle="tab" href="#issuestab" role="tab" aria-controls="issuestab"
 					      aria-selected="true">Gitlab Issues</a>
 					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link disabled" id="burndown-tab" data-toggle="tab" href="#burndowntab" role="tab" aria-controls="burndowntab"
-					      aria-selected="false">Burndown</a>
-					  </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" id="burndown-tab" data-toggle="tab" href="#burndowntab" role="tab" aria-controls="burndowntab"
+                aria-selected="false">Burndown</a>
+            </li>
 					  <li class="nav-item">
 					    <a class="nav-link disabled" id="members-tab" data-toggle="tab" href="#membertab" role="tab" aria-controls="membertab"
 					      aria-selected="false">Active Members</a>
@@ -107,15 +107,6 @@
 					</ul>
 					<div class="tab-content" id="myTabContent">
 					  <div class="tab-pane fade show active" id="issuestab" role="tabpanel" aria-labelledby="issues-tab">
-
-              <div id="loading_issues">
-                <div class="d-flex justify-content-center">
-                  <div class="spinner-border m-5" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-                </div>
-              </div>
-
               <div id="gitlab_show_issues">
                 <table id="issuestable" class="table table-dark table-hover" style="width:100%;">
                   <thead>
@@ -131,7 +122,7 @@
               </div>
             </div>
 					  <div class="tab-pane fade" id="burndowntab" role="tabpanel" aria-labelledby="burndown-tab">
-              TODO
+              <div id="burndown" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
             </div>
 					  <div class="tab-pane fade" id="membertab" role="tabpanel" aria-labelledby="members-tab">
               TODO Later
@@ -140,12 +131,23 @@
               TODO Later Later
             </div>
 					</div>
+
+          <div id="loading_issues">
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border m-5" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div> <!-- end class="row" -->
     </div>
 
     <!-- Script Libraries -->
     <span>
+			<!-- highcharts -->
+			<script src="https://code.highcharts.com/highcharts.js"></script>
+      <script src="https://code.highcharts.com/modules/exporting.js"></script>
       <!-- Popper -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
       <!-- DataTables -->
@@ -155,6 +157,9 @@
       <!-- Bootstrap -->
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
       <!-- Local -->
+      <script type="text/javascript" src="scripts/projects.js"></script>
+      <script type="text/javascript" src="scripts/issues.js"></script>
+      <script type="text/javascript" src="scripts/burndown.js"></script>
       <script type="text/javascript" src="index.js"></script>
     </span>
   </body>
