@@ -4,6 +4,13 @@ var idealDaily;
 var idealEffort = [];
 var remainEffort = [];
 var issue_notes_list = [];
+var convertTable = {
+  mo: 9600,
+  w : 2400,
+  d : 480,
+  h : 60,
+  m : 1
+}
 
 async function get_issue_notes(url) {
   // Get number of project pages
@@ -31,6 +38,31 @@ async function get_data() {
     await get_issue_notes(url);
   }
 
+  // Go through notes to get changes in spend
+  let note_re = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
+  idealEffort = [];
+  remainEffort = [];
+
+  issue_notes_list.forEach(function(note) {
+    let body = note.body
+    let match = body.match(note_re)
+
+    // If time spent was changed
+    if (match != null) {
+      // parse spent
+      time = match[2].match(/([0-9]*)([a-zA-Z]*)/)
+      spent = time[1] * convertTable[time[2]]
+
+      // update if subtracted
+      if (match[1] == "subtracted") {
+        spent = spent * -1
+      }
+
+      // parse date
+      date = Date.UTC(parseInt(match[3]), parseInt(match[4]), parseInt(match[5]))
+
+    }
+  });
 }
 
 async function update_burndown_data() {
