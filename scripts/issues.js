@@ -41,13 +41,14 @@ async function get_issues_list(url) {
 }
 
 async function getIssues() {
-  set_phase("issue_start")
+  set_phase("issue_start");
 
   // Get and set variables
   project_id = document.getElementById("project-dropdown").value;
-  let url = base_url + "projects/" + project_id + "/issues?private_token=" + gitlab_key
+  let url = base_url + "projects/" + project_id + "/issues?private_token=" + gitlab_key;
 
-  await load_issue_table(url)
+  await load_issue_table(url);
+  await update_burndown_data();
 
-  set_phase("issue_end")
+  set_phase("issue_end");
 }
