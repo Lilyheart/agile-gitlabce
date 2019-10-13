@@ -1,15 +1,17 @@
 var startHours = 0;
 var completedTasks = [];
 var idealDaily;
+var spent_time_list = []
+var spentEffort = [];
 var idealEffort = [];
 var remainEffort = [];
 var issue_notes_list = [];
 var convertTable = {
-  mo: 9600,
-  w : 2400,
-  d : 480,
-  h : 60,
-  m : 1
+  mo: 160,
+  w : 40,
+  d : 8,
+  h : 1,
+  m : 1.0 / 60.0
 }
 
 async function get_issue_notes(url) {
@@ -25,24 +27,38 @@ async function get_issue_notes(url) {
   }
 }
 
+function json_to_series(json, xlabel, ylabel) {
+  // Reduce json
+  let series = Object.values(json.reduce((acc, cur) => {
+    acc[cur[xlabel]] = acc[cur[xlabel]] || {x: cur[xlabel], y : 0};
+    acc[cur[xlabel]].y += +cur[ylabel];
+    return acc;
+  },{}));
+
+  // Sort by x axis
+  series = series.sort(function(a, b) {
+    return parseFloat(a.x) - parseFloat(b.x);
+  });
+
+  return series
+}
+
 async function get_data() {
   issue_notes_list = [];
 
   // Get data from issues
   for (var issue in issue_list) {
+    // Accumlate hours
     startHours += issue_list[issue].time_stats.time_estimate / 3600;
 
+    // Get Notes
     let issue_iid = issue_list[issue].iid
     url = base_url + "projects/" + project_id + "/issues/" + issue_iid + "/notes?private_token=" + gitlab_key;
-
     await get_issue_notes(url);
   }
 
   // Go through notes to get changes in spend
   let note_re = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
-  idealEffort = [];
-  remainEffort = [];
-
   issue_notes_list.forEach(function(note) {
     let body = note.body
     let match = body.match(note_re)
@@ -52,17 +68,14 @@ async function get_data() {
       // parse spent
       time = match[2].match(/([0-9]*)([a-zA-Z]*)/)
       spent = time[1] * convertTable[time[2]]
-
       // update if subtracted
-      if (match[1] == "subtracted") {
-        spent = spent * -1
-      }
-
+      if (match[1] == "subtracted") spent = spent * -1;
       // parse date
-      date = Date.UTC(parseInt(match[3]), parseInt(match[4]), parseInt(match[5]))
-
+      date = Date.UTC(parseInt(match[3]), parseInt(match[4])-1, parseInt(match[5]))
+      spent_time_list.push({date: date, spent: spent, issue: note.noteable_iid, author: note.author.name})
     }
   });
+
 }
 
 async function update_burndown_data() {
@@ -74,7 +87,7 @@ async function update_burndown_data() {
       xAxis: {
         type: 'datetime',
         title: {text: "Date"},
-        tickInterval: 86400000,
+        // tickInterval: 86400000,
         labels: {
           format: '{value:%m/%d/%Y}',
           rotation: -30
@@ -96,7 +109,7 @@ async function update_burndown_data() {
         type: "column",
         name: "Completed Tasks",
         color: "#4682b4",
-        data: completedTasks
+        data: json_to_series(spent_time_list, "date", "spent")
       }, {
         name: "Ideal Burndown",
         color: "rgba(255,0,0,0.75)",
