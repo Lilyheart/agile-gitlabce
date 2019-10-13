@@ -29,22 +29,6 @@ async function get_issue_notes(url) {
   }
 }
 
-function json_to_series(json, xlabel, ylabel) {
-  // Reduce json
-  let series = Object.values(json.reduce((acc, cur) => {
-    acc[cur[xlabel]] = acc[cur[xlabel]] || {x: cur[xlabel], y : 0};
-    acc[cur[xlabel]].y += +cur[ylabel];
-    return acc;
-  },{}));
-
-  // Sort by x axis
-  series = series.sort(function(a, b) {
-    return parseFloat(a.x) - parseFloat(b.x);
-  });
-
-  return series
-}
-
 async function get_data() {
   issue_notes_list = [];
   startDate = issue_list[0].created_at;
@@ -56,13 +40,15 @@ async function get_data() {
     startHours += issue_list[issue].time_stats.time_estimate / 3600;
     // Update dates
     if (startDate > issue_list[issue].created_at) startDate = issue_list[issue].created_at;
-    if (endDate < issue_list[issue].updated_at) startDate = issue_list[issue].created_at;
+    if (endDate < issue_list[issue].updated_at) endDate = issue_list[issue].updated_at;
 
     // Get Notes
     let issue_iid = issue_list[issue].iid
     url = base_url + "projects/" + project_id + "/issues/" + issue_iid + "/notes?private_token=" + gitlab_key;
     await get_issue_notes(url);
   }
+  startDate = new Date(startDate);
+  endDate = new Date(endDate);
 
   // Go through notes to get changes in spend
   let note_re = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
@@ -82,6 +68,37 @@ async function get_data() {
       spent_time_list.push({date: date, spent: spent, issue: note.noteable_iid, author: note.author.name})
     }
   });
+
+  // Create Cummulative lines
+  let dayDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+  idealDaily = startHours / dayDiff;
+
+  idealEffort = [];
+  remainEffort = [];
+  idealEffort.push([new Date(startDate.toDateString()).getTime(), startHours])
+  remainEffort.push([new Date(startDate.toDateString()).getTime(), startHours])
+  for (var i = 0; i <= dayDiff; i++) {
+  	let effort = Math.max(0, Math.round((startHours - (idealDaily * i)) * 100) / 100)
+    let eff_day = idealEffort[0][0] + (60*60*24*1000*i);
+  	idealEffort.push([eff_day, effort])
+  }
+  idealEffort.shift();
+}
+
+function json_to_series(json, xlabel, ylabel) {
+  // Reduce json
+  let series = Object.values(json.reduce((acc, cur) => {
+    acc[cur[xlabel]] = acc[cur[xlabel]] || {x: cur[xlabel], y : 0};
+    acc[cur[xlabel]].y += +cur[ylabel];
+    return acc;
+  },{}));
+
+  // Sort by x axis
+  series = series.sort(function(a, b) {
+    return parseFloat(a.x) - parseFloat(b.x);
+  });
+
+  return series
 }
 
 async function update_burndown_data() {
