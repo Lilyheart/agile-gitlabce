@@ -1,27 +1,25 @@
 var startHours = 0;
 var startDate;
 var endDate;
-var completedTasks = [];
-var idealDaily;
 var spent_time_list = []
-var spentEffort = [];
 var idealEffort = [];
 var remainEffort = [];
 var issue_notes_list = [];
-var convertTable = {
+const CONVERTTABLE = {
   mo: 160,
   w : 40,
   d : 8,
   h : 1,
   m : 1.0 / 60.0
 }
+const MSperDAY = (1000 * 60 * 60 * 24);
 
 async function get_issue_notes(url) {
   // Get number of project pages
   projectPages = get_header_value(url, "x-total-pages")
 
   // Get Data
-  console.log("Obtaining data at: " + url + "&page=1 of " + projectPages + " page(s)")
+  // console.log("Obtaining data at: " + url + "&page=1 of " + projectPages + " page(s)")
   for(i=1; i <= projectPages; i++) {
     await $.getJSON(url + "&page=" + i, function(data) {
       issue_notes_list = issue_notes_list.concat(data)
@@ -60,7 +58,7 @@ async function get_data() {
     if (match != null) {
       // parse spent
       time = match[2].match(/([0-9]*)([a-zA-Z]*)/)
-      spent = time[1] * convertTable[time[2]]
+      spent = time[1] * CONVERTTABLE[time[2]]
       // update if subtracted
       if (match[1] == "subtracted") spent = spent * -1;
       // parse date
@@ -70,19 +68,32 @@ async function get_data() {
   });
 
   // Create Cummulative lines
-  let dayDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
-  idealDaily = startHours / dayDiff;
+  let dayDiff = Math.floor((endDate - startDate) / MSperDAY);
+  let idealDaily = startHours / dayDiff;
 
   idealEffort = [];
   remainEffort = [];
-  idealEffort.push([new Date(startDate.toDateString()).getTime(), startHours])
-  remainEffort.push([new Date(startDate.toDateString()).getTime(), startHours])
+  let day1 = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate())
+  idealEffort.push([day1, startHours])
+  remainEffort.push([day1, startHours])
+
+  let summ_comm = json_to_series(spent_time_list, "date", "spent");
+
   for (var i = 0; i <= dayDiff; i++) {
   	let effort = Math.max(0, Math.round((startHours - (idealDaily * i)) * 100) / 100)
-    let eff_day = idealEffort[0][0] + (60*60*24*1000*i);
+    let eff_day = day1 + (MSperDAY * i);
   	idealEffort.push([eff_day, effort])
+
+    let thisDay = summ_comm.filter(item => item.x == eff_day);
+    if(thisDay.length == 0) {
+      effort = remainEffort[i][1]
+    } else {
+      effort = remainEffort[i][1] - thisDay[0].y
+    }
+  	remainEffort.push([eff_day, effort])
   }
   idealEffort.shift();
+  remainEffort.shift();
 }
 
 function json_to_series(json, xlabel, ylabel) {
