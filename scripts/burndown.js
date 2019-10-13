@@ -1,4 +1,6 @@
 var startHours = 0;
+var startDate;
+var endDate;
 var completedTasks = [];
 var idealDaily;
 var spent_time_list = []
@@ -45,11 +47,16 @@ function json_to_series(json, xlabel, ylabel) {
 
 async function get_data() {
   issue_notes_list = [];
+  startDate = issue_list[0].created_at;
+  endDate = issue_list[0].updated_at;
 
   // Get data from issues
   for (var issue in issue_list) {
     // Accumlate hours
     startHours += issue_list[issue].time_stats.time_estimate / 3600;
+    // Update dates
+    if (startDate > issue_list[issue].created_at) startDate = issue_list[issue].created_at;
+    if (endDate < issue_list[issue].updated_at) startDate = issue_list[issue].created_at;
 
     // Get Notes
     let issue_iid = issue_list[issue].iid
@@ -75,7 +82,6 @@ async function get_data() {
       spent_time_list.push({date: date, spent: spent, issue: note.noteable_iid, author: note.author.name})
     }
   });
-
 }
 
 async function update_burndown_data() {

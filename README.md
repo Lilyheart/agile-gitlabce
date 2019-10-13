@@ -11,6 +11,7 @@ This project is to fill in the missing gaps regarding the Agile workflow in a CE
 The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on GitHub pages.
 
 ## To code
+- [ ] Determine if there is a better way to handle start/end dates?
 - [ ] Report by milestone
 - [ ] Handle issues that used `/remove_time_spent `
 - [ ] Handle issues that used `/remove_estimate `
