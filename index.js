@@ -36,6 +36,7 @@ async function update_curr_username() {
 }
 
 async function get_project_list(url) {
+  console.log(url)
   project_list = [];
   url = url + "projects?order_by=name&sort=asc&simple=true&private_token=" + gitlab_key
 
@@ -97,9 +98,23 @@ function enableIssueBtn() {
   $('#btnGetIssues').prop('disabled', false);
 }
 
+async function get_issues_list(url) {
+  // Get number of project pages
+  projectPages = get_header_value(url, "x-total-pages")
+  console.log("Total pages to fetch: " + projectPages)
+
+  // Get Data
+  issue_list = [];
+  console.log("Obtaining data at: " + url + "&page=1")
+  for(i=1; i <= projectPages; i++) {
+    await $.getJSON(url + "&page=" + i, function(data) {
+      issue_list = issue_list.concat(data)
+    });
+  }
+}
+
 async function getIssues() {
   set_phase("issue_start")
-  issue_list = [];
 
   // Get and set variables
   project_id = document.getElementById("project-dropdown").value;
@@ -109,17 +124,7 @@ async function getIssues() {
   $("#issuestable").dataTable().fnDestroy()
   $("#issuestablerows tr").remove();
 
-  // Get number of project pages
-  projectPages = get_header_value(url, "x-total-pages")
-  console.log("Total pages to fetch: " + projectPages)
-
-  // Get Data
-  console.log("Obtaining data at: " + url + "&page=1")
-  for(i=1; i <= projectPages; i++) {
-    await $.getJSON(url + "&page=" + i, function(data) {
-      issue_list = issue_list.concat(data)
-    });
-  }
+  await get_issues_list(url);
 
   $('#issuestable').DataTable({
     data: issue_list,
@@ -136,6 +141,10 @@ async function getIssues() {
     }]
   });
   set_phase("issue_end")
+}
+
+async function testStuff() {
+
 }
 
 function set_phase(new_phase) {
@@ -193,5 +202,6 @@ function set_phase(new_phase) {
 
 $( document ).ready(function() {
   $("#head").load("resources/header.html");
-  set_phase("start")
+  set_phase("start");
+  testStuff();
 });
