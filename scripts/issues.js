@@ -45,6 +45,7 @@ async function getIssues() {
   // Get and set variables
   project_id = document.getElementById("project-dropdown").value;
   let url = base_url + "projects/" + project_id + "/issues?private_token=" + gitlab_key;
+  await update_projectname()
 
   await load_issue_table(url);
   set_phase("issue_end");

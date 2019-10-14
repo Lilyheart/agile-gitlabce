@@ -120,6 +120,7 @@ async function update_burndown_data() {
   $(function () {
     $("#burndown").highcharts({
       title: {text: "Project Burndown Chart"},
+      subtitle: {text: curr_projectname},
       xAxis: {
         type: 'datetime',
         title: {text: "Date"},

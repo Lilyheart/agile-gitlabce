@@ -6,6 +6,7 @@ This file contains general code and global variable declarations
 var base_url;
 var gitlab_key;
 var project_id;
+var curr_projectname;
 var curr_username;
 var issue_list = [];
 
@@ -36,6 +37,19 @@ async function update_curr_username() {
     console.log("Obtaining data at: " + url)
     await $.getJSON(url, function(data) {
       curr_username = data.username
+    });
+  }
+}
+
+async function update_projectname() {
+  if (project_id.length == 0) {
+    curr_projectname = null;
+  } else {
+    let url = base_url + "projects/" + project_id + "?private_token=" + gitlab_key
+
+    console.log("Obtaining data at: " + url)
+    await $.getJSON(url, function(data) {
+      curr_projectname = data.name
     });
   }
 }
