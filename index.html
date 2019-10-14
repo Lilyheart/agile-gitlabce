@@ -66,9 +66,8 @@
 
           <div id="loading_projects">
             <div class="d-flex justify-content-center">
-              <div class="spinner-border m-5" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              &nbsp;&nbsp;Loading Projects...
             </div>
           </div>
 
@@ -86,11 +85,13 @@
           </div>
         </div>
 
+        <!-- Second Column -->
+
         <div class="col-md-8 col-sm-12">
           <hr />
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 					  <li class="nav-item">
-					    <a class="nav-link disabled" id="issues-tab" data-toggle="tab" href="#issuestab" role="tab" aria-controls="issuestab"
+					    <a class="nav-link disabled active" id="issues-tab" data-toggle="tab" href="#issuestab" role="tab" aria-controls="issuestab"
 					      aria-selected="true">Gitlab Issues</a>
 					  </li>
             <li class="nav-item">
@@ -108,6 +109,12 @@
 					</ul>
 					<div class="tab-content" id="myTabContent">
 					  <div class="tab-pane fade show active" id="issuestab" role="tabpanel" aria-labelledby="issues-tab">
+              <div id="loading_issues">
+                <div class="d-flex justify-content-center">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    &nbsp;&nbsp;Loading Issues...
+                </div>
+              </div>
               <div id="gitlab_show_issues">
                 <table id="issuestable" class="table table-dark table-hover" style="width:100%;">
                   <thead>
@@ -123,6 +130,12 @@
               </div>
             </div>
 					  <div class="tab-pane fade" id="burndowntab" role="tabpanel" aria-labelledby="burndown-tab">
+              <div id="loading_burndown">
+                <div class="d-flex justify-content-center">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    &nbsp;&nbsp;Loading Burndown...
+                </div>
+              </div>
               <div id="burndown" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
             </div>
 					  <div class="tab-pane fade" id="membertab" role="tabpanel" aria-labelledby="members-tab">
@@ -132,14 +145,6 @@
               TODO Later Later
             </div>
 					</div>
-
-          <div id="loading_issues">
-            <div class="d-flex justify-content-center">
-              <div class="spinner-border m-5" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div> <!-- end class="row" -->
     </div>

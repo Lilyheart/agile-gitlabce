@@ -51,5 +51,4 @@ async function getIssues() {
   set_phase("issue_end");
 
   await update_burndown_data();
-  set_phase("burdown_end");
 }

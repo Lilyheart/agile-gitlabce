@@ -55,15 +55,63 @@ async function update_projectname() {
 }
 
 function set_phase(new_phase) {
-  // set_phase(start, project_start, project_end, issue_start, issue_end, burdown_end)
+  if (new_phase == "start") {
+    document.getElementById("loading_projects").style.display = "none";
+    document.getElementById("show_repo_options").style.display = "none";
+    document.getElementById("gitlab_get_project").style.display = "none";
+        document.getElementById("btnRestart").style.display = "none";
 
-  // DIVS
+    document.getElementById("loading_issues").style.display = "none";
+    document.getElementById("gitlab_show_issues").style.display = "none";
 
-  // loading_projects
+    document.getElementById("loading_burndown").style.display = "none";
+    document.getElementById("burndown").style.display = "none";
+
+    document.getElementById("issues-tab").classList.add("disabled");
+    document.getElementById("burndown-tab").classList.add("disabled");
+    document.getElementById("members-tab").classList.add("disabled");
+    document.getElementById("settings-tab").classList.add("disabled");
+  }
+
   if (new_phase == "project_start") {
     document.getElementById("loading_projects").style.display = "block";
-  } else {
+      document.getElementById("gitlab_get_project").style.display = "none";
+  }
+
+  if (new_phase == "project_end") {
     document.getElementById("loading_projects").style.display = "none";
+    document.getElementById("gitlab_get_project").style.display = "block";
+  }
+
+  if (new_phase == "issue_start") {
+    document.getElementById("loading_issues").style.display = "block";
+    document.getElementById("loading_burndown").style.display = "block";
+    document.getElementById("gitlab_show_issues").style.display = "none";
+
+    document.getElementById("btnRestart").style.display = "block";
+    $('#base_url').prop('disabled', true);
+    $('#gitlab_key').prop('disabled', true);
+    $('#btnGetProjects').prop('disabled', true);
+
+    $('#radio1').prop('disabled', true);
+    $('#radio2').prop('disabled', true);
+    $('#project-dropdown').prop('disabled', true);
+    $('#btnGetIssues').prop('disabled', true);
+  }
+
+  if (new_phase == "issue_end") {
+    document.getElementById("loading_issues").style.display = "none";
+    document.getElementById("gitlab_show_issues").style.display = "block";
+  }
+
+  if (new_phase == "burndown_start") {
+    document.getElementById("loading_burndown").style.display = "block";
+    document.getElementById("burndown").style.display = "none";
+  }
+
+  if (new_phase == "burndown_end") {
+    document.getElementById("loading_burndown").style.display = "none";
+    document.getElementById("burndown").style.display = "block";
   }
 
   // show_repo_options
@@ -74,72 +122,8 @@ function set_phase(new_phase) {
     document.getElementById("show_repo_options").style.display = "flex";
   }
 
-  // gitlab_get_project
-  if (new_phase == "start" || new_phase == "project_start") {
-    document.getElementById("gitlab_get_project").style.display = "none";
-  } else {
-    document.getElementById("gitlab_get_project").style.display = "block";
-  }
-
-  // loading_issues
+  // tabs
   if (new_phase == "issue_start") {
-    document.getElementById("loading_issues").style.display = "block";
-  } else {
-    document.getElementById("loading_issues").style.display = "none";
-  }
-
-  // gitlab_show_issues
-  if (new_phase == "issue_end" || new_phase == "burdown_end") {
-    document.getElementById("gitlab_show_issues").style.display = "block";
-  } else {
-    document.getElementById("gitlab_show_issues").style.display = "none";
-  }
-
-  // BUTTONS
-
-  // gitlab_show_issues
-  if (new_phase == "issue_end" || new_phase == "burdown_end") {
-    document.getElementById("btnGetProjects").style.display = "block";
-    $('#btnGetProjects').prop('disabled', true);
-  } else {
-    document.getElementById("btnGetProjects").style.display = "block";
-    $('#btnGetProjects').prop('disabled', false);
-  }
-
-  // gitlab_show_issues
-  if (new_phase == "issue_end" || new_phase == "burdown_end") {
-    document.getElementById("btnGetIssues").style.display = "block";
-    $('#btnGetIssues').prop('disabled', true);
-  } else {
-    document.getElementById("btnGetIssues").style.display = "block";
-    $('#btnGetIssues').prop('disabled', false);
-  }
-
-  // gitlab_show_issues
-  if (new_phase == "issue_end" || new_phase == "burdown_end") {
-    document.getElementById("btnRestart").style.display = "block";
-  } else {
-    document.getElementById("btnRestart").style.display = "none";
-  }
-
-  document.getElementById("issues-tab").classList.remove("active");
-  document.getElementById("issues-tab").classList.add("disabled");
-  document.getElementById("burndown-tab").classList.add("disabled");
-  document.getElementById("members-tab").classList.add("disabled");
-  document.getElementById("settings-tab").classList.add("disabled");
-
-  // tabs
-  if (new_phase == "issue_end") {
-    document.getElementById("issues-tab").classList.add("active");
-    document.getElementById("issues-tab").classList.remove("disabled");
-    document.getElementById("burndown-tab").classList.add("disabled");
-    document.getElementById("members-tab").classList.add("disabled");
-    document.getElementById("settings-tab").classList.add("disabled");
-  }
-
-  // tabs
-  if (new_phase == "burdown_end") {
-    document.getElementById("issues-tab").classList.add("active");
     document.getElementById("issues-tab").classList.remove("disabled");
     document.getElementById("burndown-tab").classList.remove("disabled");
     document.getElementById("members-tab").classList.add("disabled");

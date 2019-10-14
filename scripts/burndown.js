@@ -115,6 +115,7 @@ function json_to_series(json, xlabel, ylabel) {
 }
 
 async function update_burndown_data() {
+  set_phase("burndown_start");
   await get_data()
 
   $(function () {
@@ -167,4 +168,6 @@ async function update_burndown_data() {
       }]
     });
   });
+
+  set_phase("burndown_end");
 }
