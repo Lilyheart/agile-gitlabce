@@ -57,6 +57,8 @@ async function update_projectname() {
 function set_phase(new_phase) {
   // set_phase(start, project_start, project_end, issue_start, issue_end, burdown_end)
 
+  // DIVS
+
   // loading_projects
   if (new_phase == "project_start") {
     document.getElementById("loading_projects").style.display = "block";
@@ -93,6 +95,33 @@ function set_phase(new_phase) {
     document.getElementById("gitlab_show_issues").style.display = "none";
   }
 
+  // BUTTONS
+
+  // gitlab_show_issues
+  if (new_phase == "issue_end" || new_phase == "burdown_end") {
+    document.getElementById("btnGetProjects").style.display = "block";
+    $('#btnGetProjects').prop('disabled', true);
+  } else {
+    document.getElementById("btnGetProjects").style.display = "block";
+    $('#btnGetProjects').prop('disabled', false);
+  }
+
+  // gitlab_show_issues
+  if (new_phase == "issue_end" || new_phase == "burdown_end") {
+    document.getElementById("btnGetIssues").style.display = "block";
+    $('#btnGetIssues').prop('disabled', true);
+  } else {
+    document.getElementById("btnGetIssues").style.display = "block";
+    $('#btnGetIssues').prop('disabled', false);
+  }
+
+  // gitlab_show_issues
+  if (new_phase == "issue_end" || new_phase == "burdown_end") {
+    document.getElementById("btnRestart").style.display = "block";
+  } else {
+    document.getElementById("btnRestart").style.display = "none";
+  }
+
   document.getElementById("issues-tab").classList.remove("active");
   document.getElementById("issues-tab").classList.add("disabled");
   document.getElementById("burndown-tab").classList.add("disabled");
@@ -116,6 +145,10 @@ function set_phase(new_phase) {
     document.getElementById("members-tab").classList.add("disabled");
     document.getElementById("settings-tab").classList.add("disabled");
   }
+}
+
+function restart() {
+  location.reload();
 }
 
 $( document ).ready(function() {

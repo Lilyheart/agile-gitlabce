@@ -47,7 +47,7 @@
                 <input type="text" class="form-control" id="gitlab_key" placeholder="API Key">
               </div>
             </div>
-            <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="getProjects('auto')">Get Projects</button>
+            <button type="button" id="btnGetProjects" class="btn btn-secondary btn-lg btn-block" onclick="getProjects('auto')">Get Projects</button>
             <hr />
           </div>
 
@@ -82,6 +82,7 @@
               </div>
             </div>
             <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block" onclick="getIssues()">Get Issues</button>
+            <button type="button" id="btnRestart" class="btn btn-secondary btn-lg btn-block" onclick="restart()">Restart</button>
           </div>
         </div>
 
