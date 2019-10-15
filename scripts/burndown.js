@@ -53,25 +53,31 @@ var burndown = (function () {
     let issueIID, url, noteRE, body, match, time, spent, date, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay;
 
     issueNotesList = [];
-    startDate = issueList[0].created_at;
-    endDate = issueList[0].updated_at;
+    startDate = issueListArr[0].created_at;
+    endDate = issueListArr[0].updated_at;
 
     // Get data from issues
     startHours = 0;
-    for (let issue in issueList) {
-      if (issueList.hasOwnProperty(issue)) {
+    for (let issue in issueListArr) {
+      if (issueListArr.hasOwnProperty(issue)) {
         // Accumlate hours
-        startHours += issueList[issue].time_stats.time_estimate / SECperHOUR;
+        startHours += issueListArr[issue].time_stats.time_estimate / SECperHOUR;
         // Update dates
-        if (startDate > issueList[issue].created_at) {startDate = issueList[issue].created_at;}
-        if (endDate < issueList[issue].updated_at) {endDate = issueList[issue].updated_at;}
+        if (startDate > issueListArr[issue].created_at) {startDate = issueListArr[issue].created_at;}
+        if (endDate < issueListArr[issue].updated_at) {endDate = issueListArr[issue].updated_at;}
 
         // Get Notes
-        issueIID = issueList[issue].iid;
+        issueIID = issueListArr[issue].iid;
         url = baseURL + "projects/" + projectID + "/issues/" + issueIID + "/notes";
 
         if (gitlabKey.length > 0) {
           url += "?&private_token=" + gitlabKey;
+        }
+
+        if (issueListArr[issue].milestone !== null) {
+          milestoneList[issueListArr[issue].milestone.iid].issues.push(issueListArr[issue].iid);
+        } else {
+          milestoneList["None"].issues.push(issueListArr[issue].iid);
         }
 
         await getIssueNotes(url);

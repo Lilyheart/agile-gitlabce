@@ -11,10 +11,14 @@ This project is to fill in the missing gaps regarding the Agile workflow in a CE
 The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on GitHub pages.
 
 ## To code
-- [ ] Determine if there is a better way to handle start/end dates?
 - [ ] Report by milestone
 - [ ] Handle issues that used `/remove_time_spent `
 - [ ] Handle issues that used `/remove_estimate `
+
+- [ ] Change setPhase to switch statement with fallthrough?
+- [ ] Reduce issueListArr and JSON to just issueList
+- [ ] Recode restart() to actually reset the code while keeping the API key (i.e. not reloading the entire page)
+- [ ] Determine if there is a better way to handle start/end dates?
 - [ ] Change tick level of x axis if to many dates to display
 
 ## Installation
