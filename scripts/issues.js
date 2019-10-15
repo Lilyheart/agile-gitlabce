@@ -47,7 +47,8 @@ var issues = (function () {
     }
 
     milestoneList = {};
-    milestoneList["None"] = {issues: []};
+    milestoneList["None"] = {iid: "None", title: "None", issues: []};
+    milestoneList["All"] = {iid: "All", title: "All", issues: []};
     for (let index in tempMilestoneList) {
       if (tempMilestoneList.hasOwnProperty(index)) {
         milestone = tempMilestoneList[index];

@@ -49,6 +49,33 @@ var burndown = (function () {
     return series;
   }
 
+  function createMilestoneDD() {
+    let dropdown, dropdownText;
+
+    /* eslint-disable */
+    milestoneList["None"].start_date = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate()
+    milestoneList["All"].start_date = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate()
+    milestoneList["None"].due_date = endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDate()
+    milestoneList["All"].due_date = endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDate()
+    /* eslint-enable */
+
+    // Set up drowndown
+    dropdown = $("#milestone-dropdown");
+    dropdown.empty();
+    dropdown.append("<option selected='true' disabled>Choose Milestone</option>");
+    dropdown.prop("selectedIndex", 0);
+
+    // Fill dropdown
+    for (let milestone in milestoneList) { // iid
+      if (milestoneList.hasOwnProperty(milestone)) {
+        dropdownText = milestoneList[milestone].title;
+        dropdownText += " (" + milestoneList[milestone].issues.length + " issues)";
+        dropdown.append($("<option></option>").attr("value", milestone).text(dropdownText));
+      }
+    }
+
+  }
+
   async function getData() {
     let issueIID, url, noteRE, body, match, time, spent, date, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay;
 
@@ -74,6 +101,7 @@ var burndown = (function () {
           url += "?&private_token=" + gitlabKey;
         }
 
+        milestoneList["All"].issues.push(issueListArr[issue].iid);
         if (issueListArr[issue].milestone !== null) {
           milestoneList[issueListArr[issue].milestone.iid].issues.push(issueListArr[issue].iid);
         } else {
@@ -85,6 +113,8 @@ var burndown = (function () {
     }
     startDate = new Date(startDate);
     endDate = new Date(endDate);
+
+    createMilestoneDD();
 
     // Go through notes to get changes in spend
     noteRE = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
@@ -146,7 +176,7 @@ var burndown = (function () {
     await getData();
 
     $(function () {
-      $("#burndown").highcharts({
+      $("#burndown-chart").highcharts({
         title: {text: "Project Burndown Chart"},
         subtitle: {text: currProjectName},
         xAxis: {

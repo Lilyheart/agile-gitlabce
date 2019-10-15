@@ -141,8 +141,17 @@
 									Burndown charts are only available when logged in using an API Key.
 								</p>
               </div>
-              <div id="burndown"></div>
-              <!-- <div id="burndown" style="min-width: 310px; height: 400px; margin: 0 auto"></div> -->
+              <div id="burndown">
+                <div class="form-group row">
+                  <label for="project_id" class="col-sm-3 col-form-label">Show Milestone:</label>
+                  <div class="col-sm-9">
+                    <select id="milestone-dropdown" class="drowndown custom-select" name="milestone_id" onchange="">
+                      <option selected="true" disabled>Load Projects first</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="burndown-chart"></div>
+              </div>
             </div>
 					  <div class="tab-pane fade" id="membertab" role="tabpanel" aria-labelledby="members-tab">
               TODO Later
