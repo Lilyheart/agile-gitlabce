@@ -1,6 +1,6 @@
 var burndown = (function () {
 
-  let startHours, startDate, endDate, spentTimeList, idealEffort, remainEffort, issueNotesList;
+  let startHours, startDate, endDate, spentTimeList, idealEffort, remainEffort, issueNotesList, isLoaded;
   /* eslint-disable */
   const CONVERTTABLE = {
     mo: 160,
@@ -14,6 +14,8 @@ var burndown = (function () {
   const INVERSE = -1;
   const TWOdigitROUND = 100;
   /* eslint-enable */
+
+  isLoaded = false;
 
   async function getIssueNotes(url) {
     let projectPages;
@@ -30,9 +32,17 @@ var burndown = (function () {
     }
   }
 
-  function jsonToSeries(json, xlabel, ylabel) {
+  function jsonToSeries(json, xlabel, ylabel, filter) {
+    let filteredJSON, series, desiredIssues;
+
+    // filter
+    if (filter !== null) {
+      // for each note, determine if it's from an issue of interest
+      filteredJSON = json.filter(note => milestoneList[filter[1]].issues.includes(note.issue));
+    }
+
     // Reduce json
-    let series = Object.values(json.reduce((acc, cur) => {
+    series = Object.values(filteredJSON.reduce((acc, cur) => {
         /* eslint-disable */
       acc[cur[xlabel]] = acc[cur[xlabel]] || {x: cur[xlabel], y : 0};
       acc[cur[xlabel]].y += +cur[ylabel];
@@ -52,13 +62,6 @@ var burndown = (function () {
   function createMilestoneDD() {
     let dropdown, dropdownText;
 
-    /* eslint-disable */
-    milestoneList["None"].start_date = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate()
-    milestoneList["All"].start_date = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate()
-    milestoneList["None"].due_date = endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDate()
-    milestoneList["All"].due_date = endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDate()
-    /* eslint-enable */
-
     // Set up drowndown
     dropdown = $("#milestone-dropdown");
     dropdown.empty();
@@ -76,19 +79,16 @@ var burndown = (function () {
 
   }
 
-  async function getData() {
-    let issueIID, url, noteRE, body, match, time, spent, date, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay;
+  async function getNewData() {
+    let issueIID, url, noteRE, body, match, time, spent, date;
 
     issueNotesList = [];
     startDate = issueListArr[0].created_at;
     endDate = issueListArr[0].updated_at;
 
     // Get data from issues
-    startHours = 0;
     for (let issue in issueListArr) {
       if (issueListArr.hasOwnProperty(issue)) {
-        // Accumlate hours
-        startHours += issueListArr[issue].time_stats.time_estimate / SECperHOUR;
         // Update dates
         if (startDate > issueListArr[issue].created_at) {startDate = issueListArr[issue].created_at;}
         if (endDate < issueListArr[issue].updated_at) {endDate = issueListArr[issue].updated_at;}
@@ -114,6 +114,13 @@ var burndown = (function () {
     startDate = new Date(startDate);
     endDate = new Date(endDate);
 
+    /* eslint-disable */
+    milestoneList["None"].start_date = startDate;
+    milestoneList["All"].start_date = startDate;
+    milestoneList["None"].due_date = endDate;
+    milestoneList["All"].due_date = endDate;
+    /* eslint-enable */
+
     createMilestoneDD();
 
     // Go through notes to get changes in spend
@@ -135,6 +142,25 @@ var burndown = (function () {
         spentTimeList.push({date: date, spent: spent, issue: note.noteable_iid, author: note.author.name});
       }
     });
+  }
+
+  function updateData(selectedMilestone) {
+    let issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay;
+
+    startDate = milestoneList[selectedMilestone].start_date;
+    endDate = milestoneList[selectedMilestone].due_date;
+
+    console.log(startDate + " to " + endDate);
+
+    startHours = 0;
+
+    for (let issue in milestoneList[selectedMilestone].issues) {
+      if (milestoneList[selectedMilestone].issues.hasOwnProperty(issue)) {
+        issueIID = milestoneList[selectedMilestone].issues[issue];
+        // Accumlate hours
+        startHours += issueListJSON[issueIID].time_stats.time_estimate / SECperHOUR;
+      }
+    }
 
     // Create Cummulative lines
     dayDiff = Math.floor((endDate - startDate) / MSperDAY);
@@ -146,7 +172,7 @@ var burndown = (function () {
     idealEffort.push([day1, startHours]);
     remainEffort.push([day1, startHours]);
 
-    spentCummList = jsonToSeries(spentTimeList, "date", "spent");
+    spentCummList = jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
 
     for (let i = 0; i <= dayDiff; i += 1) {
       effort = Math.max(0, Math.round((startHours - (idealDaily * i)) * TWOdigitROUND) / TWOdigitROUND);
@@ -165,15 +191,20 @@ var burndown = (function () {
     remainEffort.shift();
   }
 
-  async function updateBurndownData() {
-    if (gitlabKey === "") {
-      setPhase("burndown_end");
-      document.getElementById("burndown-unavailable").style.display = "block";
+  async function updateBurndownData(selectedMilestone) {
+    if (!isLoaded) {
+      if (gitlabKey === "") {
+        setPhase("burndown_end");
+        document.getElementById("burndown-unavailable").style.display = "block";
 
-      return;
+        return;
+      }
+      setPhase("burndown_start");
+      await getNewData();
+      isLoaded = true;
     }
-    setPhase("burndown_start");
-    await getData();
+
+    updateData(selectedMilestone);
 
     $(function () {
       $("#burndown-chart").highcharts({
@@ -204,7 +235,7 @@ var burndown = (function () {
           type: "column",
           name: "Completed Tasks",
           color: "#4682b4",
-          data: jsonToSeries(spentTimeList, "date", "spent")
+          data: jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone])
         }, {
           name: "Ideal Burndown",
           color: "rgba(255,0,0,0.75)",
@@ -230,8 +261,8 @@ var burndown = (function () {
   }
 
   return {
-    updateBurndownData: function() {
-      updateBurndownData();
+    updateBurndownData: function(selectedMilestone) {
+      updateBurndownData(selectedMilestone);
     }
   };
 

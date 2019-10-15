@@ -145,7 +145,7 @@
                 <div class="form-group row">
                   <label for="project_id" class="col-sm-3 col-form-label">Show Milestone:</label>
                   <div class="col-sm-9">
-                    <select id="milestone-dropdown" class="drowndown custom-select" name="milestone_id" onchange="">
+                    <select id="milestone-dropdown" class="drowndown custom-select" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
                       <option selected="true" disabled>Load Projects first</option>
                     </select>
                   </div>

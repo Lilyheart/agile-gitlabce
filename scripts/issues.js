@@ -31,7 +31,7 @@ var issues = (function () {
   }
 
   async function getMilestoneList() {
-    let url, projectPages, tempMilestoneList, milestone;
+    let url, projectPages, tempMilestoneList, milestone, date;
 
     // Get number of project pages
     url = baseURL + "projects/" + projectID + "/milestones?private_token=" + gitlabKey;
@@ -54,6 +54,13 @@ var issues = (function () {
         milestone = tempMilestoneList[index];
         milestoneList[milestone.iid] = milestone;
         milestoneList[milestone.iid].issues = [];
+        //convert dates
+        /* eslint-disable */
+        date = milestoneList[milestone.iid].start_date.split("-");
+        milestoneList[milestone.iid].start_date = new Date(date[0], date[1] - 1, date[2]);
+        date = milestoneList[milestone.iid].due_date.split("-");
+        milestoneList[milestone.iid].due_date = new Date(date[0], date[1] - 1, date[2]);
+        /* eslint-enable */
       }
     }
   }
@@ -92,7 +99,7 @@ var issues = (function () {
     await loadIssueTable();
     setPhase("issue_end");
 
-    await burndown.updateBurndownData();
+    await burndown.updateBurndownData("All");
   }
 
   return {
