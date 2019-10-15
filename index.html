@@ -47,7 +47,7 @@
                 <input type="text" class="form-control" id="gitlab_key" placeholder="API Key">
               </div>
             </div>
-            <button type="button" id="btnGetProjects" class="btn btn-secondary btn-lg btn-block" onclick="getProjects('auto')">Get Projects</button>
+            <button type="button" id="btnGetProjects" class="btn btn-secondary btn-lg btn-block" onclick="projects.getProjects('auto')">Get Projects</button>
             <hr />
           </div>
 
@@ -75,12 +75,12 @@
             <div class="form-group row">
               <label for="project_id" class="col-sm-4 col-form-label">Project ID:</label>
               <div class="col-sm-8">
-                <select id="project-dropdown" class="drowndown custom-select" name="project_id" onchange="enableIssueBtn()">
+                <select id="project-dropdown" class="drowndown custom-select" name="project_id" onchange="issues.enableIssueBtn()">
                   <option selected="true" disabled>Load Projects first</option>
                 </select>
               </div>
             </div>
-            <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block" onclick="getIssues()">Get Issues</button>
+            <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block" onclick="issues.getIssues()">Get Issues</button>
             <button type="button" id="btnRestart" class="btn btn-secondary btn-lg btn-block" onclick="restart()">Restart</button>
           </div>
         </div>
@@ -136,7 +136,13 @@
                     &nbsp;&nbsp;Loading Burndown...
                 </div>
               </div>
-              <div id="burndown" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+              <div id="burndown-unavailable">
+                <p>
+									Burndown charts are only available when logged in using an API Key.
+								</p>
+              </div>
+              <div id="burndown"></div>
+              <!-- <div id="burndown" style="min-width: 310px; height: 400px; margin: 0 auto"></div> -->
             </div>
 					  <div class="tab-pane fade" id="membertab" role="tabpanel" aria-labelledby="members-tab">
               TODO Later

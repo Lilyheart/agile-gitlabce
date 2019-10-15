@@ -1,54 +1,72 @@
-function enableIssueBtn() {
-  $('#btnGetIssues').prop('disabled', false);
-}
+var issues = (function () {
 
-async function load_issue_table(url) {
-  // Reset table
-  $("#issuestable").dataTable().fnDestroy()
-  $("#issuestablerows tr").remove();
+  function enableIssueBtn() {
+    $("#btnGetIssues").prop("disabled", false);
+  }
 
-  await get_issues_list(url);
+  async function getIssuesList(url) {
+    let projectPages;
 
-  $('#issuestable').DataTable({
-    data: issue_list,
-    columns: [
-      { "data": "title"},
-      { "data": "state"},
-      { "data": "time_stats.human_time_estimate"}
-    ],
-    "columnDefs": [{
-      "render": function ( data, type, row ) {
-        return "<a href='" + row.web_url + "' target='_blank'>" + row.title + "</a>"
-      },
-      "targets": 0
-    }]
-  });
-}
+    // Get number of project pages
+    projectPages = getHeaderValue(url, "x-total-pages");
 
-async function get_issues_list(url) {
-  // Get number of project pages
-  projectPages = get_header_value(url, "x-total-pages")
+    // Get Data
+    issueList = [];
+    console.log("Obtaining data at: " + url + "&page=1 of " + projectPages + " page(s)");
+    for (let i = 1; i <= projectPages; i += 1) {
+      await $.getJSON(url + "&page=" + i, function(data) {
+        issueList = issueList.concat(data);
+      });
+    }
+  }
 
-  // Get Data
-  issue_list = [];
-  console.log("Obtaining data at: " + url + "&page=1 of " + projectPages + " page(s)")
-  for(i=1; i <= projectPages; i++) {
-    await $.getJSON(url + "&page=" + i, function(data) {
-      issue_list = issue_list.concat(data)
+  async function loadIssueTable(url) {
+    // Reset table
+    $("#issuestable").dataTable().fnDestroy();
+    $("#issuestablerows tr").remove();
+
+    await getIssuesList(url);
+
+    $("#issuestable").DataTable({
+      data: issueList,
+      columns: [
+        {data: "title"},
+        {data: "state"},
+        {data: "time_stats.human_time_estimate"}
+      ],
+      columnDefs: [{
+        render: function ( data, type, row ) {
+          return "<a href='" + row.web_url + "' target='_blank'>" + row.title + "</a>";
+        },
+        targets: 0
+      }]
     });
   }
-}
 
-async function getIssues() {
-  set_phase("issue_start");
+  async function getIssues() {
+    let url;
 
-  // Get and set variables
-  project_id = document.getElementById("project-dropdown").value;
-  let url = base_url + "projects/" + project_id + "/issues?private_token=" + gitlab_key;
-  await update_projectname()
+    setPhase("issue_start");
 
-  await load_issue_table(url);
-  set_phase("issue_end");
+    // Get and set variables
+    projectID = document.getElementById("project-dropdown").value;
+    url = baseURL + "projects/" + projectID + "/issues?private_token=" + gitlabKey;
+    await updateProjectname();
 
-  await update_burndown_data();
-}
+    await loadIssueTable(url);
+    setPhase("issue_end");
+
+    await burndown.updateBurndownData();
+  }
+
+  return {
+    getIssues: function() {
+      getIssues();
+    },
+
+    enableIssueBtn: function() {
+      enableIssueBtn();
+    }
+  };
+
+})();
