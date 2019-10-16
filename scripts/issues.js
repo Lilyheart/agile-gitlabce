@@ -23,9 +23,15 @@ var issues = (function () {
     issueListJSON = {};
     for (let index in issueListArr) {
       if (issueListArr.hasOwnProperty(index)) {
+        // Build JSON
         issue = issueListArr[index];
         issueListJSON[issue.iid] = issue;
         issueListJSON[issue.iid].issues = [];
+
+        // Set miletone variable for DataTabale
+        if (issueListArr[index].milestone === null) {
+          issueListArr[index].milestone = {title: ""};
+        }
       }
     }
   }
@@ -74,10 +80,12 @@ var issues = (function () {
     await getMilestoneList();
 
     $("#issuestable").DataTable({
+      responsive: true,
       data: issueListArr,
       columns: [
         {data: "title"},
         {data: "state"},
+        {data: "milestone.title"},
         {data: "time_stats.human_time_estimate"}
       ],
       columnDefs: [{

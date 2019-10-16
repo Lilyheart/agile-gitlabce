@@ -110,7 +110,7 @@
 					<div class="tab-content" id="myTabContent">
 					  <div class="tab-pane fade show active" id="issuestab" role="tabpanel" aria-labelledby="issues-tab">
               <div id="loading_issues">
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center m-5">
                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     &nbsp;&nbsp;Loading Issues...
                 </div>
@@ -121,6 +121,7 @@
                     <tr>
                       <th>Title</th>
                       <th>State</th>
+                      <th>Milestone</th>
                       <th>Time Est.</th>
                     </tr>
                   </thead>
@@ -131,7 +132,7 @@
             </div>
 					  <div class="tab-pane fade" id="burndowntab" role="tabpanel" aria-labelledby="burndown-tab">
               <div id="loading_burndown">
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center m-5">
                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     &nbsp;&nbsp;Loading Burndown...
                 </div>
@@ -150,7 +151,7 @@
                     </select>
                   </div>
                 </div>
-                <div id="burndown-chart"></div>
+                <div id="burndown-chart" style="height: 400px"></div>
               </div>
             </div>
 					  <div class="tab-pane fade" id="membertab" role="tabpanel" aria-labelledby="members-tab">

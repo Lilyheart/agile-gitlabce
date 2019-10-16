@@ -13,6 +13,7 @@ var burndown = (function () {
   const SECperHOUR = 3600
   const INVERSE = -1;
   const TWOdigitROUND = 100;
+  const MSperMIN = (1000 * 60);
   /* eslint-enable */
 
   isLoaded = false;
@@ -73,7 +74,11 @@ var burndown = (function () {
       if (milestoneList.hasOwnProperty(milestone)) {
         dropdownText = milestoneList[milestone].title;
         dropdownText += " (" + milestoneList[milestone].issues.length + " issues)";
-        dropdown.append($("<option></option>").attr("value", milestone).text(dropdownText));
+        if (milestoneList[milestone].issues.length > 0) {
+          dropdown.append($("<option></option>").attr("value", milestone).text(dropdownText));
+        } else {
+          dropdown.append($("<option disabled></option>").attr("value", milestone).text(dropdownText));
+        }
       }
     }
 
@@ -104,7 +109,7 @@ var burndown = (function () {
         }
 
         milestoneList["All"].issues.push(issueListArr[issue].iid);
-        if (issueListArr[issue].milestone !== null) {
+        if (issueListArr[issue].milestone.iid) {
           milestoneList[issueListArr[issue].milestone.iid].issues.push(issueListArr[issue].iid);
         } else {
           milestoneList["None"].issues.push(issueListArr[issue].iid);
@@ -113,8 +118,17 @@ var burndown = (function () {
         await getIssueNotes(url);
       }
     }
+
     startDate = new Date(startDate);
     endDate = new Date(endDate);
+
+    for (let milestone in milestoneList) {
+      if (milestoneList.hasOwnProperty(milestone)) {
+        console.log(milestone);
+        if (startDate > milestoneList[milestone].start_date) {startDate = milestoneList[milestone].start_date;}
+        if (endDate < milestoneList[milestone].due_date) {endDate = milestoneList[milestone].due_date;}
+      }
+    }
 
     /* eslint-disable */
     milestoneList["None"].start_date = startDate;
@@ -217,7 +231,13 @@ var burndown = (function () {
           labels: {
             format: "{value:%m/%d/%Y}",
             rotation: -30
-          }
+          },
+          plotLines: [{
+            color: "#888888",
+            width: 2,
+            value: new Date(new Date().setHours(0, 0, 0, 0)).getTime() - (new Date()).getTimezoneOffset() * MSperMIN,
+            dashStyle: "longdashdot"
+          }]
         },
         yAxis: {
           title: {text: "Hours"}
@@ -261,6 +281,20 @@ var burndown = (function () {
         credits: {
           text: "Highcarts.com and lilyheart.github.io/agile-gitlabce",
           href: "https://lilyheart.github.io/agile-gitlabce/"
+        },
+        responsive: {
+          rules: [{
+            condition: {
+              maxWidth: 500
+            },
+            chartOptions: {
+              legend: {
+                align: "center",
+                verticalAlign: "bottom",
+                layout: "vertical"
+              }
+            }
+          }]
         }
       });
     });
