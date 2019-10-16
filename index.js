@@ -3,7 +3,9 @@ See Scripts folder for additional Scripts.
 This file contains general code and global variable declarations
 */
 
-var baseURL, gitlabKey, projectID, currProjectName, currUserName, projectList, issueListArr, issueListJSON, milestoneList;
+var baseURL, gitlabKey, projectID, currProjectName,
+    currUserName, projectList, issueListArr, issueListJSON, milestoneList, time1,
+    time0 = performance.now();
 
 function getHeaderValue(url, headerValue) {
   let request, arr, headerMap, parts, header, value;

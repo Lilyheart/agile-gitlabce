@@ -338,12 +338,19 @@ var burndown = (function () {
       });
     });
 
+    if (!time1) {
+      time1 = performance.now();
+      console.log("Took " + (performance.now() - time0) + " milliseconds from load to burndown chart.");
+    }
+
     setPhase("burndown_end");
   }
 
   return {
-    updateBurndownData: function(selectedMilestone) {
-      updateBurndownData(selectedMilestone);
+    updateBurndownData: async function(selectedMilestone) {
+      await updateBurndownData(selectedMilestone);
+
+      return;
     }
   };
 
