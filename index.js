@@ -57,6 +57,7 @@ function setPhase(newPhase) {
   if (newPhase === "start") {
     document.getElementById("loading_projects").style.display = "none";
     document.getElementById("show_repo_options").style.display = "none";
+    document.getElementById("radio1").checked = true;
     document.getElementById("gitlab_get_project").style.display = "none";
     document.getElementById("btnRestart").style.display = "none";
 
@@ -76,12 +77,14 @@ function setPhase(newPhase) {
 
   if (newPhase === "project_start") {
     document.getElementById("loading_projects").style.display = "block";
-      document.getElementById("gitlab_get_project").style.display = "none";
+    document.getElementById("gitlab_get_project").style.display = "none";
+    $("#btnGetProjects").prop("disabled", true);
   }
 
   if (newPhase === "project_end") {
     document.getElementById("loading_projects").style.display = "none";
     document.getElementById("gitlab_get_project").style.display = "block";
+    $("#btnGetProjects").prop("disabled", false);
   }
 
   if (newPhase === "issue_start") {

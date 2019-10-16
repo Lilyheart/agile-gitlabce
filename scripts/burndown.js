@@ -77,6 +77,8 @@ var burndown = (function () {
       }
     }
 
+    document.getElementById("milestone-dropdown").value = "All";
+
   }
 
   async function getNewData() {
@@ -150,8 +152,6 @@ var burndown = (function () {
     startDate = milestoneList[selectedMilestone].start_date;
     endDate = milestoneList[selectedMilestone].due_date;
 
-    console.log(startDate + " to " + endDate);
-
     startHours = 0;
 
     for (let issue in milestoneList[selectedMilestone].issues) {
@@ -209,7 +209,7 @@ var burndown = (function () {
     $(function () {
       $("#burndown-chart").highcharts({
         title: {text: "Project Burndown Chart"},
-        subtitle: {text: currProjectName},
+        subtitle: {text: currProjectName + " - " + milestoneList[selectedMilestone].title},
         xAxis: {
           type: "datetime",
           title: {text: "Date"},
@@ -253,7 +253,15 @@ var burndown = (function () {
           },
           lineWidth: 2,
           data: remainEffort
-        }]
+        }],
+        exporting: {
+          sourceWidth: 800,
+          sourceHeight: 400
+        },
+        credits: {
+          text: "Highcarts.com and lilyheart.github.io/agile-gitlabce",
+          href: "https://lilyheart.github.io/agile-gitlabce/"
+        }
       });
     });
 
