@@ -1,7 +1,7 @@
 var projects = (function () {
 
   async function getProjectList(projFilter) {
-    let url, projectPages, dropdown;
+    let url, projectPages;
 
     // Build URL and get project list
     if (projFilter === "all" || currUserName === null) {
@@ -15,31 +15,36 @@ var projects = (function () {
     // Get number of project pages
     projectPages = getHeaderValue(url, "x-total-pages");
 
-    // Set up drowndown
-    dropdown = $("#project-dropdown");
-    dropdown.empty();
-    dropdown.append("<option selected='true' disabled>Choose Project</option>");
-    dropdown.prop("selectedIndex", 0);
 
-    // Fill dropdown
+    // Obtain data for dropdown
     console.log("Obtaining data at: " + url + "&page=1 of " + projectPages + " page(s)");
 
     for (let i = 1; i <= projectPages; i += 1) {
       await $.getJSON(url + "&page=" + i, function (data) {
-        // TODO Alphabetize project list THEN make option list
         projectList = projectList.concat(data);
-        $.each(data, function (key, entry) {
-          let projName;
-
-          if (currUserName === null || currUserName.length === 0 || currUserName !== entry.namespace.path) {
-            projName = entry.name + " (" + entry.namespace.path + ")";
-          } else {
-            projName = entry.name;
-          }
-          dropdown.append($("<option></option>").attr("value", entry.id).text(projName));
-        });
       });
     }
+
+    // Add field for dropdown text
+    for (let project in projectList) {
+      if (projectList.hasOwnProperty(project)) {
+          if (currUserName === null || currUserName.length === 0 || currUserName !== projectList[project].namespace.path) {
+            projectList[project].dropdownText = projectList[project].name + " (" + projectList[project].namespace.path + ")";
+          } else {
+            projectList[project].dropdownText = projectList[project].name;
+          }
+      }
+    }
+
+    // Remove any previous selectize and redraw
+    $("#project-dropdown").selectize()[0].selectize.destroy();
+    $("#project-dropdown").selectize({
+      valueField: "id",
+      labelField: "dropdownText",
+      searchField: "dropdownText",
+      options: projectList,
+      create: false
+    });
 
   }
 

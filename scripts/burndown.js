@@ -122,7 +122,6 @@ var burndown = (function () {
 
     for (let milestone in milestoneList) {
       if (milestoneList.hasOwnProperty(milestone)) {
-        console.log(milestone);
         if (startDate > milestoneList[milestone].start_date) {startDate = milestoneList[milestone].start_date;}
         if (endDate < milestoneList[milestone].due_date) {endDate = milestoneList[milestone].due_date;}
       }

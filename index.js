@@ -100,6 +100,7 @@ function setPhase(newPhase) {
     $("#radio1").prop("disabled", true);
     $("#radio2").prop("disabled", true);
     $("#project-dropdown").prop("disabled", true);
+    $("#project-dropdown")[0].selectize.disable();
     $("#btnGetIssues").prop("disabled", true);
   }
 

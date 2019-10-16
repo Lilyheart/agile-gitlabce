@@ -15,6 +15,7 @@
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Local -->
+    <link rel="stylesheet" href="resources/selectize.bootstrap3.css">
     <link rel="stylesheet" href="resources/stylesheet.css" media="screen" title="no title" charset="utf-8">
 
     <!-- Scripts -->
@@ -73,11 +74,9 @@
 
           <div id="gitlab_get_project">
             <div class="form-group row">
-              <label for="project_id" class="col-sm-4 col-form-label">Project ID:</label>
+              <label for="project-dropdown" class="col-sm-4 col-form-label">Project ID:</label>
               <div class="col-sm-8">
-                <select id="project-dropdown" class="drowndown custom-select" name="project_id" onchange="issues.enableIssueBtn()">
-                  <option selected="true" disabled>Load Projects first</option>
-                </select>
+                <select id="project-dropdown" placeholder="Pick a project..." name="project_id"  onchange="issues.enableIssueBtn()"></select>
               </div>
             </div>
             <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block" onclick="issues.getIssues()">Get Issues</button>
@@ -144,7 +143,7 @@
               </div>
               <div id="burndown">
                 <div class="form-group row">
-                  <label for="project_id" class="col-sm-3 col-form-label">Show Milestone:</label>
+                  <label for="milestone-dropdown" class="col-sm-3 col-form-label">Show Milestone:</label>
                   <div class="col-sm-9">
                     <select id="milestone-dropdown" class="drowndown custom-select" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
                       <option selected="true" disabled>Load Projects first</option>
@@ -179,6 +178,7 @@
       <!-- Bootstrap -->
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
       <!-- Local -->
+      <script type="text/javascript" src="resources/selectize.min.js"></script>
       <script type="text/javascript" src="scripts/projects.js"></script>
       <script type="text/javascript" src="scripts/issues.js"></script>
       <script type="text/javascript" src="scripts/burndown.js"></script>

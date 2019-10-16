@@ -11,7 +11,7 @@ This project is to fill in the missing gaps regarding the Agile workflow in a CE
 The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on GitHub pages.
 
 ## To code
-- [ ] Report by milestone
+- [x] Report by milestone
 - [ ] Handle issues that used `/remove_time_spent `
 - [ ] Handle issues that used `/remove_estimate `
 
@@ -21,21 +21,19 @@ The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on G
 - [ ] Determine if there is a better way to handle start/end dates?
 - [ ] Change tick level of x axis if to many dates to display
 
-## Installation
-
-TODO: Describe the installation process
-
 ## Usage
 
 TODO: Write usage instructions
 
 ## Contributing :revolving_hearts:
 
-1. Fork the repo
+Not current accepting pull requests.
+
+<!-- 1. Fork the repo
 2. Create a branch for the feature: `git checkout -b new-feature-name`
 3. Commit: `git commit -am 'Add a cool thing'`
 4. Push to the branch: `git push origin new-feature-name`
-5. Submit a pull request
+5. Submit a pull request -->
 
 ## History
 
