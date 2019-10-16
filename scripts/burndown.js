@@ -1,6 +1,6 @@
 var burndown = (function () {
 
-  let startHours, startDate, endDate, spentTimeList, idealEffort, remainEffort, issueNotesList, isLoaded;
+  let startHours, startDate, endDate, today, spentTimeList, idealEffort, remainEffort, issueNotesList, isLoaded;
   /* eslint-disable */
   const CONVERTTABLE = {
     mo: 160,
@@ -185,18 +185,23 @@ var burndown = (function () {
 
     spentCummList = jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
 
+    today = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - (new Date()).getTimezoneOffset() * MSperMIN;
     for (let i = 0; i <= dayDiff; i += 1) {
+      // Determine ideal effort
       effort = Math.max(0, Math.round((startHours - (idealDaily * i)) * TWOdigitROUND) / TWOdigitROUND);
       effortDay = day1 + (MSperDAY * i);
       idealEffort.push([effortDay, effort]);
 
-      thisDay = spentCummList.filter(item => item.x === effortDay);
-      if (thisDay.length === 0) {
-        effort = remainEffort[i][1];
-      } else {
-        effort = remainEffort[i][1] - thisDay[0].y;
+      // Determine remaining effort
+      if (effortDay <= today) {
+        thisDay = spentCummList.filter(item => item.x === effortDay);
+        if (thisDay.length === 0) {
+          effort = remainEffort[i][1];
+        } else {
+          effort = remainEffort[i][1] - thisDay[0].y;
+        }
+        remainEffort.push([effortDay, effort]);
       }
-      remainEffort.push([effortDay, effort]);
     }
     idealEffort.shift();
     remainEffort.shift();
@@ -232,7 +237,7 @@ var burndown = (function () {
           plotLines: [{
             color: "#888888",
             width: 2,
-            value: new Date(new Date().setHours(0, 0, 0, 0)).getTime() - (new Date()).getTimezoneOffset() * MSperMIN,
+            value: today,
             dashStyle: "longdashdot"
           }]
         },
