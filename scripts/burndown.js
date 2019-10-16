@@ -87,7 +87,7 @@ var burndown = (function () {
   }
 
   async function getNewData() {
-    let issueIID, url, noteRE, body, match, time, spent, date, newprogress;
+    let issueIID, url, addSubRE, tempSpentTimeList, body, match, noteableIID, time, spent, date, newprogress;
 
     issueNotesList = [];
     startDate = issueListArr[0].created_at;
@@ -105,7 +105,7 @@ var burndown = (function () {
         url = baseURL + "projects/" + projectID + "/issues/" + issueIID + "/notes";
 
         if (gitlabKey.length > 0) {
-          url += "?&private_token=" + gitlabKey;
+          url += "?sort=asc&order_by=updated_at&&per_page=100&private_token=" + gitlabKey;
         }
 
         milestoneList["All"].issues.push(issueListArr[issue].iid);
@@ -142,13 +142,24 @@ var burndown = (function () {
     createMilestoneDD();
 
     // Go through notes to get changes in spend
-    noteRE = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
+    noteableIID = "Empty Note";
+    addSubRE = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
     spentTimeList = [];
-    issueNotesList.forEach(function(note) {
-      body = note.body;
-      match = body.match(noteRE);
+    tempSpentTimeList = [];
 
-      // If time spent was changed
+    issueNotesList.forEach(function(note) {
+      if (noteableIID !== note.noteable_iid) {
+        // new issue - add spent time from last issue and reset accumulator
+        spentTimeList = spentTimeList.concat(tempSpentTimeList);
+        tempSpentTimeList = [];
+        noteableIID = note.noteable_iid;
+      }
+
+      // Check for changes in time spent
+      body = note.body;
+      match = body.match(addSubRE);
+
+      // If has added or subtracted
       if (match !== null) {
         // parse spent
         time = match[2].match(/([0-9]*)([a-zA-Z]*)/);
@@ -157,7 +168,12 @@ var burndown = (function () {
         if (match[1] === "subtracted") {spent *= INVERSE;}
         // parse date
         date = Date.UTC(parseInt(match[3], 10), parseInt(match[4], 10) - 1, parseInt(match[5], 10));
-        spentTimeList.push({date: date, spent: spent, issue: note.noteable_iid, author: note.author.name});
+        tempSpentTimeList.push({date: date, spent: spent, issue: noteableIID, author: note.author.name});
+      }
+
+      // If time spent was removed
+      if (body === "removed time spent") {
+        tempSpentTimeList = [];
       }
     });
   }
