@@ -1,6 +1,6 @@
 var burndown = (function () {
 
-  let startHours, startDate, endDate, today, spentTimeList, idealEffort, remainEffort, issueNotesList, isLoaded;
+  let startHours, startDate, endDate, today, spentTimeList, idealEffort, remainEffort, trendEffort, issueNotesList, isLoaded;
   /* eslint-disable */
   const CONVERTTABLE = {
     mo: 160,
@@ -14,6 +14,7 @@ var burndown = (function () {
   const INVERSE = -1;
   const TWOdigitROUND = 100;
   const MSperMIN = (1000 * 60);
+  const TRENDOFFSET = 3;
   /* eslint-enable */
 
   isLoaded = false;
@@ -158,7 +159,7 @@ var burndown = (function () {
   }
 
   function updateData(selectedMilestone) {
-    let issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay;
+    let issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay, trendSlope;
 
     startDate = milestoneList[selectedMilestone].start_date;
     endDate = milestoneList[selectedMilestone].due_date;
@@ -179,9 +180,11 @@ var burndown = (function () {
 
     idealEffort = [];
     remainEffort = [];
+    trendEffort = [];
     day1 = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
     idealEffort.push([day1, startHours]);
     remainEffort.push([day1, startHours]);
+    trendEffort.push([day1, startHours]);
 
     spentCummList = jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
 
@@ -203,6 +206,18 @@ var burndown = (function () {
         remainEffort.push([effortDay, effort]);
       }
     }
+    // Determine remaining effort
+    trendSlope = (remainEffort[remainEffort.length - 1][1] - remainEffort[0][1]) / (remainEffort.length - TRENDOFFSET);
+
+    for (let i = 1; i < dayDiff; i += 1) {
+      effortDay = day1 + (MSperDAY * i);
+      effort = trendEffort[i - 1][1] + trendSlope;
+
+      trendEffort.push([effortDay, effort]);
+    }
+
+    // test = trendSlope;
+
     idealEffort.shift();
     remainEffort.shift();
   }
@@ -241,6 +256,17 @@ var burndown = (function () {
             dashStyle: "longdashdot"
           }]
         },
+        annotations: [{
+          color: "rgba(40, 40, 40, 0.25)",
+          labels: [{
+              point: {
+                  x: today,
+                  y: 0,
+                  xAxis: 0
+              },
+              text: "Today"
+          }]
+        }],
         yAxis: {
           title: {text: "Hours"}
         },
@@ -251,7 +277,8 @@ var burndown = (function () {
           layout: "vertical",
           align: "right",
           verticalAlign: "middle",
-          borderWidth: 1
+          borderWidth: 1,
+          padding: 15
         },
         series: [{
           type: "column",
@@ -275,6 +302,15 @@ var burndown = (function () {
           },
           lineWidth: 2,
           data: remainEffort
+        }, {
+          name: "Actual Effort Trend",
+          color: "rgba(40, 40, 40, 0.25)",
+          marker: {
+            enabled: false
+          },
+          lineWidth: 1,
+          data: trendEffort,
+          enableMouseTracking: false
         }],
         exporting: {
           sourceWidth: 800,
