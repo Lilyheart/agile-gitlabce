@@ -12,6 +12,8 @@ The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on G
 
 ## To code
 - [x] Report by milestone
+- [ ] Add [Progress Bar](https://getbootstrap.com/docs/4.1/components/progress/) for loading issues and burndown.
+- [ ] Fix the [API Tooltip](https://getbootstrap.com/docs/4.1/components/tooltips/)
 - [ ] Handle issues that used `/remove_time_spent `
 - [ ] Handle issues that used `/remove_estimate `
 
@@ -20,6 +22,8 @@ The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on G
 - [ ] Recode restart() to actually reset the code while keeping the API key (i.e. not reloading the entire page)
 - [ ] Determine if there is a better way to handle start/end dates?
 - [ ] Change tick level of x axis if to many dates to display
+- [ ] [Update](https://getbootstrap.com/docs/4.1/components/input-group/) Input fields
+- [ ] Change to [OAuth](https://docs.gitlab.com/ee/api/oauth2.html)
 
 ## Usage
 
