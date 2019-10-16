@@ -15,8 +15,8 @@ The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on G
 - [x] Report by milestone
 - [x] Add [Progress Bar](https://getbootstrap.com/docs/4.1/components/progress/) for loading issues and burndown.
 - [ ] Fix the [API Tooltip](https://getbootstrap.com/docs/4.1/components/tooltips/)
-- [ ] Handle issues that used `/remove_time_spent `
-- [ ] Handle issues that used `/remove_estimate `
+- [x] Handle issues that used `/remove_time_spent `
+- [x] Handle issues that used `/remove_estimate `
 
 - [ ] Change setPhase to switch statement with fallthrough?
 - [ ] Reduce issueListArr and JSON to just issueList
@@ -25,6 +25,12 @@ The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on G
 - [ ] Change tick level of x axis if to many dates to display
 - [ ] [Update](https://getbootstrap.com/docs/4.1/components/input-group/) Input fields
 - [ ] Change to [OAuth](https://docs.gitlab.com/ee/api/oauth2.html)
+
+## To decide
+
+- [ ] Handle issues w/ spend and no estimate?
+- [ ] Handle issues w/ more spend than estimate?
+- [ ] Handle issues with spend dates outside of milestone
 
 ## Usage
 

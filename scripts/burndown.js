@@ -59,6 +59,13 @@ var burndown = (function () {
       return parseFloat(first.x) - parseFloat(second.x);
     });
 
+    // Drop Zero Sums by going through array (backwards to avoid skipped indices)
+    for (let i = series.length - 1; i >= 0; i -= 1) {
+      if (series[i].y === 0) {
+        series.splice(i, 1);
+      }
+    }
+
     return series;
   }
 
