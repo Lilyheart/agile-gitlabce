@@ -197,3 +197,6 @@ td a:hover {
   background-color: darkgrey;
   color: white;
 }
+.progress-bar {
+	background-color: steelblue;
+}

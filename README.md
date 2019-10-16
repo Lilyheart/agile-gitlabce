@@ -11,8 +11,9 @@ This project is to fill in the missing gaps regarding the Agile workflow in a CE
 The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on GitHub pages.
 
 ## To code
+
 - [x] Report by milestone
-- [ ] Add [Progress Bar](https://getbootstrap.com/docs/4.1/components/progress/) for loading issues and burndown.
+- [x] Add [Progress Bar](https://getbootstrap.com/docs/4.1/components/progress/) for loading issues and burndown.
 - [ ] Fix the [API Tooltip](https://getbootstrap.com/docs/4.1/components/tooltips/)
 - [ ] Handle issues that used `/remove_time_spent `
 - [ ] Handle issues that used `/remove_estimate `

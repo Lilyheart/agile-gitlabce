@@ -8,7 +8,7 @@ var issues = (function () {
     let url, projectPages, issue;
 
     // Get number of project pages
-    url = baseURL + "projects/" + projectID + "/issues?private_token=" + gitlabKey;
+    url = baseURL + "projects/" + projectID + "/issues?per_page=100&private_token=" + gitlabKey;
     projectPages = getHeaderValue(url, "x-total-pages");
 
     // Get Data

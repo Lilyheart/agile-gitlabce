@@ -91,7 +91,6 @@ function setPhase(newPhase) {
 
   if (newPhase === "issue_start") {
     document.getElementById("loading_issues").style.display = "block";
-    document.getElementById("loading_burndown").style.display = "block";
     document.getElementById("gitlab_show_issues").style.display = "none";
 
     document.getElementById("btnRestart").style.display = "block";
@@ -133,9 +132,11 @@ function setPhase(newPhase) {
   if (newPhase === "issue_start") {
     document.getElementById("issues-tab").classList.add("active");
     document.getElementById("issues-tab").classList.remove("disabled");
+  }
+
+  // tabs
+  if (newPhase === "burndown_start") {
     document.getElementById("burndown-tab").classList.remove("disabled");
-    document.getElementById("members-tab").classList.add("disabled");
-    document.getElementById("settings-tab").classList.add("disabled");
   }
 }
 

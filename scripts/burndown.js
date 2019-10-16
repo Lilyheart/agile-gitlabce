@@ -15,6 +15,7 @@ var burndown = (function () {
   const TWOdigitROUND = 100;
   const MSperMIN = (1000 * 60);
   const TRENDOFFSET = 3;
+  const PERCENT = 100;
   /* eslint-enable */
 
   isLoaded = false;
@@ -86,7 +87,7 @@ var burndown = (function () {
   }
 
   async function getNewData() {
-    let issueIID, url, noteRE, body, match, time, spent, date;
+    let issueIID, url, noteRE, body, match, time, spent, date, newprogress;
 
     issueNotesList = [];
     startDate = issueListArr[0].created_at;
@@ -115,6 +116,9 @@ var burndown = (function () {
         }
 
         await getIssueNotes(url);
+
+        newprogress = ((issue + 1) * PERCENT) / issueListArr.length;
+        $("#burndown_progress").attr("aria-valuenow", newprogress).css("width", newprogress + "%");
       }
     }
 
@@ -260,12 +264,14 @@ var burndown = (function () {
         annotations: [{
           color: "rgba(40, 40, 40, 0.25)",
           labels: [{
-              point: {
-                  x: today,
-                  y: 0,
-                  xAxis: 0
-              },
-              text: "Today"
+            point: {
+              /* eslint-disable */
+              x: today,
+              y: 0,
+              xAxis: 0
+              /* eslint-enable */
+            },
+            text: "Today"
           }]
         }],
         yAxis: {
@@ -338,10 +344,10 @@ var burndown = (function () {
       });
     });
 
-    if (!time1) {
-      time1 = performance.now();
-      console.log("Took " + (performance.now() - time0) + " milliseconds from load to burndown chart.");
-    }
+    // if (!time1) {
+    //   time1 = performance.now();
+    //   console.log("Took " + (performance.now() - time0) + " milliseconds from load to burndown chart.");
+    // }
 
     setPhase("burndown_end");
   }
