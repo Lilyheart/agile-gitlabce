@@ -227,6 +227,7 @@ var burndown = (function () {
       if (gitlabKey === "") {
         setPhase("burndown_end");
         document.getElementById("burndown-unavailable").style.display = "block";
+        document.getElementById("milestone-selection").style.display = "none";
 
         return;
       }
