@@ -1,10 +1,16 @@
 var projects = (function () {
 
-  async function getProjectList(incomingURL) {
+  async function getProjectList(projFilter) {
     let url, projectPages, dropdown;
 
+    // Build URL and get project list
+    if (projFilter === "all" || currUserName === null) {
+      url = baseURL + "projects?order_by=name&sort=asc&simple=true&private_token=" + gitlabKey;
+    } else {
+      url = baseURL + "projects?order_by=name&min_access_level=40&sort=asc&simple=true&private_token=" + gitlabKey;
+    }
+
     projectList = [];
-    url = incomingURL + "projects?order_by=name&sort=asc&simple=true&private_token=" + gitlabKey;
 
     // Get number of project pages
     projectPages = getHeaderValue(url, "x-total-pages");
@@ -25,7 +31,7 @@ var projects = (function () {
         $.each(data, function (key, entry) {
           let projName;
 
-          if (currUserName === null || currUserName.length === 0) {
+          if (currUserName === null || currUserName.length === 0 || currUserName !== entry.namespace.path) {
             projName = entry.name + " (" + entry.namespace.path + ")";
           } else {
             projName = entry.name;
@@ -46,16 +52,8 @@ var projects = (function () {
 
     // Set or clear username
     await updateCurrUserName();
-    let url;
 
-    // Build URL and get project list
-    if (projFilter === "all" || currUserName === null) {
-      url = baseURL;
-    } else {
-      url = baseURL + "users/" + currUserName + "/";
-    }
-
-    await getProjectList(url);
+    await getProjectList(projFilter);
 
     $("#btnGetIssues").prop("disabled", true);
     setPhase("project_end");

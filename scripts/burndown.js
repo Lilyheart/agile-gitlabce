@@ -66,8 +66,6 @@ var burndown = (function () {
     // Set up drowndown
     dropdown = $("#milestone-dropdown");
     dropdown.empty();
-    dropdown.append("<option selected='true' disabled>Choose Milestone</option>");
-    dropdown.prop("selectedIndex", 0);
 
     // Fill dropdown
     for (let milestone in milestoneList) { // iid
