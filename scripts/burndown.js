@@ -252,6 +252,7 @@ var burndown = (function () {
   async function updateBurndownData(selectedMilestone) {
     if (!isLoaded) {
       if (gitlabKey === "") {
+        setPhase("burndown_start");
         setPhase("burndown_end");
         document.getElementById("burndown-unavailable").style.display = "block";
         document.getElementById("milestone-selection").style.display = "none";
