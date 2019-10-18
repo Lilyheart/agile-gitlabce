@@ -5,9 +5,9 @@ var projects = (function () {
 
     // Build URL and get project list
     if (projFilter === "all" || currUserName === null) {
-      url = baseURL + "projects?order_by=name&sort=asc&simple=true&private_token=" + gitlabKey;
+      url = baseURL + "projects?order_by=name&sort=asc&simple=true&" + gitlabKey;
     } else {
-      url = baseURL + "projects?order_by=name&min_access_level=40&sort=asc&simple=true&private_token=" + gitlabKey;
+      url = baseURL + "projects?order_by=name&min_access_level=40&sort=asc&simple=true&" + gitlabKey;
     }
 
     projectList = [];
@@ -53,7 +53,11 @@ var projects = (function () {
 
     // Get and set variables
     baseURL = document.getElementById("base_url").value;
-    gitlabKey = document.getElementById("gitlab_key").value;
+    if (!paramDict || paramDict.length === 0) {
+      gitlabKey = "private_token=" + document.getElementById("gitlab_key").value;
+    } else {
+      gitlabKey = "access_token=" + document.getElementById("gitlab_key").value;
+    }
 
     // Set or clear username
     await updateCurrUserName();

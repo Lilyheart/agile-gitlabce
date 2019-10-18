@@ -8,7 +8,7 @@ var issues = (function () {
     let url, projectPages, issue;
 
     // Get number of project pages
-    url = baseURL + "projects/" + projectID + "/issues?per_page=100&private_token=" + gitlabKey;
+    url = baseURL + "projects/" + projectID + "/issues?per_page=100&" + gitlabKey;
     projectPages = getHeaderValue(url, "x-total-pages");
 
     // Get Data
@@ -40,7 +40,7 @@ var issues = (function () {
     let url, projectPages, tempMilestoneList, milestone, date;
 
     // Get number of project pages
-    url = baseURL + "projects/" + projectID + "/milestones?private_token=" + gitlabKey;
+    url = baseURL + "projects/" + projectID + "/milestones?" + gitlabKey;
     projectPages = getHeaderValue(url, "x-total-pages");
 
     // Get Data

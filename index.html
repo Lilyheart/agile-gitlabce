@@ -24,14 +24,40 @@
 
   <body>
 
-    <div class="head" id="head"></div>
+    <div class="head" id="head">
+      <header id="header" class="header">
+        <div class="text-center">
+          Created by
+          <a href="https://github.com/Lilyheart/agile-gitlabce">
+            Lily Romano</a>
+        </div>
+      </header>
+
+      <!-- Title -->
+      <h1>
+        <a href="index.html">Agile Gitlab</a>
+      </h1>
+
+      <!-- Menu Bar -->
+      <div id="stripe" class="stripe">
+        <!-- History dropdown -->
+        <ul class="nav justify-content-end">
+          <li class="nav-item">
+            <a id="gitlab-login-link" class="nav-link active" href="">Login</a>
+          </li>
+          <li class="nav-item">
+            <a id="gitlab-logout-link" style="display: none" class="nav-link active" href="">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
     <div id="container" class="container-fluid">
       <div class="row">
         <!-- Large screens 1/3 - 2/3, Small screens Stacked -->
         <div class="col-md-4 col-sm-12">
+          <hr />
+          <h3 class="pad-below">Gitlab Setup</h3>
           <div id="gitlab_setup">
-            <hr />
-            <h3>Gitlab Setup</h3>
             <div class="form-group row">
               <label for="base_url" class="col-sm-4 col-form-label">Gitlab URL:</label>
               <div class="col-sm-8">
@@ -52,7 +78,14 @@
             <hr />
           </div>
 
-          <div id="show_repo_options" class="row justify-content-end">
+          <div id="loading_projects" class="m-5" style="display: none">
+            <div class="d-flex justify-content-center">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              &nbsp;&nbsp;Loading Projects...
+            </div>
+          </div>
+
+          <div id="show_repo_options" class="row justify-content-end" style="display: none">
             <div class="col-8">
               <div class="form-check form-check-inline">
                 <input class="form-check-input" name="filter" type="radio" id="radio1" value="my"  onclick="projects.getProjects('user')" checked>
@@ -65,14 +98,7 @@
             </div>
           </div>
 
-          <div id="loading_projects">
-            <div class="d-flex justify-content-center">
-              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              &nbsp;&nbsp;Loading Projects...
-            </div>
-          </div>
-
-          <div id="gitlab_get_project">
+          <div id="gitlab_get_project" style="display: none">
             <div class="form-group row">
               <label for="project-dropdown" class="col-sm-4 col-form-label">Project ID:</label>
               <div class="col-sm-8">
@@ -80,7 +106,7 @@
               </div>
             </div>
             <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block" onclick="issues.getIssues()">Get Issues</button>
-            <button type="button" id="btnRestart" class="btn btn-secondary btn-lg btn-block" onclick="restart()">Restart</button>
+            <button type="button" id="btnRestart" class="btn btn-secondary btn-lg btn-block" onclick="restart()" style="display: none">Restart</button>
           </div>
         </div>
 
@@ -108,13 +134,13 @@
 					</ul>
 					<div class="tab-content" id="myTabContent">
 					  <div class="tab-pane fade show active" id="issuestab" role="tabpanel" aria-labelledby="issues-tab">
-              <div id="loading_issues">
+              <div id="loading_issues" style="display: none">
                 <div class="d-flex justify-content-center m-5">
                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     &nbsp;&nbsp;Loading Issues...
                 </div>
               </div>
-              <div id="gitlab_show_issues">
+              <div id="gitlab_show_issues" style="display: none">
                 <table id="issuestable" class="table table-dark table-hover" style="width:100%;">
                   <thead>
                     <tr>
@@ -130,18 +156,18 @@
               </div>
             </div>
 					  <div class="tab-pane fade" id="burndowntab" role="tabpanel" aria-labelledby="burndown-tab">
-              <div id="loading_burndown">
+              <div id="loading_burndown" style="display: none">
                 Loading Burndown...
                 <div class="progress m-5">
                   <div id="burndown_progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                 </div>
               </div>
-              <div id="burndown-unavailable">
+              <div id="burndown-unavailable" style="display: none">
                 <p>
 									Burndown charts are only available when logged in using an API Key.
 								</p>
               </div>
-              <div id="burndown">
+              <div id="burndown" style="display: none">
                 <div id="milestone-selection" class="form-group row">
                   <label for="milestone-dropdown" class="col-sm-3 col-form-label">Show Milestone:</label>
                   <div class="col-sm-9">

@@ -112,7 +112,7 @@ var burndown = (function () {
         url = baseURL + "projects/" + projectID + "/issues/" + issueIID + "/notes";
 
         if (gitlabKey.length > 0) {
-          url += "?sort=asc&order_by=updated_at&&per_page=100&private_token=" + gitlabKey;
+          url += "?sort=asc&order_by=updated_at&&per_page=100&" + gitlabKey;
         }
 
         milestoneList["All"].issues.push(issueListArr[issue].iid);

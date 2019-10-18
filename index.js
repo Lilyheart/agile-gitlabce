@@ -3,9 +3,13 @@ See Scripts folder for additional Scripts.
 This file contains general code and global variable declarations
 */
 
-var baseURL, gitlabKey, projectID, currProjectName,
-    currUserName, projectList, issueListArr, issueListJSON, milestoneList, time1,
-    time0 = performance.now();
+var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH,
+    clientID, redirectURI, authURL, currUserName, projectList, issueListArr,
+    issueListJSON, milestoneList, paramDict, time1,
+    time0 = performance.now(),
+    base36 = 36;
+
+currURL = window.location.href;
 
 function getHeaderValue(url, headerValue) {
   let request, arr, headerMap, parts, header, value;
@@ -33,7 +37,7 @@ async function updateCurrUserName() {
   if (gitlabKey.length === 0) {
     currUserName = null;
   } else {
-    url = baseURL + "user?private_token=" + gitlabKey;
+    url = baseURL + "user?" + gitlabKey;
 
     console.log("Obtaining data at: " + url);
     await $.getJSON(url, function(data) {
@@ -46,7 +50,7 @@ async function updateProjectname() {
   if (projectID.length === 0) {
     currProjectName = null;
   } else {
-    let url = baseURL + "projects/" + projectID + "?private_token=" + gitlabKey;
+    let url = baseURL + "projects/" + projectID + "?" + gitlabKey;
 
     console.log("Obtaining data at: " + url);
     await $.getJSON(url, function(data) {
@@ -118,6 +122,12 @@ function setPhase(newPhase) {
   if (newPhase === "burndown_end") {
     document.getElementById("loading_burndown").style.display = "none";
     document.getElementById("burndown").style.display = "block";
+
+    // $("#radio1").prop("disabled", false);
+    // $("#radio2").prop("disabled", false);
+    // $("#project-dropdown").prop("disabled", false);
+    // $("#project-dropdown")[0].selectize.enable();
+    // $("#btnGetIssues").prop("disabled", false);
   }
 
   // show_repo_options
@@ -144,7 +154,45 @@ function restart() {
   location.reload();
 }
 
+function authenticate() {
+  stateHASH = Date.now().toString(base36);
+  clientID = "06ed28b4a14e68fa4448b98c257f5c606971c971cbcfae43dab3ca6e5bf5e8a5";
+  redirectURI = window.location.origin + window.location.pathname;
+
+  authURL = "https://gitlab.bucknell.edu/oauth/authorize";
+  authURL += "?client_id=" + clientID;
+  authURL += "&redirect_uri=" + currURL;
+  authURL += "&response_type=token&state=" + stateHASH + "&scope=api";
+
+  document.getElementById("gitlab-login-link").setAttribute("href", authURL);
+}
+
+function parsePARAMS(params) {
+  let paramList, param;
+
+  paramList = params.replace("?", "");
+  paramList = params.replace("#", "");
+  paramList = paramList.split("&");
+
+  paramDict = {};
+  paramList.forEach(function(element) {
+    param = element.split("=");
+    paramDict[param[0]] = param[1];
+  });
+}
+
 $(document).ready(function() {
-  $("#head").load("resources/header.html");
-  setPhase("start");
+  if (window.location.hash.length === 0) {
+    authenticate();
+    setPhase("start");
+  } else {
+    setPhase("start");
+    document.getElementById("gitlab-login-link").style.display = "none";
+    document.getElementById("gitlab-logout-link").style.display = "block";
+    document.getElementById("gitlab_setup").style.display = "none";
+    document.getElementById("loading_projects").style.display = "block";
+    parsePARAMS(window.location.hash);
+    document.getElementById("gitlab_key").value = paramDict.access_token;
+    projects.getProjects("auto");
+  }
 });

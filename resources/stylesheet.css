@@ -119,7 +119,7 @@ button:hover {
   padding: 10px;
   text-align: center;
 }
-.header a {
+.header a, .nav-item a {
   color: steelblue;
 }
 p {
@@ -185,6 +185,10 @@ td a:hover {
 	margin-top: 15px;
 }
 
+.nav-link {
+  margin-top: 4px;
+}
+
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
   margin-left: 5px;
   background-color: steelblue;
@@ -199,4 +203,8 @@ td a:hover {
 }
 .progress-bar {
 	background-color: steelblue;
+}
+
+.pad-below {
+  padding-bottom: 15px;
 }
