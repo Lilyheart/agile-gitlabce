@@ -119,8 +119,29 @@ button:hover {
   padding: 10px;
   text-align: center;
 }
-.header a, .nav-item a {
+.header a {
   color: steelblue;
+}
+.nav-item a {
+  color: #b44663;
+  font-weight: bold;
+}
+.bounce {
+  width: 40px;
+  -moz-animation: bounce 2s infinite;
+  -webkit-animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-60px);
+  }
+  60% {
+    transform: translateX(-30px);
+  }
 }
 p {
   padding: 0 20px;
