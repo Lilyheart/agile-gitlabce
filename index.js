@@ -5,11 +5,12 @@ This file contains general code and global variable declarations
 
 var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH,
     clientID, redirectURI, authURL, currUserName, projectList, issueListArr,
-    issueListJSON, milestoneList, paramDict, time1,
+    issueListJSON, milestoneList, accessToken, paramDict, time1,
     time0 = performance.now(),
     base36 = 36;
 
 currURL = window.location.href;
+redirectURI = window.location.origin + window.location.pathname;
 
 function getHeaderValue(url, headerValue) {
   let request, arr, headerMap, parts, header, value;
@@ -151,13 +152,13 @@ function setPhase(newPhase) {
 }
 
 function restart() {
+  location.href = redirectURI + "#access_token=" + accessToken;
   location.reload();
 }
 
 function authenticate() {
   stateHASH = Date.now().toString(base36);
   clientID = "06ed28b4a14e68fa4448b98c257f5c606971c971cbcfae43dab3ca6e5bf5e8a5";
-  redirectURI = window.location.origin + window.location.pathname;
 
   authURL = "https://gitlab.bucknell.edu/oauth/authorize";
   authURL += "?client_id=" + clientID;
@@ -182,17 +183,24 @@ function parsePARAMS(params) {
 }
 
 $(document).ready(function() {
-  if (window.location.hash.length === 0) {
-    authenticate();
-    setPhase("start");
-  } else {
+  if (window.location.hash.length !== 0 || accessToken) {
     setPhase("start");
     document.getElementById("gitlab-login-link").style.display = "none";
     document.getElementById("gitlab-logout-link").style.display = "block";
     document.getElementById("gitlab_setup").style.display = "none";
     document.getElementById("loading_projects").style.display = "block";
     parsePARAMS(window.location.hash);
-    document.getElementById("gitlab_key").value = paramDict.access_token;
+    accessToken = paramDict.access_token;
+    document.getElementById("gitlab_key").value = accessToken;
+    if (history.pushState) {
+      window.history.pushState("object or string", "Title", redirectURI);
+    } else {
+      document.location.href = redirectURI;
+    }
     projects.getProjects("auto");
+  } else {
+    authenticate();
+    setPhase("start");
   }
+
 });
