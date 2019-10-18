@@ -77,7 +77,7 @@
                 <input type="text" class="form-control" id="gitlab_key" placeholder="API Key">
               </div>
             </div>
-            <button type="button" id="btnGetProjects" class="btn btn-secondary btn-lg btn-block" onclick="projects.getProjects('auto')">Get Projects</button>
+            <button type="button" id="btnGetProjects" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="projects.getProjects('auto')">Get Projects</button>
             <hr />
           </div>
 
@@ -108,7 +108,7 @@
                 <select id="project-dropdown" placeholder="Start typing name..." name="project_id"  onchange="issues.enableIssueBtn()"></select>
               </div>
             </div>
-            <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block" onclick="issues.getIssues()">
+            <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="issues.getIssues()">
               Get Issues
             </button>
           </div>
