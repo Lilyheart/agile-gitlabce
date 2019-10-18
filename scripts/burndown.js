@@ -124,7 +124,7 @@ var burndown = (function () {
 
         await getIssueNotes(url);
 
-        newprogress = ((issue + 1) * PERCENT) / issueListArr.length;
+        newprogress = ((parseInt(issue, 10) + 1) * PERCENT) / issueListArr.length;
         $("#burndown_progress").attr("aria-valuenow", newprogress).css("width", newprogress + "%");
       }
     }
@@ -381,6 +381,9 @@ var burndown = (function () {
       await updateBurndownData(selectedMilestone);
 
       return;
+    },
+    setBurndownUnloaded: function() {
+      isLoaded = false;
     }
   };
 

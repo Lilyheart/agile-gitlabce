@@ -7,7 +7,8 @@ var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH,
     clientID, redirectURI, authURL, currUserName, projectList, issueListArr,
     issueListJSON, milestoneList, accessToken, paramDict, time1,
     time0 = performance.now(),
-    base36 = 36;
+    base36 = 36,
+    spinnerText = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>";
 
 currURL = window.location.href;
 redirectURI = window.location.origin + window.location.pathname;
@@ -66,7 +67,6 @@ function setPhase(newPhase) {
     document.getElementById("show_repo_options").style.display = "none";
     document.getElementById("radio1").checked = true;
     document.getElementById("gitlab_get_project").style.display = "none";
-    document.getElementById("btnRestart").style.display = "none";
 
     document.getElementById("loading_issues").style.display = "none";
     document.getElementById("gitlab_show_issues").style.display = "none";
@@ -95,10 +95,19 @@ function setPhase(newPhase) {
   }
 
   if (newPhase === "issue_start") {
+    // Setup issues sections
+    document.getElementById("issues-tab").click();
     document.getElementById("loading_issues").style.display = "block";
+    document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Issues";
     document.getElementById("gitlab_show_issues").style.display = "none";
+    document.getElementById("issues-tab").classList.add("active");
+    document.getElementById("issues-tab").classList.remove("disabled");
 
-    document.getElementById("btnRestart").style.display = "block";
+    // Setup burndown sections
+    document.getElementById("burndown-tab").classList.add("disabled");
+    $("#burndown_progress").attr("aria-valuenow", 0).css("width", 0 + "%");
+
+    // Disable changing any options
     $("#base_url").prop("disabled", true);
     $("#gitlab_key").prop("disabled", true);
     $("#btnGetProjects").prop("disabled", true);
@@ -116,19 +125,22 @@ function setPhase(newPhase) {
   }
 
   if (newPhase === "burndown_start") {
-    document.getElementById("loading_burndown").style.display = "block";
+    document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Burndown";
     document.getElementById("burndown").style.display = "none";
+    document.getElementById("loading_burndown").style.display = "block";
+    document.getElementById("burndown-tab").classList.remove("disabled");
   }
 
   if (newPhase === "burndown_end") {
     document.getElementById("loading_burndown").style.display = "none";
     document.getElementById("burndown").style.display = "block";
+    document.getElementById("btnGetIssues").innerHTML = "Reload Issues";
 
-    // $("#radio1").prop("disabled", false);
-    // $("#radio2").prop("disabled", false);
-    // $("#project-dropdown").prop("disabled", false);
-    // $("#project-dropdown")[0].selectize.enable();
-    // $("#btnGetIssues").prop("disabled", false);
+    $("#radio1").prop("disabled", false);
+    $("#radio2").prop("disabled", false);
+    $("#project-dropdown").prop("disabled", false);
+    $("#project-dropdown")[0].selectize.enable();
+    $("#btnGetIssues").prop("disabled", false);
   }
 
   // show_repo_options
@@ -138,17 +150,11 @@ function setPhase(newPhase) {
   } else {
     document.getElementById("show_repo_options").style.display = "flex";
   }
+}
 
-  // tabs
-  if (newPhase === "issue_start") {
-    document.getElementById("issues-tab").classList.add("active");
-    document.getElementById("issues-tab").classList.remove("disabled");
-  }
-
-  // tabs
-  if (newPhase === "burndown_start") {
-    document.getElementById("burndown-tab").classList.remove("disabled");
-  }
+function reloadIssues() {
+  document.getElementById("issues-tab").click();
+  issues.getIssues();
 }
 
 function restart() {

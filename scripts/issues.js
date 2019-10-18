@@ -1,6 +1,7 @@
 var issues = (function () {
 
   function enableIssueBtn() {
+    document.getElementById("btnGetIssues").innerHTML = "Get Issues";
     $("#btnGetIssues").prop("disabled", false);
   }
 
@@ -107,6 +108,7 @@ var issues = (function () {
     await loadIssueTable();
     setPhase("issue_end");
 
+    burndown.setBurndownUnloaded();
     await burndown.updateBurndownData("All");
   }
 
