@@ -97,7 +97,6 @@ function setPhase(newPhase) {
   if (newPhase === "oAuth") {
     document.getElementById("gitlab-login-link").style.display = "none";
     document.getElementById("gitlab-logout-link").style.display = "block";
-    document.getElementById("gitlab_auth_apikey").classList.add("disabled");
     document.getElementById("loading_projects").style.display = "block";
     $("#auth-server-dropdown").prop("disabled", true);
     $("#auth-server-dropdown")[0].selectize.disable();
@@ -106,6 +105,12 @@ function setPhase(newPhase) {
   if (newPhase === "project_start") {
     document.getElementById("loading_projects").style.display = "block";
     document.getElementById("gitlab_get_project").style.display = "none";
+    if ($("#gitlab_auth_oauth")[0].classList.contains("active")) {
+      $("#gitlab_auth_apikey")[0].classList.add("disabled");
+    } else {
+      $("#gitlab_auth_oauth")[0].classList.add("disabled");
+    }
+
     $("#btnGetProjects").prop("disabled", true);
   }
 

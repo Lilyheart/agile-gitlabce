@@ -231,9 +231,13 @@ td a:hover {
   padding-bottom: 15px;
 }
 
-
 .nav-pills .nav-link {
   margin-left: 5px;
+  background-color: darkgrey;
+  color: white;
+}
+
+.nav-link.disabled {
   background-color: #333;
   color: #6c757d;
 }
