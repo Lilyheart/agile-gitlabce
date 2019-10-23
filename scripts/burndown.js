@@ -1,6 +1,6 @@
 var burndown = (function () {
 
-  let startHours, startDate, endDate, today, spentTimeList, idealEffort, remainEffort, trendEffort, issueNotesList, isLoaded;
+  let startHours, startDate, endDate, today, idealEffort, remainEffort, trendEffort, issueNotesList, isLoaded;
   /* eslint-disable */
   const CONVERTTABLE = {
     mo: 160,
@@ -15,7 +15,6 @@ var burndown = (function () {
   const TWOdigitROUND = 100;
   const MSperMIN = (1000 * 60);
   const TRENDOFFSET = 3;
-  const PERCENT = 100;
   /* eslint-enable */
 
   isLoaded = false;
@@ -97,8 +96,13 @@ var burndown = (function () {
     let issueIID, url, addSubRE, tempSpentTimeList, body, match, noteableIID, time, spent, date, newprogress;
 
     issueNotesList = [];
-    startDate = issueListArr[0].created_at;
-    endDate = issueListArr[0].updated_at;
+    if (issueListArr.length === 0) {
+      startDate = today;
+      endDate = today;
+    } else {
+      startDate = issueListArr[0].created_at;
+      endDate = issueListArr[0].updated_at;
+    }
 
     // Get data from issues
     for (let issue in issueListArr) {
@@ -215,7 +219,6 @@ var burndown = (function () {
 
     spentCummList = jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
 
-    today = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - (new Date()).getTimezoneOffset() * MSperMIN;
     for (let i = 0; i <= dayDiff; i += 1) {
       // Determine ideal effort
       effort = Math.max(0, Math.round((startHours - (idealDaily * i)) * TWOdigitROUND) / TWOdigitROUND);
@@ -373,11 +376,14 @@ var burndown = (function () {
     //   console.log("Took " + (performance.now() - time0) + " milliseconds from load to burndown chart.");
     // }
 
+    hours.updateHoursData(selectedMilestone);
+
     setPhase("burndown_end");
   }
 
   return {
     updateBurndownData: async function(selectedMilestone) {
+      today = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - (new Date()).getTimezoneOffset() * MSperMIN;
       await updateBurndownData(selectedMilestone);
 
       return;

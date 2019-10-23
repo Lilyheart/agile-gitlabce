@@ -5,10 +5,11 @@ This file contains general code and global variable declarations
 
 var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH,
     clientID, redirectURI, authURL, currUserName, projectList, issueListArr,
-    issueListJSON, milestoneList, accessToken, paramDict, time1,
+    issueListJSON, milestoneList, spentTimeList, accessToken, paramDict, time1,
     time0 = performance.now(),
     base36 = 36,
     spinnerText = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>";
+    const PERCENT = 100;
 
 currURL = window.location.href;
 redirectURI = window.location.origin + window.location.pathname;
@@ -74,6 +75,7 @@ function setPhase(newPhase) {
     document.getElementById("loading_burndown").style.display = "none";
     document.getElementById("burndown-unavailable").style.display = "none";
     document.getElementById("burndown").style.display = "none";
+    document.getElementById("show_hours").style.display = "none";
 
     document.getElementById("issues-tab").classList.remove("active");
     document.getElementById("issues-tab").classList.add("disabled");
@@ -127,6 +129,7 @@ function setPhase(newPhase) {
   if (newPhase === "burndown_start") {
     document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Burndown";
     document.getElementById("burndown").style.display = "none";
+    document.getElementById("show_hours").style.display = "none";
     document.getElementById("loading_burndown").style.display = "block";
     document.getElementById("burndown-tab").classList.remove("disabled");
   }
@@ -134,6 +137,7 @@ function setPhase(newPhase) {
   if (newPhase === "burndown_end") {
     document.getElementById("loading_burndown").style.display = "none";
     document.getElementById("burndown").style.display = "block";
+    document.getElementById("show_hours").style.display = "block";
     document.getElementById("btnGetIssues").innerHTML = "Reload Issues";
 
     $("#radio1").prop("disabled", false);

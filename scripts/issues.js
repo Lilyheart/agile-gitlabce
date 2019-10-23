@@ -87,7 +87,7 @@ var issues = (function () {
       responsive: true,
       data: issueListArr,
       columns: [
-        {title: "Title", data: "title"},
+        {title: "Title"},
         {title: "State", data: "state"},
         {title: "Milestone", data: "milestone.title"},
         {title: "Time Est.", data: "time_stats.human_time_estimate"}
