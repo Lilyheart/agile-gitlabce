@@ -69,21 +69,41 @@ var burndown = (function () {
   }
 
   function createMilestoneDD() {
-    let dropdown, dropdownText;
+    let milestoneArr, dropdown, dropdownText;
+
+    milestoneArr = [];
+    for (let milestone in milestoneList) {
+      if (milestoneList.hasOwnProperty(milestone)) {
+        dropdownText = milestoneList[milestone].title;
+        dropdownText += " (" + milestoneList[milestone].issues.length + " issues)";
+
+        milestoneArr.push(milestoneList[milestone]);
+      }
+    }
+
+    milestoneArr.sort(function (first, second) {
+      if (first.due_date > second.due_date) {
+        return 1;
+      } else if (first.due_date < second.due_date) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
 
     // Set up drowndown
     dropdown = $("#milestone-dropdown");
     dropdown.empty();
 
     // Fill dropdown
-    for (let milestone in milestoneList) { // iid
-      if (milestoneList.hasOwnProperty(milestone)) {
-        dropdownText = milestoneList[milestone].title;
-        dropdownText += " (" + milestoneList[milestone].issues.length + " issues)";
-        if (milestoneList[milestone].issues.length > 0) {
-          dropdown.append($("<option></option>").attr("value", milestone).text(dropdownText));
+    for (let milestone in milestoneArr) { // iid
+      if (milestoneArr.hasOwnProperty(milestone)) {
+        dropdownText = milestoneArr[milestone].title;
+        dropdownText += " (" + milestoneArr[milestone].issues.length + " issues)";
+        if (milestoneArr[milestone].issues.length > 0) {
+          dropdown.append($("<option></option>").attr("value", milestoneArr[milestone].iid).text(dropdownText));
         } else {
-          dropdown.append($("<option disabled></option>").attr("value", milestone).text(dropdownText));
+          dropdown.append($("<option disabled></option>").attr("value", milestoneArr[milestone].iid).text(dropdownText));
         }
       }
     }
