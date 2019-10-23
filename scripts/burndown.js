@@ -14,7 +14,7 @@ var burndown = (function () {
   const INVERSE = -1;
   const TWOdigitROUND = 100;
   const MSperMIN = (1000 * 60);
-  const TRENDOFFSET = 3;
+  const TRENDOFFSET = 2;
   /* eslint-enable */
 
   isLoaded = false;
@@ -240,14 +240,12 @@ var burndown = (function () {
     // Determine remaining effort
     trendSlope = (remainEffort[remainEffort.length - 1][1] - remainEffort[0][1]) / (remainEffort.length - TRENDOFFSET);
 
-    for (let i = 1; i < dayDiff; i += 1) {
+    for (let i = 1; i <= dayDiff; i += 1) {
       effortDay = day1 + (MSperDAY * i);
       effort = trendEffort[i - 1][1] + trendSlope;
 
       trendEffort.push([effortDay, effort]);
     }
-
-    // test = trendSlope;
 
     idealEffort.shift();
     remainEffort.shift();
