@@ -85,7 +85,7 @@ var burndown = (function () {
       if (first.due_date > second.due_date) {
         return 1;
       } else if (first.due_date < second.due_date) {
-        return -1;
+        return INVERSE;
       } else {
         return 0;
       }
@@ -236,7 +236,6 @@ var burndown = (function () {
     day1 = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
     idealEffort.push([day1, startHours]);
     remainEffort.push([day1, startHours]);
-    trendEffort.push([day1, startHours]);
 
     spentCummList = jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
 
@@ -257,18 +256,35 @@ var burndown = (function () {
         remainEffort.push([effortDay, effort]);
       }
     }
-    // Determine remaining effort
-    trendSlope = (remainEffort[remainEffort.length - 1][1] - remainEffort[0][1]) / (remainEffort.length - TRENDOFFSET);
-
-    for (let i = 1; i <= dayDiff; i += 1) {
-      effortDay = day1 + (MSperDAY * i);
-      effort = trendEffort[i - 1][1] + trendSlope;
-
-      trendEffort.push([effortDay, effort]);
-    }
 
     idealEffort.shift();
     remainEffort.shift();
+
+    // Determine trend effort
+    /* eslint-disable */
+    let xVal, yVal, sumX, sumY, sumXY, sumXX, slope, intercept,
+        valuesLength = remainEffort.length;
+    /* eslint-enable */
+
+    sumX = sumY = sumXY = sumXX = 0;
+
+    for (let i = 0; i < valuesLength; i += 1) {
+      xVal = i + 1;
+      yVal = remainEffort[i][1];
+      sumX += xVal;
+      sumY += yVal;
+      sumXY += xVal * yVal;
+      sumXX += xVal * xVal;
+    }
+
+    slope = (valuesLength * sumXY - sumX * sumY) / (valuesLength * sumXX - sumX * sumX);
+    intercept = (sumY / valuesLength) - (slope * sumX) / valuesLength;
+
+    for (let i = 0; i <= dayDiff; i += 1) {
+      effortDay = day1 + (MSperDAY * (i));
+      yVal = slope * (i + 1) + intercept;
+      trendEffort.push([effortDay, yVal]);
+    }
   }
 
   async function updateBurndownData(selectedMilestone) {
