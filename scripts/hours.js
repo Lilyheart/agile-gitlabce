@@ -47,6 +47,11 @@ var hours = (function () {
           return "Coming Soon";
         },
         targets: 3
+      }, {
+        render: function ( data, type, row ) {
+          return +(data).toFixed(2);
+        },
+        targets: 2
       }],
       paging: false,
       bInfo: false

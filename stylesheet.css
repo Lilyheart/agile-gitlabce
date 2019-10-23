@@ -230,3 +230,14 @@ td a:hover {
 .pad-below {
   padding-bottom: 15px;
 }
+
+
+.nav-pills .nav-link {
+  margin-left: 5px;
+  background-color: #333;
+  color: #6c757d;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: steelblue;
+}

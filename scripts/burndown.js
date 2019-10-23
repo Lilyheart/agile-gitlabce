@@ -187,6 +187,7 @@ var burndown = (function () {
         tempSpentTimeList = [];
       }
     });
+    spentTimeList = spentTimeList.concat(tempSpentTimeList);
   }
 
   function updateData(selectedMilestone) {

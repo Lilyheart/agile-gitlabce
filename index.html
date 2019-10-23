@@ -40,18 +40,6 @@
 
       <!-- Menu Bar -->
       <div id="stripe" class="stripe">
-        <!-- History dropdown -->
-        <ul class="nav justify-content-end">
-          <li class="nav-item">
-            <a id="gitlab-login-link" class="nav-link active" href="">
-              <i class="fa fa-arrow-right arrow bounce"></i>
-							Login
-						</a>
-          </li>
-          <li class="nav-item">
-            <a id="gitlab-logout-link" style="display: none" class="nav-link active" href="">Logout</a>
-          </li>
-        </ul>
       </div>
     </div>
     <div id="container" class="container-fluid">
@@ -60,24 +48,70 @@
         <div class="col-md-4 col-sm-12">
           <hr />
           <h3 class="pad-below">Gitlab Setup</h3>
-          <div id="gitlab_setup">
-            <div class="form-group row">
-              <label for="base_url" class="col-sm-4 col-form-label">Gitlab URL:</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="base_url" value="https://gitlab.bucknell.edu/api/v4/">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="gitlab_key" class="col-sm-4 col-form-label">
-                <a href="#" class="nodec" data-toggle="tooltip" data-placement="top" title="This is obtained by creating an Access Token with api access from the settings page of your Gitlab profile.">
-                  API Key: <i class="fa fa-info-circle"></i>
+          <div id="gitlab_auth">
+
+
+            <ul class="nav nav-pills nav-justified mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="gitlab_auth_oauth" data-toggle="pill" href="#pills-auth-oauth" role="tab" aria-controls="pills-auth-oauth" aria-selected="true">
+                  OAuth
                 </a>
-              </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="gitlab_key" placeholder="API Key">
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="gitlab_auth_apikey" data-toggle="pill" href="#pills-auth-apikey" role="tab" aria-controls="pills-auth-apikey" aria-selected="false">
+                  Api Key
+                </a>
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-auth-oauth" role="tabpanel" aria-labelledby="gitlab_auth_oauth">
+                <div id="">
+                  <div class="form-group row">
+                    <label for="auth-server-dropdown" class="col-sm-4 col-form-label">Gitlab Server:</label>
+                    <div class="col-sm-8">
+                      <select id="auth-server-dropdown" placeholder="Start typing name..." name="auth_server_id"   onchange="authenticate(this.options[this.selectedIndex].value)">
+                      </select>
+                    </div>
+                  </div>
+                  <div id="gitlab-login-link">
+                    <button type="button" id="" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="openAuthPage()">
+                      Login
+                    </button>
+                  </div>
+                  <div id="gitlab-logout-link" style="display: none;">
+                    <button type="button" id="" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="window.location.reload();">
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="pills-auth-apikey" role="tabpanel" aria-labelledby="gitlab_auth_apikey">
+                <div class="form-group row">
+                  <label for="base_url" class="col-sm-4 col-form-label">Gitlab URL:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="base_url" value="">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="gitlab_key" class="col-sm-4 col-form-label">
+                    <a href="#" class="nodec" data-toggle="tooltip" data-placement="top" title="This is obtained by creating an Access Token with api access from the settings page of your Gitlab profile.">
+                      API Key: <i class="fa fa-info-circle"></i>
+                    </a>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="gitlab_key" placeholder="API Key">
+                  </div>
+                </div>
+                <button type="button" id="btnGetProjects" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="projects.getProjects('auto')">Get Projects</button>
               </div>
             </div>
-            <button type="button" id="btnGetProjects" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="projects.getProjects('auto')">Get Projects</button>
+
+
+
+
+
+
+
             <hr />
           </div>
 
@@ -219,10 +253,12 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
       <!-- Local -->
       <script type="text/javascript" src="libraries/selectize.min.js"></script>
+      <script type="text/javascript" src="libraries/defiant.min.js"></script>
       <script type="text/javascript" src="scripts/projects.js"></script>
       <script type="text/javascript" src="scripts/issues.js"></script>
       <script type="text/javascript" src="scripts/burndown.js"></script>
       <script type="text/javascript" src="scripts/hours.js"></script>
+      <script type="text/javascript" src="gitlab_servers.js"></script>
       <script type="text/javascript" src="main.js"></script>
     </span>
   </body>
