@@ -38,7 +38,7 @@ var hours = (function () {
       columns: [
         {title: "Team member", data: "author"},
         {title: "Hr Assigned", data: "assigned"},
-        {title: "Hr Completed", data: "completed"},
+        {title: "Hr Completed*", data: "completed"},
         {title: "Percent Complete"}
       ],
       columnDefs: [{
@@ -47,7 +47,9 @@ var hours = (function () {
           return "Coming Soon";
         },
         targets: 3
-      }]
+      }],
+      paging: false,
+      bInfo: false
     });
   }
 
