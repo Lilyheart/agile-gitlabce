@@ -73,21 +73,24 @@ var issues = (function () {
   }
 
   async function loadIssueTable() {
-    // Reset table
-    $("#issuestable").dataTable().fnDestroy();
-    $("#issuestablerows tr").remove();
 
     await getIssuesList();
     await getMilestoneList();
+
+    // Reset table
+    if ( $.fn.dataTable.isDataTable( "#issuestable" ) ) {
+      $("#issuestable").dataTable().fnDestroy();
+      $("#issuestablerows tr").remove();
+    }
 
     $("#issuestable").DataTable({
       responsive: true,
       data: issueListArr,
       columns: [
-        {data: "title"},
-        {data: "state"},
-        {data: "milestone.title"},
-        {data: "time_stats.human_time_estimate"}
+        {title: "Title", data: "title"},
+        {title: "State", data: "state"},
+        {title: "Milestone", data: "milestone.title"},
+        {title: "Time Est.", data: "time_stats.human_time_estimate"}
       ],
       columnDefs: [{
         render: function ( data, type, row ) {
