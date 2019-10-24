@@ -90,13 +90,36 @@ var issues = (function () {
         {title: "Title"},
         {title: "State", data: "state"},
         {title: "Milestone", data: "milestone.title"},
-        {title: "Time Est.", data: "time_stats.human_time_estimate"}
+        {title: "Time Spent", className: "none", data: "time_stats.human_total_time_spent"},
+        {title: "Time Est.", className: "none", data: "time_stats.human_time_estimate"},
+        {title: "Assigned", className: "none", data: "assignee"}
       ],
       columnDefs: [{
+        width: 800, targets: 0
+      }, {
+        responsivePriority: 1, targets: 0
+      }, {
+        responsivePriority: 2, targets: 1
+      }, {
+        render: function ( data, type, row ) {
+          if (row.time_stats.human_total_time_spent === null) {
+            return "None";
+          } else {
+            return row.time_stats.human_total_time_spent;
+          }
+        }, targets: 3
+      }, {
+        render: function ( data, type, row ) {
+          if (row.assignee === null) {
+            return "None";
+          } else {
+            return row.assignee.name;
+          }
+        }, targets: 5
+      }, {
         render: function ( data, type, row ) {
           return "<a href='" + row.web_url + "' target='_blank'>" + row.title + "</a>";
-        },
-        targets: 0
+        }, targets: 0
       }]
     });
   }

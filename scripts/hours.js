@@ -1,5 +1,6 @@
 var hours = (function () {
   let sprintHoursJSON = {};
+  const DECIMALPLACES = 2;
 
   function updateData(selectedMilestone) {
     let milestoneIssues;
@@ -49,9 +50,13 @@ var hours = (function () {
         targets: 3
       }, {
         render: function ( data, type, row ) {
-          return +(data).toFixed(2);
+          return +(data).toFixed(DECIMALPLACES);
         },
         targets: 2
+      }, {
+        responsivePriority: 1, targets: 0
+      }, {
+        responsivePriority: 2, targets: 2
       }],
       paging: false,
       bInfo: false

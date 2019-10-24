@@ -245,3 +245,12 @@ td a:hover {
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
   background-color: steelblue;
 }
+
+table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before {
+  background-color: steelblue;
+  margin-top: 3px;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
+  background-color: #d33333
+}
