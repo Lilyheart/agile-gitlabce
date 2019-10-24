@@ -226,6 +226,7 @@ $(document).ready(function() {
     setPhase("oAuth");
 
     parsePARAMS(window.location.hash);
+    $("#auth-server-dropdown").selectize()[0].selectize.setValue(paramDict.state, false);
     authenticate(paramDict.state);
     accessToken = paramDict.access_token;
     document.getElementById("base_url").value = serverDetails.baseURL;
