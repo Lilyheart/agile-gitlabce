@@ -90,8 +90,8 @@ function setPhase(newPhase) {
     document.getElementById("issues-tab").classList.remove("active");
     document.getElementById("issues-tab").classList.add("disabled");
     document.getElementById("burndown-tab").classList.add("disabled");
-    document.getElementById("members-tab").classList.add("disabled");
-    document.getElementById("settings-tab").classList.add("disabled");
+    // document.getElementById("members-tab").classList.add("disabled");
+    // document.getElementById("settings-tab").classList.add("disabled");
   }
 
   if (newPhase === "oAuth") {

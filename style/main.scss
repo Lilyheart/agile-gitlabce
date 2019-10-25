@@ -13,6 +13,9 @@
 
 /* Basic CSS Overloads */
 
+html {
+  overflow-y: scroll;
+}
 body {
   background-color: $background;
   color: $color-primary-0-inverse;
@@ -43,72 +46,70 @@ a, a:hover {
 .pad-below {
   padding-bottom: 15px;
 }
-
-button {
-  justify-content: center;
-  &:active {
-    outline: none;
-  }
-  &.btn-primary {
-    background-color: $color-primary-0;
-    border-color: $color-primary-0;
-    #{$selected} {
-      background-color: $color-secondary-2-0;
-      border-color: $color-secondary-2-0;
-    }
-    &:disabled {
-      background-color: $color-primary-0-disabled;
-      border-color: $color-primary-0-disabled;
-    }
-  }
-}
-.btn-primary:not(:disabled):not(.disabled):active {
-  background-color: $color-primary-0;
+.pad-right-no {
+  padding-right: 0;
 }
 .progress-bar {
-	background-color: $color-primary-0;
+  background-color: $color-primary-0;
 }
 .tab-pane {
-	margin-top: 15px;
+  margin-top: 15px;
+}
+
+.milestone-selection.row {
+  margin: $row-margins;
 }
 
 /* NAV STUFFS */
 
+.nav-pills, .nav-tabs {
+  &:active {
+    outline: none;
+  }
+  &>li+li {
+    margin-left: 5px;
+  }
+}
+.nav-pills .nav-link, .nav-tabs .nav-link, button.btn-primary {
+  justify-content: center;
+  font-weight: bold;
+  letter-spacing: 2px;
+
+  /* Default with add specificites for nonsense */
+  &, &.active, &.btn:not(.disabled):active {
+    @extend %inverse-color-text;
+    border-color: $color-primary-0;
+  }
+  &.btn {
+    font-weight: bold;
+    letter-spacing: 3px;
+  }
+  &:not(.active):not(button) {
+    background-color: $color-primary-4;
+    border-color: $color-primary-4;
+    color: $color-primary-3;
+  }
+  &.disabled:not(button), &:disabled {
+    background-color: $color-primary-0-disabled;
+    border-color: $color-primary-0-disabled;
+    color: $color-primary-3;
+  }
+  &:not(.active):not(:disabled) {
+    #{$selected} {
+      background-color: $color-secondary-2-0;
+      border-color: $color-secondary-2-0;
+      color: $color-primary-0-inverse;
+    }
+  }
+}
 .nav-pills {
   #{$a-tags} {
     color: $color-primary-0-inverse;
   }
-  &>li+li {
-    margin-left: 5px;
-  }
-  .nav-link {
-    background-color: $color-primary-4;
-    &:not(.active) {
-      #{$selected} {
-        background-color: $color-secondary-2-0;
-      }
-    }
-    &.active {
-      background-color: $color-primary-0;
-    }
-    &.disabled {
-      background-color: $color-primary-0-disabled;
-    }
-  }
 }
-.nav-tabs {
-  &>li+li {
-    margin-left: 5px;
-  }
-  .nav-link {
-    background-color: $color-primary-4;
-    border-bottom-color: $color-primary-0-inverse;
-    color: $color-primary-0-inverse;
-    &.active {
-      @extend %inverse-color-text;
-      border-color: $color-primary-0;
-      border-bottom-color: $color-primary-0-inverse;
-    }
+.nav-tabs .nav-link:not(button):not(:disabled) {
+  &.active, &:not(.active), &:not(.active):hover {
+    border-bottom-color: $nav-tab-border;
   }
 }
 
@@ -138,6 +139,10 @@ table {
       }
     }
   }
+}
+td a {
+  display:block;
+  width:100%;
 }
 .page-item {
   a {

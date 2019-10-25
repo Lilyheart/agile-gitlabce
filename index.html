@@ -70,9 +70,9 @@
               <div class="tab-pane fade show active" id="pills-auth-oauth" role="tabpanel" aria-labelledby="gitlab_auth_oauth">
                 <div id="">
                   <div class="form-group row">
-                    <label for="auth-server-dropdown" class="col-sm-4 col-form-label">Gitlab Server:</label>
-                    <div class="col-sm-8">
-                      <select id="auth-server-dropdown" placeholder="Start typing name..." name="auth_server_id"   onchange="authenticate(this.options[this.selectedIndex].value)">
+                    <label for="auth-server-dropdown" class="col-sm-4 align-self-center col-form-label">Gitlab Server:</label>
+                    <div class="col-sm-8 ">
+                      <select id="auth-server-dropdown" class="align-self-center" placeholder="Start typing name..." name="auth_server_id"   onchange="authenticate(this.options[this.selectedIndex].value)">
                       </select>
                     </div>
                   </div>
@@ -109,12 +109,6 @@
               </div>
             </div>
 
-
-
-
-
-
-
             <hr />
           </div>
 
@@ -140,9 +134,9 @@
 
           <div id="gitlab_get_project" style="display: none">
             <div class="form-group row">
-              <label for="project-dropdown" class="col-sm-4 col-form-label">Project ID:</label>
+              <label for="project-dropdown" class="col-sm-4 align-self-center col-form-label">Project ID:</label>
               <div class="col-sm-8">
-                <select id="project-dropdown" placeholder="Start typing name..." name="project_id"  onchange="issues.enableIssueBtn()"></select>
+                <select id="project-dropdown" class="align-self-center" placeholder="Start typing name..." name="project_id"  onchange="issues.enableIssueBtn()"></select>
               </div>
             </div>
             <button type="button" id="btnGetIssues" class="btn btn-primary btn-lg btn-block d-flex align-items-center" onclick="issues.getIssues()">
@@ -164,14 +158,14 @@
               <a class="nav-link disabled" id="burndown-tab" data-toggle="tab" href="#burndowntab" role="tab" aria-controls="burndowntab"
                 aria-selected="false">Burndown</a>
             </li>
-					  <li class="nav-item">
+					  <!-- <li class="nav-item">
 					    <a class="nav-link disabled" id="members-tab" data-toggle="tab" href="#membertab" role="tab" aria-controls="membertab"
 					      aria-selected="false">Active Members</a>
-					  </li>
-					  <li class="nav-item">
+					  </li> -->
+					  <!-- <li class="nav-item">
 					    <a class="nav-link disabled" id="settings-tab" data-toggle="tab" href="#settingtab" role="tab" aria-controls="settingtab"
 					      aria-selected="false">Settings</a>
-					  </li>
+					  </li> -->
 					</ul>
 					<div class="tab-content" id="myTabContent">
 					  <div class="tab-pane fade show active" id="issuestab" role="tabpanel" aria-labelledby="issues-tab">
@@ -188,8 +182,8 @@
 					  <div class="tab-pane fade" id="burndowntab" role="tabpanel" aria-labelledby="burndown-tab">
               <div id="loading_burndown" style="display: none">
                 Loading Burndown...
-                <div class="progress m-5">
-                  <div id="burndown_progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                <div class="progress m-5"  style="height: 2rem;">
+                  <div id="burndown_progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
                 </div>
               </div>
               <div id="burndown-unavailable" style="display: none">
@@ -198,10 +192,10 @@
 								</p>
               </div>
               <div id="burndown" style="display: none">
-                <div id="milestone-selection" class="form-group row">
+                <div id="milestone-selection" class="milestone-selection form-group row">
                   <label for="milestone-dropdown" class="col-sm-3 col-form-label">Show Milestone:</label>
-                  <div class="col-sm-9">
-                    <select id="milestone-dropdown" class="drowndown custom-select" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
+                  <div class="col-sm-9 pad-right-no">
+                    <select id="milestone-dropdown" class="custom-select align-self-center" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
                       <option selected="true" disabled>Load Projects first</option>
                     </select>
                   </div>

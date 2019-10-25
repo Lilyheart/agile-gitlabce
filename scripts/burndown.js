@@ -150,6 +150,8 @@ var burndown = (function () {
 
         newprogress = ((parseInt(issue, 10) + 1) * PERCENT) / issueListArr.length;
         $("#burndown_progress").attr("aria-valuenow", newprogress).css("width", newprogress + "%");
+        newprogress = Math.round(newprogress);
+        $("#burndown_progress")[0].innerHTML = newprogress + "%";
       }
     }
 
