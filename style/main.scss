@@ -1,0 +1,158 @@
+@import "variables";
+
+/* EXTENDS */
+
+%primary-color-text {
+  color: $color-primary-0;
+  background-color: $color-primary-0-inverse;
+}
+%inverse-color-text {
+  color: $color-primary-0-inverse;
+  background-color: $color-primary-0;
+}
+
+/* Basic CSS Overloads */
+
+body {
+  background-color: $background;
+  color: $color-primary-0-inverse;
+  font-family: "Montserrat", "Avenir";
+}
+h1 {
+  @extend %inverse-color-text;
+  margin-bottom: 0;
+  padding: 20px 0;
+  text-align: center;
+  a {
+    text-decoration: none;
+  }
+}
+a, a:hover {
+  color: inherit;
+}
+
+/* MISC DIVS */
+
+.stripe {
+  @extend %primary-color-text;
+  height: 28px;
+  font-size: 16px;
+  text-align: center;
+  padding: 2px 0;
+}
+.pad-below {
+  padding-bottom: 15px;
+}
+
+button {
+  justify-content: center;
+  &:active {
+    outline: none;
+  }
+  &.btn-primary {
+    background-color: $color-primary-0;
+    border-color: $color-primary-0;
+    #{$selected} {
+      background-color: $color-secondary-2-0;
+      border-color: $color-secondary-2-0;
+    }
+    &:disabled {
+      background-color: $color-primary-0-disabled;
+      border-color: $color-primary-0-disabled;
+    }
+  }
+}
+.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: $color-primary-0;
+}
+.progress-bar {
+	background-color: $color-primary-0;
+}
+.tab-pane {
+	margin-top: 15px;
+}
+
+/* NAV STUFFS */
+
+.nav-pills {
+  #{$a-tags} {
+    color: $color-primary-0-inverse;
+  }
+  &>li+li {
+    margin-left: 5px;
+  }
+  .nav-link {
+    background-color: $color-primary-4;
+    &:not(.active) {
+      #{$selected} {
+        background-color: $color-secondary-2-0;
+      }
+    }
+    &.active {
+      background-color: $color-primary-0;
+    }
+    &.disabled {
+      background-color: $color-primary-0-disabled;
+    }
+  }
+}
+.nav-tabs {
+  &>li+li {
+    margin-left: 5px;
+  }
+  .nav-link {
+    background-color: $color-primary-4;
+    border-bottom-color: $color-primary-0-inverse;
+    color: $color-primary-0-inverse;
+    &.active {
+      @extend %inverse-color-text;
+      border-color: $color-primary-0;
+      border-bottom-color: $color-primary-0-inverse;
+    }
+  }
+}
+
+/* SELECT STUFFS */
+
+.selectize-dropdown-content {
+  .option:hover {
+    @extend %inverse-color-text;
+  }
+}
+
+/* DATATABLES */
+
+table {
+  &.dataTable.dtr-inline.collapsed>tbody>tr {
+    &[role="row"] {
+      &>td:first-child:before,
+      &>th:first-child:before {
+        background-color: $color-primary-0;
+        margin-top: 3px;
+      }
+    }
+    &.parent {
+      &>td:first-child:before,
+      &>th:first-child:before {
+        background-color: $color-secondary-2-4
+      }
+    }
+  }
+}
+.page-item {
+  a {
+    color: $color-primary-0;
+  }
+  &.active {
+    .page-link {
+      @extend %inverse-color-text;
+      border-color: $color-primary-0;
+    }
+  }
+  &.disabled {
+    .page-link {
+      @extend %primary-color-text;
+      border-color: $color-primary-0-inverse;
+    }
+  }
+}

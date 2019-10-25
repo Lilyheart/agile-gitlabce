@@ -139,8 +139,8 @@ var issues = (function () {
   }
 
   return {
-    getIssues: function() {
-      getIssues();
+    getIssues: async function() {
+      await getIssues();
     },
 
     enableIssueBtn: function() {

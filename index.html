@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Local -->
     <link rel="stylesheet" href="libraries/selectize.bootstrap3.css">
-    <link rel="stylesheet" href="stylesheet.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="style/main.min.css" media="screen" title="no title" charset="utf-8">
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
@@ -28,7 +28,7 @@
   <body>
 
     <div class="head" id="head">
-      <header id="header" class="header">
+      <header id="header" class="stripe">
         <div class="text-center">
           Created by
           <a href="https://github.com/Lilyheart/agile-gitlabce">
@@ -77,12 +77,12 @@
                     </div>
                   </div>
                   <div id="gitlab-login-link">
-                    <button type="button" id="" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="openAuthPage()">
+                    <button type="button" id="" class="btn btn-primary btn-lg btn-block d-flex align-items-center" onclick="openAuthPage()">
                       Login
                     </button>
                   </div>
                   <div id="gitlab-logout-link" style="display: none;">
-                    <button type="button" id="" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="window.location.reload();">
+                    <button type="button" id="" class="btn btn-primary btn-lg btn-block d-flex align-items-center" onclick="window.location.reload();">
                       Logout
                     </button>
                   </div>
@@ -105,7 +105,7 @@
                     <input type="text" class="form-control" id="gitlab_key" placeholder="API Key">
                   </div>
                 </div>
-                <button type="button" id="btnGetProjects" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="projects.getProjects('auto')">Get Projects</button>
+                <button type="button" id="btnGetProjects" class="btn btn-primary btn-lg btn-block d-flex align-items-center" onclick="projects.getProjects('auto')">Get Projects</button>
               </div>
             </div>
 
@@ -145,7 +145,7 @@
                 <select id="project-dropdown" placeholder="Start typing name..." name="project_id"  onchange="issues.enableIssueBtn()"></select>
               </div>
             </div>
-            <button type="button" id="btnGetIssues" class="btn btn-secondary btn-lg btn-block d-flex align-items-center" onclick="issues.getIssues()">
+            <button type="button" id="btnGetIssues" class="btn btn-primary btn-lg btn-block d-flex align-items-center" onclick="issues.getIssues()">
               Get Issues
             </button>
           </div>
@@ -263,7 +263,7 @@
       <script type="text/javascript" src="scripts/burndown.js"></script>
       <script type="text/javascript" src="scripts/hours.js"></script>
       <script type="text/javascript" src="gitlab_servers.js"></script>
-      <script type="text/javascript" src="main.js"></script>
+      <script type="text/javascript" src="scripts/main.js"></script>
     </span>
   </body>
 </html>
