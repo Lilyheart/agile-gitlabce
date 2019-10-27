@@ -10,30 +10,15 @@ This project is to fill in the missing gaps regarding the Agile workflow in a CE
 
 The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on GitHub pages.
 
-## To code
-
-- [x] Report by milestone
-- [x] Add [Progress Bar](https://getbootstrap.com/docs/4.1/components/progress/) for loading issues and burndown.
-- [ ] Fix the [API Tooltip](https://getbootstrap.com/docs/4.1/components/tooltips/)
-- [x] Handle issues that used `/remove_time_spent `
-- [x] Handle issues that used `/remove_estimate `
-
-- [ ] Reduce issueListArr and JSON to just issueList
-- [x] Recode restart() to actually reset the code while keeping the API key (i.e. not reloading the entire page)
-- [ ] Determine if there is a better way to handle start/end dates?
-- [x] Change tick level of x axis if to many dates to display
-- [ ] [Update](https://getbootstrap.com/docs/4.1/components/input-group/) Input fields
-- [x] Change to [OAuth](https://docs.gitlab.com/ee/api/oauth2.html)
-
 ## To decide
 
 - [ ] Handle issues w/ spend and no estimate?
 - [ ] Handle issues w/ more spend than estimate?
 - [ ] Handle issues with spend dates outside of milestone
 
-## Usage
+<!-- ## Usage
 
-TODO: Write usage instructions
+TODO: Write usage instructions -->
 
 ## Contributing :revolving_hearts:
 
@@ -47,11 +32,21 @@ Not current accepting pull requests.
 
 ## History
 
-TODO: Write history
+### [0.2.0] - 2019-10-23
+Add hours by member table
+Rework login flow
+Fix regression line
+Sort sprints/milestones by due date
 
-## Credits
+### [0.1.0] - 2019-10-17
+OAuth option added to menu bar
 
-TODO: Write credits
+### [0.0.1] - 2019-10-16
+Initial release for testing
+
+<!-- ## Credits
+
+TODO: Write credits -->
 
 ## License
 
