@@ -149,14 +149,25 @@
 
         <div class="col-md-8 col-sm-12">
           <hr />
+          <div id="updateAlert" class="alert alert-dark alert-dismissible fade show align-items-center" role="alert">
+            <span>
+              There have been updates on Gitlab.
+            </span>
+            <button type="button" id="btnGetIssues" class="btn btn-primary" onclick="issues.getIssues()">
+              Update Issues
+            </button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 					  <li class="nav-item">
 					    <a class="nav-link disabled active" id="issues-tab" data-toggle="tab" href="#issuestab" role="tab" aria-controls="issuestab"
-					      aria-selected="true">Gitlab Issues</a>
+					      aria-selected="true" onclick="checkForUpdates()">Gitlab Issues</a>
 					  </li>
             <li class="nav-item">
               <a class="nav-link disabled" id="burndown-tab" data-toggle="tab" href="#burndowntab" role="tab" aria-controls="burndowntab"
-                aria-selected="false">Burndown</a>
+                aria-selected="false" onclick="checkForUpdates()">Burndown</a>
             </li>
 					  <!-- <li class="nav-item">
 					    <a class="nav-link disabled" id="members-tab" data-toggle="tab" href="#membertab" role="tab" aria-controls="membertab"

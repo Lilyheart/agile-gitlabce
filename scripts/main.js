@@ -4,13 +4,14 @@ This file contains general code and global variable declarations
 */
 
 var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH, serverDetails,
-    clientID, redirectURI, authURL, currUserName, projectList, issueListArr,
+    clientID, redirectURI, authURL, currUserName, projectList, lastUpdate, issueListArr,
     issueListJSON, milestoneList, spentTimeList, accessToken, paramDict, time1,
     time0 = performance.now(),
     base36 = 36,
     spinnerText = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>";
     const PERCENT = 100;
 
+$("#updateAlert").hide();
 currURL = window.location.href;
 redirectURI = window.location.origin + window.location.pathname;
 
@@ -70,6 +71,30 @@ async function updateProjectname() {
       currProjectName = data.name;
     });
   }
+}
+
+async function checkForUpdates() {
+  let url, numUpdate;
+
+  if (!(lastUpdate instanceof Date)) {
+    return;
+  }
+
+  url = baseURL + "projects/" + projectID + "/issues_statistics?" + gitlabKey
+      + "&updated_after=" + lastUpdate.toJSON();
+
+  // console.log("Obtaining data at: " + url);
+  await $.getJSON(url, function(data) {
+    numUpdate = parseInt(data.statistics.counts.all, 10);
+  });
+
+  if (numUpdate > 0) {
+    $("#updateAlert").show();
+  }
+}
+
+function displayUpdateAlert() {
+  $("#updateAlert").show();
 }
 
 function setPhase(newPhase) {

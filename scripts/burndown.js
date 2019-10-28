@@ -290,6 +290,8 @@ var burndown = (function () {
   }
 
   async function updateBurndownData(selectedMilestone) {
+    await checkForUpdates()
+
     if (!isLoaded) {
       if (gitlabKey === "") {
         setPhase("burndown_start");

@@ -126,6 +126,8 @@ var issues = (function () {
 
   async function getIssues() {
     setPhase("issue_start");
+    $("#updateAlert").hide();
+    lastUpdate = new Date();
 
     // Get and set variables
     projectID = document.getElementById("project-dropdown").value;

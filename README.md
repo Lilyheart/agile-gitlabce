@@ -32,6 +32,9 @@ Not current accepting pull requests.
 
 ## History
 
+### [0.2.1] - 2019-10-24
+Notify when there is an update to issues on Gitlab (in 40 lines of code!)
+
 ### [0.2.0] - 2019-10-23
 Add hours by member table
 Rework login flow
