@@ -40,8 +40,25 @@ a, a:hover {
   @extend %primary-color-text;
   height: 28px;
   font-size: 16px;
-  text-align: center;
-  padding: 2px 0;
+  text-align: right;
+  .dropdown {
+    height: 100%;
+    position: relative;
+    display: inline-block;
+  }
+  button {
+    @extend %primary-color-text;
+    border: none;
+    border-radius: 0;
+    background: none;
+    padding: 0 6px;
+    height: 100%;
+    transition: all .3s;
+    outline: none;
+  }
+    button:hover {
+    @extend %inverse-color-text;
+  }
 }
 .pad-below {
   padding-bottom: 15px;
@@ -74,6 +91,7 @@ a, a:hover {
   justify-content: center;
   font-weight: bold;
   letter-spacing: 2px;
+  transition: all .2s;
 
   /* Default with add specificites for nonsense */
   &, &.active, &.btn:not(.disabled):active {

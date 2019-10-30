@@ -175,9 +175,9 @@ function setPhase(newPhase) {
 
   if (newPhase === "issue_start") {
     // Setup issues sections
-    isCheckingUpdate = false
+    isCheckingUpdate = false;
     document.getElementById("issues-tab").click();
-    isCheckingUpdate = true
+    isCheckingUpdate = true;
     document.getElementById("loading_issues").style.display = "block";
     document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Issues";
     document.getElementById("gitlab_show_issues").style.display = "none";
@@ -277,6 +277,11 @@ function parsePARAMS(params) {
 }
 
 $(document).ready(function() {
+  var feedbackOptions = {appendTo: null};
+
+  feedbackOptions.url = "https://agile-gitlab.dev.with-datafire.io/feedback"; // TODO Change to outside file once set
+  Feedback(feedbackOptions);
+
   if (window.location.hash.length !== 0 || accessToken) {
     setPhase("oAuth");
 
