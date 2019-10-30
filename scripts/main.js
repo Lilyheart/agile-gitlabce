@@ -3,7 +3,7 @@ See Scripts folder for additional Scripts.
 This file contains general code and global variable declarations
 */
 
-var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH, serverDetails,
+var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH, serverDetails, isCheckingUpdate,
     clientID, redirectURI, authURL, currUserName, projectList, lastUpdate, issueListArr,
     issueListJSON, milestoneList, spentTimeList, accessToken, paramDict, time1,
     time0 = performance.now(),
@@ -43,6 +43,30 @@ function getHeaderValue(url, headerValue) {
   });
 
   return parseInt((headerMap[headerValue]), 10);
+
+  // $.ajax({
+  //   url: url,
+  //   type: "GET",
+  //   contentType: "application/json;charset=utf-8",
+  //   async: true,
+  //   success: function (data, status, xhr) {
+  //     // console.log(data);
+  //     // console.log(xhr.getAllResponseHeaders());
+  //     request = xhr.getAllResponseHeaders();
+  //     arr = request.trim().split(/[\r\n]+/);
+  //     headerMap = {};
+  //     arr.forEach(function (line) {
+  //       parts = line.split(": ");
+  //       header = parts.shift();
+  //       value = parts.join(": ");
+  //       headerMap[header] = value;
+  //     });
+  //     console.log(headerMap);
+  //   },
+  //   error: function () {
+  //     console.log(url);
+  //   }
+  // });
 }
 
 async function updateCurrUserName() {
@@ -76,7 +100,7 @@ async function updateProjectname() {
 async function checkForUpdates() {
   let url, numUpdate;
 
-  if (!(lastUpdate instanceof Date)) {
+  if (!(lastUpdate instanceof Date) || !isCheckingUpdate || $("#updateAlert")[0].style.display !== "none") {
     return;
   }
 
@@ -96,6 +120,10 @@ async function checkForUpdates() {
 function displayUpdateAlert() {
   $("#updateAlert").show();
 }
+
+$(".alert .close").click(function() {
+   $(this).parent().hide();
+});
 
 function setPhase(newPhase) {
   if (newPhase === "start" || newPhase === "oAuth") {
@@ -147,7 +175,9 @@ function setPhase(newPhase) {
 
   if (newPhase === "issue_start") {
     // Setup issues sections
+    isCheckingUpdate = false
     document.getElementById("issues-tab").click();
+    isCheckingUpdate = true
     document.getElementById("loading_issues").style.display = "block";
     document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Issues";
     document.getElementById("gitlab_show_issues").style.display = "none";
