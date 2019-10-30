@@ -12,8 +12,7 @@ var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH, serverDe
     const PERCENT = 100;
 
 $("#updateAlert").hide();
-currURL = window.location.href;
-redirectURI = window.location.origin + window.location.pathname;
+currURL = redirectURI = window.location.origin + window.location.pathname;
 
 $("#auth-server-dropdown").selectize({
   valueField: "id",
@@ -277,9 +276,11 @@ function parsePARAMS(params) {
 }
 
 $(document).ready(function() {
-  var feedbackOptions = {appendTo: null};
+  var feedbackOptions = {};
 
-  feedbackOptions.url = "https://agile-gitlab.dev.with-datafire.io/feedback"; // TODO Change to outside file once set
+  feedbackOptions.appendTo = null;
+  feedbackOptions.url = "https://agile-gitlab.prod.with-datafire.io/feedback";
+  // feedbackOptions.url = "https://agile-gitlab.dev.with-datafire.io/feedback";
   Feedback(feedbackOptions);
 
   if (window.location.hash.length !== 0 || accessToken) {

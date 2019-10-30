@@ -171,9 +171,9 @@
 }
 .feedback-btn.active, .feedback-btn:active {
     background-image: none;
-    -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-    -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 0 0 15px steelblue;
+    -moz-box-shadow: 0 0 15px steelblue;
+    box-shadow: 0 0 15px steelblue;
     background-color: #e6e6e6;
     background-color: #d9d9d9 \9;
     outline: 0;
@@ -271,7 +271,7 @@ button.feedback-btn.small, input[type="submit"].feedback-btn.small {
 }
 
 .feedback-link {
-  
+
   height: 28px;
   padding: 0 20px;
 }

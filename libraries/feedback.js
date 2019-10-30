@@ -152,7 +152,7 @@ window.Feedback = function( options ) {
             // Next button
             nextButton = element( "button", options.nextLabel );
 
-            nextButton.className =  "btn feedback-btn";
+            nextButton.className =  "btn btn-primary feedback-btn";
             nextButton.onclick = function() {
 
                 if (currentPage > 0 ) {

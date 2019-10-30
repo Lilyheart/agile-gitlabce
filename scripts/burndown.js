@@ -344,7 +344,8 @@ var burndown = (function () {
           title: {text: "Hours"}
         },
         tooltip: {
-          valueSuffix: " hrs"
+          valueSuffix: " hrs",
+          valueDecimals: 2
         },
         legend: {
           layout: "vertical",
