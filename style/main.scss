@@ -42,9 +42,9 @@ a, a:hover {
   font-size: 16px;
   text-align: right;
   .dropdown {
+    display: inline-block;
     height: 100%;
     position: relative;
-    display: inline-block;
   }
   button {
     @extend %primary-color-text;
@@ -56,15 +56,12 @@ a, a:hover {
     transition: all .3s;
     outline: none;
   }
-    button:hover {
+  button:hover {
     @extend %inverse-color-text;
   }
 }
 .pad-below {
   padding-bottom: 15px;
-}
-.pad-right-no {
-  padding-right: 0;
 }
 .progress-bar {
   background-color: $color-primary-0;

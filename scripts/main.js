@@ -3,13 +3,13 @@ See Scripts folder for additional Scripts.
 This file contains general code and global variable declarations
 */
 
-var currURL, baseURL, gitlabKey, projectID, currProjectName, stateHASH, serverDetails, isCheckingUpdate,
-    clientID, redirectURI, authURL, currUserName, projectList, lastUpdate, issueListArr,
-    issueListJSON, milestoneList, spentTimeList, accessToken, paramDict, time1,
-    time0 = performance.now(),
-    base36 = 36,
+var baseURL, gitlabKey, projectID, currProjectName, currUserName, projectList,
+    lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, paramDict;
+const PERCENT = 100;
+
+let currURL, stateHASH, serverDetails, isCheckingUpdate, clientID, redirectURI,
+    authURL, accessToken,
     spinnerText = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>";
-    const PERCENT = 100;
 
 $("#updateAlert").hide();
 currURL = redirectURI = window.location.origin + window.location.pathname;
@@ -276,12 +276,12 @@ function parsePARAMS(params) {
 }
 
 $(document).ready(function() {
-  var feedbackOptions = {};
-
-  feedbackOptions.appendTo = null;
-  feedbackOptions.url = "https://agile-gitlab.prod.with-datafire.io/feedback";
-  // feedbackOptions.url = "https://agile-gitlab.dev.with-datafire.io/feedback";
-  Feedback(feedbackOptions);
+  // var feedbackOptions = {};
+  //
+  // feedbackOptions.appendTo = null;
+  // feedbackOptions.url = "https://agile-gitlab.prod.with-datafire.io/feedback";
+  // // feedbackOptions.url = "https://agile-gitlab.dev.with-datafire.io/feedback";
+  // Feedback(feedbackOptions);
 
   if (window.location.hash.length !== 0 || accessToken) {
     setPhase("oAuth");

@@ -290,7 +290,9 @@ var burndown = (function () {
   }
 
   async function updateBurndownData(selectedMilestone) {
-    await checkForUpdates()
+    let title;
+
+    await checkForUpdates();
 
     if (!isLoaded) {
       if (gitlabKey === "") {
@@ -308,9 +310,17 @@ var burndown = (function () {
 
     updateData(selectedMilestone);
 
+    if (selectedMilestone === "All") {
+      title = "Project";
+    } else if (selectedMilestone === "None") {
+      title = "";
+    } else {
+      title = "Sprint";
+    }
+
     $(function () {
       $("#burndown-chart").highcharts({
-        title: {text: "Project Burndown Chart"},
+        title: {text: title + " Burndown Chart"},
         subtitle: {text: currProjectName + " - " + milestoneList[selectedMilestone].title},
         xAxis: {
           type: "datetime",

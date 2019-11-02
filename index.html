@@ -46,7 +46,7 @@
       <!-- Menu Bar -->
       <div id="stripe" class="stripe">
         <div class="dropdown">
-          <button id="feedback-link">Send Feedback</button>
+          <button id="feedback-link" style="display: none;">Send Feedback</button>
         </div>
       </div>
     </div>
@@ -210,7 +210,7 @@
               <div id="burndown" style="display: none">
                 <div id="milestone-selection" class="milestone-selection form-group row">
                   <label for="milestone-dropdown" class="col-sm-3 col-form-label">Show Milestone:</label>
-                  <div class="col-sm-9 pad-right-no">
+                  <div class="col-sm-9">
                     <select id="milestone-dropdown" class="custom-select align-self-center" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
                       <option selected="true" disabled>Load Projects first</option>
                     </select>

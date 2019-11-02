@@ -284,7 +284,7 @@ window.Feedback = function( options ) {
     // Swap from button to activating the feedback-link in the stripe
     // button = element( "button", options.label );
     // button.className = "btn feedback-btn feedback-bottom-left";
-    button = document.getElementById("feedback-link")
+    button = document.getElementById("feedback-link");
 
     // button.setAttribute(H2C_IGNORE, true);
 

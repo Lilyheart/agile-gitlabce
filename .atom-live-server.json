@@ -1,0 +1,6 @@
+{
+  "entry-file": "index.html",
+  "browser": "chrome",
+  "ignore": "scss",
+  "port": "3000"
+}
