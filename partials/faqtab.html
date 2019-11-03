@@ -1,0 +1,164 @@
+<div class="accordion" id="faq-accordion">
+
+  <div class="card">
+    <div class="card-header" id="faq1">
+      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+        Getting Started
+      </button>
+    </div>
+    <div id="collapse1" class="collapse show" aria-labelledby="faq1" data-parent="#faq-accordion">
+      <div class="card-body">
+        <p>
+          This site currently allows you to view issues and burndown charts for code repositories stored on a Gitlab server.  Features include:
+        </p>
+        <ul>
+          <li>Filter issue lists by Name, sprint, state, and assignee.</li>
+          <li>View and <strong><em>download</em></strong> Burndown charts for the project or by sprint (i.e., Gitlab's Milestones).</li>
+          <li>See the amount of time logged spent by team members for the project or by sprint.</li>
+        </ul>
+        <p>
+          The website is continuously being improved, and new features are added regularly.
+        </p>
+        <div class="accordion" id="login-accordion">
+          <button class="btn btn-outline-secondary btn-block" data-toggle="collapse" href="#login-details">
+            Log in
+          </button >
+          <div class="collapse show" id="login-details" data-parent="#login-accordion">
+            The easiest way to authenticate is by logging into Gitlab through this application.  In the Gitlab setup, select the Log in button
+            <ul>
+              <li>Select the specific GitLab website you want to access in the dropdown. </li>
+              <ul>
+                <li>If your website is missing, you will need to use the API Key method.  </li>
+                <li>If you want your add your website, see the instructions later in this FAQ</li>
+              </ul>
+              <li>Click the Login to Gitlab button</li>
+              <li>This will forward you to your Gitlab website.  If you are not already logged into the site, you will be prompted to log in.</li>
+              <li>The first time you log in, you will need to authorize AgileGitlab to use your account. AgileGitlab requests API access to your account to analyze the issue data. This access can be revoked following the steps later in this FAQ.</li>
+            </ul>
+          </div>
+
+          <button class="btn btn-outline-secondary btn-block" data-toggle="collapse" href="#apikey-details">
+          API Key (for if you cannot or do not want to use the Log in method)
+          </button >
+          <div class="collapse" id="apikey-details" data-parent="#login-accordion">
+            <ul>
+              <li>To find your Gitlab URL</li>
+              <ul>
+                <li>There is no single place to determine your Gitlab URL.</li>
+                <li>The URL is in the form https://gitlab.example.com/api/v4</li>
+                <li>The to begin with, try adding /api/v4 to the end of the URL you use to access Gitlab.  If this doesn’t work, you will need to contact your Gitlab administrator to find out the API URL.</li>
+              </ul>
+              <li>To find your API Key</li>
+              <ul>
+                <li>Log into your Gitlab website.</li>
+                <li>In the top left corner, click your profile image and select Settings.</li>
+                <li>On the left-hand side, select Access Tokens.</li>
+                <li>Create a new token with API access.  You will need to store this token somewhere, as Gitlab will only display it once.</li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="faq2">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+        Selecting a Project
+      </button>
+    </div>
+    <div id="collapse2" class="collapse" aria-labelledby="faq2" data-parent="#faq-accordion">
+      <div class="card-body">
+        <p>
+          By default, only projects where you have maintainer access are shown.  If you need to see all repositories you have access to on this Gitlab website, select Show all Repos.  Note, this may take a while to load.
+        </p>
+        <p>
+          To select a specific project, you can either begin to type the name in the selection box or scroll to the project using the dropdown arrow.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="faq3">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+        The Issues Tab
+      </button>
+    </div>
+    <div id="collapse3" class="collapse" aria-labelledby="faq3" data-parent="#faq-accordion">
+      <div class="card-body">
+        <p>This tab displays all issues in the repository.</p>
+        <p>The search box will search all fields and filter the table to display the results.</p>
+        <p>The plus symbol will display any fields that that table cannot display.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="faq4">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+        The Burndown Tab
+      </button>
+    </div>
+    <div id="collapse4" class="collapse" aria-labelledby="faq4" data-parent="#faq-accordion">
+      <div class="card-body">
+        <p>
+          This tab display burndown charts and hours spent by each teammember.  The chart can be filtered by:
+        </p>
+        <ul>
+          <li>All Issues in the project</li>
+          <li>All Issues without a milestone</li>
+          <li>Milestones</li>
+        </ul>
+        <p>
+          To download the chart as an image, click the menu button on the top right corner of the chart image.
+        </p>
+        <p>
+          Below the burndown chart is a table displaying all members who spent time in the issue relevant to the milestone selected.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="faq5">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+        How to fix estimated and spent hours
+      </button>
+    </div>
+    <div id="collapse5" class="collapse" aria-labelledby="faq5" data-parent="#faq-accordion">
+      <div class="card-body">
+        Coming Soon
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="card">
+    <div class="card-header" id="faq6">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+        How to revoke access
+      </button>
+    </div>
+    <div id="collapse6" class="collapse" aria-labelledby="faq6" data-parent="#faq-accordion">
+      <div class="card-body">
+        Coming Soon
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <div class="card">
+    <div class="card-header" id="faq7">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+        How to add a new Gitlab website
+      </button>
+    </div>
+    <div id="collapse7" class="collapse" aria-labelledby="faq7" data-parent="#faq-accordion">
+      <div class="card-body">
+        Coming Soon
+      </div>
+    </div>
+  </div> -->
+
+</div>

@@ -84,7 +84,7 @@ a, a:hover {
     margin-left: 5px;
   }
 }
-.nav-pills .nav-link, .nav-tabs .nav-link, button.btn-primary {
+.nav-pills .nav-link, .nav-tabs .nav-link, button.btn-primary, button.btn-link {
   justify-content: center;
   font-weight: bold;
   letter-spacing: 2px;
@@ -114,6 +114,7 @@ a, a:hover {
       background-color: $color-secondary-2-0;
       border-color: $color-secondary-2-0;
       color: $color-primary-0-inverse;
+      text-decoration: none;
     }
   }
 }
@@ -125,6 +126,24 @@ a, a:hover {
 .nav-tabs .nav-link:not(button):not(:disabled) {
   &.active, &:not(.active), &:not(.active):hover {
     border-bottom-color: $nav-tab-border;
+  }
+}
+
+/* CARDS */
+
+.card {
+  border-color: $color-primary-0;
+  background-color: $background;
+  color: $color-primary-3;
+}
+.card-header {
+  padding: 0;
+  button {
+    @extend %inverse-color-text;
+    padding: 12px 20px;
+    width: 100%;
+    text-align: left;
+    border-radius: 0;
   }
 }
 

@@ -62,7 +62,7 @@
             <ul class="nav nav-pills nav-justified mb-3" id="pills-tab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="gitlab_auth_oauth" data-toggle="pill" href="#pills-auth-oauth" role="tab" aria-controls="pills-auth-oauth" aria-selected="true">
-                  OAuth
+                  Log in
                 </a>
               </li>
               <li class="nav-item">
@@ -75,7 +75,7 @@
               <div class="tab-pane fade show active" id="pills-auth-oauth" role="tabpanel" aria-labelledby="gitlab_auth_oauth">
                 <div id="">
                   <div class="form-group row">
-                    <label for="auth-server-dropdown" class="col-sm-4 align-self-center col-form-label">Gitlab Server:</label>
+                    <label for="auth-server-dropdown" class="col-sm-4 align-self-center col-form-label">Gitlab Website:</label>
                     <div class="col-sm-8 ">
                       <select id="auth-server-dropdown" class="align-self-center" placeholder="Start typing name..." name="auth_server_id"   onchange="authenticate(this.options[this.selectedIndex].value)">
                       </select>
@@ -83,7 +83,7 @@
                   </div>
                   <div id="gitlab-login-link">
                     <button type="button" id="" class="btn btn-primary btn-lg btn-block d-flex align-items-center" onclick="openAuthPage()">
-                      Login
+                      Log in to Gitlab
                     </button>
                   </div>
                   <div id="gitlab-logout-link" style="display: none;">
@@ -167,24 +167,20 @@
           </div>
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 					  <li class="nav-item">
-					    <a class="nav-link disabled active" id="issues-tab" data-toggle="tab" href="#issuestab" role="tab" aria-controls="issuestab"
-					      aria-selected="true" onclick="checkForUpdates()">Gitlab Issues</a>
+					    <a class="nav-link disabled" id="issues-tab" data-toggle="tab" href="#issuestab" role="tab" aria-controls="issuestab"
+					      aria-selected="false" onclick="checkForUpdates()">Issues</a>
 					  </li>
             <li class="nav-item">
               <a class="nav-link disabled" id="burndown-tab" data-toggle="tab" href="#burndowntab" role="tab" aria-controls="burndowntab"
                 aria-selected="false" onclick="checkForUpdates()">Burndown</a>
             </li>
-					  <!-- <li class="nav-item">
-					    <a class="nav-link disabled" id="members-tab" data-toggle="tab" href="#membertab" role="tab" aria-controls="membertab"
-					      aria-selected="false">Active Members</a>
-					  </li> -->
-					  <!-- <li class="nav-item">
-					    <a class="nav-link disabled" id="settings-tab" data-toggle="tab" href="#settingtab" role="tab" aria-controls="settingtab"
-					      aria-selected="false">Settings</a>
-					  </li> -->
+					  <li class="nav-item">
+					    <a class="nav-link active" id="faq-tab" data-toggle="tab" href="#faqtab" role="tab" aria-controls="fawtab"
+					      aria-selected="true">FAQ</a>
+					  </li>
 					</ul>
 					<div class="tab-content" id="myTabContent">
-					  <div class="tab-pane fade show active" id="issuestab" role="tabpanel" aria-labelledby="issues-tab">
+					  <div class="tab-pane fade" id="issuestab" role="tabpanel" aria-labelledby="issues-tab">
               <div id="loading_issues" style="display: none">
                 <div class="d-flex justify-content-center m-5">
                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -239,11 +235,12 @@
                 </div>
               </div>
             </div>
-					  <div class="tab-pane fade" id="membertab" role="tabpanel" aria-labelledby="members-tab">
-              TODO Later
-            </div>
-					  <div class="tab-pane fade" id="settingtab" role="tabpanel" aria-labelledby="settings-tab">
-              TODO Later Later
+					  <div class="tab-pane fade show active" id="faqtab" role="tabpanel" aria-labelledby="faq-tab">
+              <div id="faqtab-html">
+                <script>
+                  $("#faqtab-html").load("partials/faqtab.html");
+                </script>
+              </div>
             </div>
 					</div>
         </div>

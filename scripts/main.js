@@ -138,12 +138,6 @@ function setPhase(newPhase) {
     document.getElementById("burndown-unavailable").style.display = "none";
     document.getElementById("burndown").style.display = "none";
     document.getElementById("show_hours").style.display = "none";
-
-    document.getElementById("issues-tab").classList.remove("active");
-    document.getElementById("issues-tab").classList.add("disabled");
-    document.getElementById("burndown-tab").classList.add("disabled");
-    // document.getElementById("members-tab").classList.add("disabled");
-    // document.getElementById("settings-tab").classList.add("disabled");
   }
 
   if (newPhase === "oAuth") {
@@ -164,6 +158,7 @@ function setPhase(newPhase) {
     }
 
     $("#btnGetProjects").prop("disabled", true);
+    $("#collapse2").collapse("show");
   }
 
   if (newPhase === "project_end") {
@@ -174,6 +169,7 @@ function setPhase(newPhase) {
 
   if (newPhase === "issue_start") {
     // Setup issues sections
+    document.getElementById("issues-tab").classList.remove("disabled");
     isCheckingUpdate = false;
     document.getElementById("issues-tab").click();
     isCheckingUpdate = true;
@@ -182,6 +178,7 @@ function setPhase(newPhase) {
     document.getElementById("gitlab_show_issues").style.display = "none";
     document.getElementById("issues-tab").classList.add("active");
     document.getElementById("issues-tab").classList.remove("disabled");
+    $("#collapse3").collapse("show");
 
     // Setup burndown sections
     document.getElementById("burndown-tab").classList.add("disabled");
