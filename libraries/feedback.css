@@ -561,3 +561,13 @@ button.feedback-btn.small, input[type="submit"].feedback-btn.small {
     -moz-transform: translateY(-21px);
   }
 }
+
+@media only screen and (max-width: 550px) {
+  .feedback-modal {
+    position: absolute;
+    width: 95%;
+    top: 50%;
+    left: auto;
+    right: 2%;
+  }
+}

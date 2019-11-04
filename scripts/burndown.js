@@ -1,3 +1,4 @@
+/*eslint id-length: ["error", { "exceptions": ["i", "x", "y"] }]*/
 var burndown = (function () {
 
   let startHours, startDate, endDate, today, idealEffort, remainEffort, trendEffort, issueNotesList, isLoaded;
