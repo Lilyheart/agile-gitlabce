@@ -273,12 +273,28 @@ function parsePARAMS(params) {
 }
 
 $(document).ready(function() {
-  // var feedbackOptions = {};
-  //
-  // feedbackOptions.appendTo = null;
-  // feedbackOptions.url = "https://agile-gitlab.prod.with-datafire.io/feedback";
-  // // feedbackOptions.url = "https://agile-gitlab.dev.with-datafire.io/feedback";
-  // Feedback(feedbackOptions);
+  var feedbackOptions = {};
+
+  feedbackOptions.appendTo = null;
+  feedbackOptions.url = "https://agile-gitlab.prod.with-datafire.io/feedback";
+  // feedbackOptions.url = "https://agile-gitlab.dev.with-datafire.io/feedback";
+  feedbackOptions.elements = [{
+    type: "email",
+    name: "E-mail",
+    label: "What is your email address?",
+    required: false
+  }, {
+    type: "textarea",
+    name: "Issue",
+    label: "Please describe the issue you are experiencing or the feedback you wish to provide",
+    required: true
+  }];
+
+  feedbackOptions.pages = [
+      new window.Feedback.Form(feedbackOptions.elements)
+      // new window.Feedback.Review()
+  ];
+  Feedback(feedbackOptions);
 
   if (window.location.hash.length !== 0 || accessToken) {
     setPhase("oAuth");

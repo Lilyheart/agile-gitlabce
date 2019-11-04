@@ -338,18 +338,31 @@ window.Feedback.Form.prototype = new window.Feedback.Page();
 
 window.Feedback.Form.prototype.render = function() {
 
-    var i = 0, len = this.elements.length, item;
     emptyElements( this.dom );
-    for (; i < len; i++) {
+    for (var i = 0; i < this.elements.length; i++) {
         item = this.elements[ i ];
 
         switch( item.type ) {
             case "textarea":
-                this.dom.appendChild( element("label", item.label + ":" + (( item.required === true ) ? " *" : "")) );
+                this.dom.appendChild( element("label", item.label + ": " + (( item.required === true ) ? " *" : "")) );
                 this.dom.appendChild( ( item.element = document.createElement("textarea")) );
+                item.element.classList.add("form-control");
+                item.element.classList.add("mb-3");
+                item.element.setAttribute("rows", "5");
+                item.element.setAttribute("placeholder", "Enter feedback");
+                break;
+            case "email":
+                this.dom.appendChild( element("label", item.label + ": " + (( item.required === true ) ? " *" : "")) );
+                this.dom.appendChild( ( item.element = document.createElement("input")) );
+                item.element.classList.add("form-control");
+                item.element.classList.add("mb-3");
+                item.element.setAttribute("type", "email");
+                item.element.setAttribute("placeholder", "Enter email");
                 break;
         }
     }
+
+
 
     return this;
 

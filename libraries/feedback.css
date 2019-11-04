@@ -297,7 +297,7 @@ button.feedback-btn.small, input[type="submit"].feedback-btn.small {
 
 
 
-.feedback-body textarea {
+/* .feedback-body textarea {
     margin: 0;
     font-size: 100%;
     vertical-align: middle;
@@ -329,7 +329,7 @@ button.feedback-btn.small, input[type="submit"].feedback-btn.small {
     -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
     -o-transition: border linear 0.2s, box-shadow linear 0.2s;
     transition: border linear 0.2s, box-shadow linear 0.2s;
-}
+} */
 
 .feedback-body textarea:focus {
     border-color: rgba(82, 168, 236, 0.8);

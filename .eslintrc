@@ -16,6 +16,7 @@
     "console": true,
     "XMLHttpRequest": true,
     "defiant": true,
+    "Feedback": true,
 
     # var variables
     "baseURL": true,
