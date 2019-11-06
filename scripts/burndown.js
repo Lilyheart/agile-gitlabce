@@ -367,7 +367,7 @@ var burndown = (function () {
         },
         series: [{
           type: "column",
-          name: "Completed Tasks",
+          name: "Completed Hours",
           color: "#4682b4",
           data: jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone])
         }, {
