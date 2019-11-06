@@ -135,6 +135,11 @@ a, a:hover {
   border-color: $color-primary-0;
   background-color: $background;
   color: $color-primary-3;
+  font-weight: bold;
+  letter-spacing: 1px;
+  strong {
+    font-weight: normal;
+  }
 }
 .card-header {
   padding: 0;
@@ -144,6 +149,14 @@ a, a:hover {
     width: 100%;
     text-align: left;
     border-radius: 0;
+  }
+}
+
+.accordion {
+  .btn-outline-secondary {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 10px;
   }
 }
 
