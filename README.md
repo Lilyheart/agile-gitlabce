@@ -10,12 +10,6 @@ This project is to fill in the missing gaps regarding the Agile workflow in a CE
 
 The website is deployed [here](https://lilyheart.github.io/agile-gitlabce/) on GitHub pages.
 
-## To decide
-
-- [ ] Handle issues w/ spend and no estimate?
-- [ ] Handle issues w/ more spend than estimate?
-- [ ] Handle issues with spend dates outside of milestone
-
 <!-- ## Usage
 
 TODO: Write usage instructions -->
@@ -32,12 +26,18 @@ Not current accepting pull requests.
 
 ## History
 
-### [0.2.1] - 2019-10-24
+### [0.2.3] - 2019-11-08
+Minor Bug fixes
+
+### [0.2.2] - 2019-11-03
+Instructions added to site!
+
+### [0.2.1] - 2019-10-28
 Notify when there is an update to issues on Gitlab (in 40 lines of code!)
 
 ### [0.2.0] - 2019-10-23
 Add hours by member table
-Rework login flow
+Rework log in flow
 Fix regression line
 Sort sprints/milestones by due date
 

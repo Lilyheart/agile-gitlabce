@@ -5,7 +5,8 @@ This file contains general code and global variable declarations
 
 var baseURL, gitlabKey, projectID, currProjectName, currUserName, projectList,
     lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, paramDict;
-const PERCENT = 100;
+const PERCENT = 100,
+      MSperMIN = 60000;
 
 let currURL, stateHASH, serverDetails, isCheckingUpdate, clientID, redirectURI,
     authURL, accessToken,

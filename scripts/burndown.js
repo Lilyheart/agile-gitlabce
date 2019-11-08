@@ -14,7 +14,6 @@ var burndown = (function () {
   const SECperHOUR = 3600
   const INVERSE = -1;
   const TWOdigitROUND = 100;
-  const MSperMIN = (1000 * 60);
   const TRENDOFFSET = 2;
   /* eslint-enable */
 

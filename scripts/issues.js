@@ -38,7 +38,8 @@ var issues = (function () {
   }
 
   async function getMilestoneList() {
-    let url, projectPages, tempMilestoneList, milestone, date;
+    let url, projectPages, tempMilestoneList, milestone, startDate, dueDate,
+        today = new Date(new Date().setHours(0, 0, 0, 0));
 
     // Get number of project pages
     url = baseURL + "projects/" + projectID + "/milestones?" + gitlabKey;
@@ -58,15 +59,36 @@ var issues = (function () {
     milestoneList["All"] = {iid: "All", title: "All Issues", issues: []};
     for (let index in tempMilestoneList) {
       if (tempMilestoneList.hasOwnProperty(index)) {
+        startDate = dueDate = "";
         milestone = tempMilestoneList[index];
         milestoneList[milestone.iid] = milestone;
         milestoneList[milestone.iid].issues = [];
         //convert dates
+
+        if (milestoneList[milestone.iid].start_date !== null) {
+          startDate = milestoneList[milestone.iid].start_date.split("-");
+          startDate = new Date(startDate[0], startDate[1] - 1, startDate[2]);
+        }
+        if (milestoneList[milestone.iid].due_date !== null) {
+          dueDate = milestoneList[milestone.iid].due_date.split("-");
+          dueDate = new Date(dueDate[0], dueDate[1] - 1, dueDate[2]);
+        }
+
         /* eslint-disable */
-        date = milestoneList[milestone.iid].start_date.split("-");
-        milestoneList[milestone.iid].start_date = new Date(date[0], date[1] - 1, date[2]);
-        date = milestoneList[milestone.iid].due_date.split("-");
-        milestoneList[milestone.iid].due_date = new Date(date[0], date[1] - 1, date[2]);
+        if (startDate !== "") {
+          milestoneList[milestone.iid].start_date = startDate;
+        } else if (dueDate !== "") {
+          milestoneList[milestone.iid].start_date = dueDate;
+        } else {
+          milestoneList[milestone.iid].start_date = today;
+        }
+        if (dueDate !== "") {
+          milestoneList[milestone.iid].due_date = dueDate;
+        } else if (startDate !== "") {
+          milestoneList[milestone.iid].due_date = startDate;
+        } else {
+          milestoneList[milestone.iid].due_date = today;
+        }
         /* eslint-enable */
       }
     }

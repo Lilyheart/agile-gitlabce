@@ -34,6 +34,7 @@
 
     # const variables
     "PERCENT": true,
+    "MSperMIN": true,
 
     # Functions
     "getHeaderValue": true,
