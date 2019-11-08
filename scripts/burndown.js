@@ -11,7 +11,7 @@ var burndown = (function () {
     m : 1.0 / 60.0
   }
   const MSperDAY = (1000 * 60 * 60 * 24);
-  const SECperHOUR = 3600
+  const SECperHOUR = 3600;
   const INVERSE = -1;
   const TWOdigitROUND = 100;
   const TRENDOFFSET = 2;
@@ -113,7 +113,7 @@ var burndown = (function () {
   }
 
   async function getNewData() {
-    let issueIID, url, addSubRE, tempSpentTimeList, body, match, noteableIID, time, spent, date, newprogress;
+    let issueIID, url, addSubRE, tempSpentTimeList, body, match, noteableIID, times, time, spent, date, newprogress;
 
     issueNotesList = [];
     if (issueListArr.length === 0) {
@@ -194,14 +194,19 @@ var burndown = (function () {
 
       // If has added or subtracted
       if (match !== null) {
-        // parse spent
-        time = match[2].match(/([0-9]*)([a-zA-Z]*)/);
-        spent = time[1] * CONVERTTABLE[time[2]];
-        // update if subtracted
-        if (match[1] === "subtracted") {spent *= INVERSE;}
-        // parse date
-        date = Date.UTC(parseInt(match[3], 10), parseInt(match[4], 10) - 1, parseInt(match[5], 10));
-        tempSpentTimeList.push({date: date, spent: spent, issue: noteableIID, author: note.author.name});
+        times = match[2].split(" ");
+        for (let timesIndex in times) {
+          if (times.hasOwnProperty(timesIndex)) {
+            // parse spent
+            time = times[timesIndex].match(/([0-9]*)([a-zA-Z]*)/);
+            spent = time[1] * CONVERTTABLE[time[2]];
+            // update if subtracted
+            if (match[1] === "subtracted") {spent *= INVERSE;}
+            // parse date
+            date = Date.UTC(parseInt(match[3], 10), parseInt(match[4], 10) - 1, parseInt(match[5], 10));
+            tempSpentTimeList.push({date: date, spent: spent, issue: noteableIID, author: note.author.name});
+          }
+        }
       }
 
       // If time spent was removed
@@ -285,7 +290,7 @@ var burndown = (function () {
     for (let i = 0; i <= dayDiff; i += 1) {
       effortDay = day1 + (MSperDAY * (i));
       yVal = slope * (i + 1) + intercept;
-      trendEffort.push([effortDay, yVal]);
+      trendEffort.push([effortDay, Math.max(0, yVal)]);
     }
   }
 
