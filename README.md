@@ -26,25 +26,28 @@ Not current accepting pull requests.
 
 ## History
 
-### [0.2.3] - 2019-11-08
+### [[0.2.4]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.4) - 2019-11-12
+Add List of future plans to FAQ list.
+
+### [[0.2.3]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.3) - 2019-11-08
 Minor Bug fixes
 
-### [0.2.2] - 2019-11-03
+### [[0.2.2]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.2) - 2019-11-03
 Instructions added to site!
 
-### [0.2.1] - 2019-10-28
+### [[0.2.1]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.1) - 2019-10-28
 Notify when there is an update to issues on Gitlab (in 40 lines of code!)
 
-### [0.2.0] - 2019-10-23
+### [[0.2.0]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.0) - 2019-10-23
 Add hours by member table
 Rework log in flow
 Fix regression line
 Sort sprints/milestones by due date
 
-### [0.1.0] - 2019-10-17
+### [[0.1.0]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.1.0) - 2019-10-17
 OAuth option added to menu bar
 
-### [0.0.1] - 2019-10-16
+### [[0.0.1]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.0.1) - 2019-10-16
 Initial release for testing
 
 <!-- ## Credits

@@ -121,6 +121,56 @@ function displayUpdateAlert() {
   $("#updateAlert").show();
 }
 
+async function getAgilePlans() {
+  let issueURL, projectPages, agilePlans,
+      validTags = ["Bug", "Documentation", "Enhancement", "Suggestion", "Support"];
+
+  issueURL = "https://gitlab.bucknell.edu/api/v4/projects/3878/issues?per_page=100&page=1";
+  projectPages = getHeaderValue(issueURL, "x-total-pages");
+
+  // Get Data
+  agilePlans = [];
+  for (let i = 1; i <= projectPages; i += 1) {
+    await $.getJSON(issueURL + "&page=" + i, function(data) {
+      agilePlans = agilePlans.concat(data);
+    });
+  }
+
+  // Remove closed issues
+  agilePlans = agilePlans.filter(issue => issue.state === "opened");
+
+  for (let issueIndex in agilePlans) {
+    if (agilePlans.hasOwnProperty(issueIndex)) {
+      for (let i = (agilePlans[issueIndex].labels.length - 1); i >= 0; i -= 1) {
+        if (validTags.indexOf(agilePlans[issueIndex].labels[i]) === -1) {
+          agilePlans[issueIndex].labels.splice(i, 1);
+        }
+      }
+    }
+  }
+
+  $("#agilePlans").DataTable({
+    responsive: true,
+    data: agilePlans,
+    columns: [
+      {title: "Type", data: "labels"},
+      {title: "Title"}
+    ],
+    columnDefs: [{
+      responsivePriority: 1, targets: 1
+    }, {
+      render: function ( data, type, row ) {
+        return "<a href='" + row.web_url + "' target='_blank'>" + row.title + "</a>";
+
+      },
+      targets: 1
+    }],
+    searching: false,
+    paging: false,
+    info: false
+  });
+}
+
 $(".alert .close").click(function() {
    $(this).parent().hide();
 });
@@ -296,6 +346,7 @@ $(document).ready(function() {
       // new window.Feedback.Review()
   ];
   Feedback(feedbackOptions);
+  getAgilePlans();
 
   if (window.location.hash.length !== 0 || accessToken) {
     setPhase("oAuth");
