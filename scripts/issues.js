@@ -6,11 +6,15 @@ var issues = (function () {
   }
 
   async function getIssuesList() {
-    let url, projectPages, issue;
+    let projectName, url, projectPages, issue;
 
     if (history.pushState) {
       window.history.pushState("object or string", "Title", currURL + "?project=" + projectID);
     }
+
+    projectName = $("#project-dropdown")[0].selectize.getOption($("#project-dropdown")[0].selectize.getValue())[0].innerHTML;
+
+    document.title = projectName + " (Agile Gitlab CE)";
 
     // Get number of project pages
     url = baseURL + "projects/" + projectID + "/issues?per_page=100&" + gitlabKey;
