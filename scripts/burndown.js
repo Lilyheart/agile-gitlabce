@@ -1,7 +1,8 @@
 /*eslint id-length: ["error", { "exceptions": ["i", "x", "y"] }]*/
 var burndown = (function () {
 
-  let startHours, startDate, endDate, today, idealEffort, remainEffort, trendEffort, issueNotesList, isLoaded;
+  let startHours, startDate, endDate, today, idealEffort, remainEffort, trendEffort, issueNotesList,
+      isLoaded = false;
   /* eslint-disable */
   const CONVERTTABLE = {
     mo: 160,
@@ -9,15 +10,13 @@ var burndown = (function () {
     d : 8,
     h : 1,
     m : 1.0 / 60.0
-  }
-  const MSperDAY = (1000 * 60 * 60 * 24);
-  const SECperHOUR = 3600;
-  const INVERSE = -1;
-  const TWOdigitROUND = 100;
-  const TRENDOFFSET = 2;
-  /* eslint-enable */
-
-  isLoaded = false;
+  },
+        MSperDAY = (1000 * 60 * 60 * 24),
+        /* eslint-enable */
+        SECperHOUR = 3600,
+        INVERSE = -1,
+        TWOdigitROUND = 100,
+        TRENDOFFSET = 2;
 
   async function getIssueNotes(url) {
     let projectPages;

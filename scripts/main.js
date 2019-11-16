@@ -3,17 +3,19 @@ See Scripts folder for additional Scripts.
 This file contains general code and global variable declarations
 */
 
-var baseURL, gitlabKey, projectID, currProjectName, currUserName, projectList,
-    lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, paramDict;
+var baseURL, currURL, gitlabKey, projectID, currProjectName, currUserName, projectList,
+    lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, paramDict,
+    searchDict = {};
 const PERCENT = 100,
       MSperMIN = 60000;
 
-let currURL, stateHASH, serverDetails, isCheckingUpdate, clientID, redirectURI,
+let stateHASH, serverDetails, isCheckingUpdate, clientID, redirectURI,
     authURL, accessToken,
     spinnerText = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>";
 
 $("#updateAlert").hide();
-currURL = redirectURI = window.location.origin + window.location.pathname;
+currURL = window.location.origin + window.location.pathname;
+redirectURI = currURL + window.location.search;
 
 $("#auth-server-dropdown").selectize({
   valueField: "id",
@@ -301,7 +303,7 @@ function authenticate(server) {
 
   authURL = serverDetails.authURL;
   authURL += "?client_id=" + serverDetails.clientID;
-  authURL += "&redirect_uri=" + currURL;
+  authURL += "&redirect_uri=" + redirectURI;
   authURL += "&response_type=token&state=" + stateHASH + "&scope=api";
 }
 
@@ -309,11 +311,11 @@ function openAuthPage() {
   window.open(authURL, "_self");
 }
 
-function parsePARAMS(params) {
+function parseHASH(hash) {
   let paramList, param;
 
-  paramList = params.replace("?", "");
-  paramList = params.replace("#", "");
+  paramList = hash.replace("?", "");
+  paramList = paramList.replace("#", "");
   paramList = paramList.split("&");
 
   paramDict = {};
@@ -323,8 +325,23 @@ function parsePARAMS(params) {
   });
 }
 
+function parseSEARCH(search) {
+  let searchList;
+
+  searchList = search.replace("?", "");
+  searchList = searchList.split();
+
+  for (let line in searchList) {
+    if (searchList.hasOwnProperty(line)) {
+      line = searchList[line].split("=");
+      searchDict[line[0]] = line[1];
+    }
+  }
+}
+
 $(document).ready(function() {
-  var feedbackOptions = {};
+  let searchString,
+      feedbackOptions = {};
 
   feedbackOptions.appendTo = null;
   feedbackOptions.url = "https://agile-gitlab.prod.with-datafire.io/feedback";
@@ -348,10 +365,15 @@ $(document).ready(function() {
   Feedback(feedbackOptions);
   getAgilePlans();
 
+  searchString = window.location.search;
+  if (searchString.length !== 0) {
+     parseSEARCH(searchString);
+  }
+
   if (window.location.hash.length !== 0 || accessToken) {
     setPhase("oAuth");
 
-    parsePARAMS(window.location.hash);
+    parseHASH(window.location.hash);
     $("#auth-server-dropdown").selectize()[0].selectize.setValue(paramDict.state, false);
     authenticate(paramDict.state);
     accessToken = paramDict.access_token;
@@ -360,8 +382,6 @@ $(document).ready(function() {
 
     if (history.pushState) {
       window.history.pushState("object or string", "Title", redirectURI);
-    } else {
-      document.location.href = redirectURI;
     }
     projects.getProjects("auto");
   } else {

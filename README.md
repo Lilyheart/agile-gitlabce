@@ -26,6 +26,9 @@ Not current accepting pull requests.
 
 ## History
 
+### [[0.2.5]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.5) - 2019-11-16
+Add ability to bookmark a project.
+
 ### [[0.2.4]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.4) - 2019-11-12
 Add List of future plans to FAQ list.
 

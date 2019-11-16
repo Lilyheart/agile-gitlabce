@@ -14,12 +14,14 @@
     "document": true,
     "history": true,
     "console": true,
+    "fetch": true,
     "XMLHttpRequest": true,
     "defiant": true,
     "Feedback": true,
 
     # var variables
     "baseURL": true,
+    "currURL": true,
     "gitlabKey": true,
     "projectID": true,
     "currProjectName": true,
@@ -31,6 +33,7 @@
     "milestoneList": true,
     "spentTimeList": true,
     "paramDict": true,
+    "searchDict": true,
 
     # const variables
     "PERCENT": true,

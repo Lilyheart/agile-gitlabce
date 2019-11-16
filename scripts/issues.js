@@ -8,6 +8,10 @@ var issues = (function () {
   async function getIssuesList() {
     let url, projectPages, issue;
 
+    if (history.pushState) {
+      window.history.pushState("object or string", "Title", currURL + "?project=" + projectID);
+    }
+
     // Get number of project pages
     url = baseURL + "projects/" + projectID + "/issues?per_page=100&" + gitlabKey;
     projectPages = getHeaderValue(url, "x-total-pages");
