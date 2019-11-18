@@ -409,7 +409,11 @@ $(document).ready(function() {
     if (history.pushState) {
       window.history.pushState("object or string", "Title", newURL);
     }
-    projects.getProjects("auto");
+    if (searchDict.hasOwnProperty("project")) {
+      projects.getProjects("bookmarked");
+    } else {
+      projects.getProjects("auto");
+    }
   } else {
     setupAuthenticate("Bucknell");
     setPhase("start");
