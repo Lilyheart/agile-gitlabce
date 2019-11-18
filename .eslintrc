@@ -229,7 +229,7 @@
     "block-scoped-var": "warn",
     "func-style": ["warn", "declaration"],
     "id-length": ["warn", {
-        "exceptions": ["i", "id"],
+        "exceptions": ["i", "id", "x", "y"],
         "min": 3,
         "max": 20}],
     # "max-statements": ["warn", 10],

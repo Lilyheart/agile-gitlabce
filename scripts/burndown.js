@@ -33,35 +33,30 @@ var burndown = (function () {
     }
   }
 
-  function jsonToSeries(json, xlabel, ylabel, filter) {
+  function jsonToChartSeries(json, xlabel, ylabel, filter) {
     let filteredJSON, series, desiredIssues;
 
-    // filter
+    // for each note, determine if it's from an issue of interest
     if (filter !== null) {
-      // for each note, determine if it's from an issue of interest
       filteredJSON = json.filter(note => milestoneList[filter[1]].issues.includes(note.issue));
+    } else {
+      filteredJSON = json;
     }
 
     // Reduce json
     series = Object.values(filteredJSON.reduce((acc, cur) => {
-        /* eslint-disable */
-      acc[cur[xlabel]] = acc[cur[xlabel]] || {x: cur[xlabel], y : 0};
+      acc[cur[xlabel]] = acc[cur[xlabel]] || {x: cur[xlabel], y: 0};
       acc[cur[xlabel]].y += +cur[ylabel];
-        /* eslint-enable */
 
       return acc;
     }, {}));
 
     // Sort by x axis
-    series = series.sort(function(first, second) {
-      return parseFloat(first.x) - parseFloat(second.x);
-    });
+    series = series.sort(function(first, second) {return parseFloat(first.x) - parseFloat(second.x);});
 
     // Drop Zero Sums by going through array (backwards to avoid skipped indices)
     for (let i = series.length - 1; i >= 0; i -= 1) {
-      if (series[i].y === 0) {
-        series.splice(i, 1);
-      }
+      if (series[i].y === 0) {series.splice(i, 1);}
     }
 
     return series;
@@ -112,7 +107,8 @@ var burndown = (function () {
   }
 
   async function getNewData() {
-    let issueIID, url, addSubRE, tempSpentTimeList, body, match, noteableIID, times, time, spent, date, newprogress;
+    let issueIID, url, addSubRE, estimateRE, tempSpentTimeList, matchAddSub, matchEst,
+        noteableIID, times, time, spent, date, newprogress;
 
     issueNotesList = [];
     if (issueListArr.length === 0) {
@@ -130,6 +126,14 @@ var burndown = (function () {
         if (startDate > issueListArr[issue].created_at) {startDate = issueListArr[issue].created_at;}
         if (endDate < issueListArr[issue].updated_at) {endDate = issueListArr[issue].updated_at;}
 
+        // Add issue id to appropriate milestone's dictionary
+        milestoneList["All"].issues.push(issueListArr[issue].iid);
+        if (issueListArr[issue].milestone.iid) {
+          milestoneList[issueListArr[issue].milestone.iid].issues.push(issueListArr[issue].iid);
+        } else {
+          milestoneList["None"].issues.push(issueListArr[issue].iid);
+        }
+
         // Get Notes
         issueIID = issueListArr[issue].iid;
         url = baseURL + "projects/" + projectID + "/issues/" + issueIID + "/notes";
@@ -138,15 +142,9 @@ var burndown = (function () {
           url += "?sort=asc&order_by=updated_at&&per_page=100&" + gitlabKey;
         }
 
-        milestoneList["All"].issues.push(issueListArr[issue].iid);
-        if (issueListArr[issue].milestone.iid) {
-          milestoneList[issueListArr[issue].milestone.iid].issues.push(issueListArr[issue].iid);
-        } else {
-          milestoneList["None"].issues.push(issueListArr[issue].iid);
-        }
-
         await getIssueNotes(url);
 
+        // Update progress bar on burndown tab
         newprogress = ((parseInt(issue, 10) + 1) * PERCENT) / issueListArr.length;
         $("#burndown_progress").attr("aria-valuenow", newprogress).css("width", newprogress + "%");
         newprogress = Math.round(newprogress);
@@ -154,6 +152,7 @@ var burndown = (function () {
       }
     }
 
+    // Determine milestone start and end dates
     startDate = new Date(startDate);
     endDate = new Date(endDate);
 
@@ -164,52 +163,54 @@ var burndown = (function () {
       }
     }
 
-    /* eslint-disable */
+    // eslint-disable-next-line camelcase
     milestoneList["None"].start_date = startDate;
+    // eslint-disable-next-line camelcase
     milestoneList["All"].start_date = startDate;
+    // eslint-disable-next-line camelcase
     milestoneList["None"].due_date = endDate;
+    // eslint-disable-next-line camelcase
     milestoneList["All"].due_date = endDate;
-    /* eslint-enable */
 
     createMilestoneDD();
 
-    // Go through notes to get changes in spend
+    // Go through notes to get changes in spend & estimates
     noteableIID = "Empty Note";
     addSubRE = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
+    estimateRE = /(changed time estimate) to (1d)/;
     spentTimeList = [];
     tempSpentTimeList = [];
 
     issueNotesList.forEach(function(note) {
       if (noteableIID !== note.noteable_iid) {
-        // new issue - add spent time from last issue and reset accumulator
+        // parsing new issue - add spent time from last issue and reset accumulator
         spentTimeList = spentTimeList.concat(tempSpentTimeList);
         tempSpentTimeList = [];
         noteableIID = note.noteable_iid;
       }
 
       // Check for changes in time spent
-      body = note.body;
-      match = body.match(addSubRE);
+      matchAddSub = note.body.match(addSubRE);
 
       // If has added or subtracted
-      if (match !== null) {
-        times = match[2].split(" ");
+      if (matchAddSub !== null) {
+        times = matchAddSub[2].split(" ");
         for (let timesIndex in times) {
           if (times.hasOwnProperty(timesIndex)) {
             // parse spent
             time = times[timesIndex].match(/([0-9]*)([a-zA-Z]*)/);
             spent = time[1] * CONVERTTABLE[time[2]];
             // update if subtracted
-            if (match[1] === "subtracted") {spent *= INVERSE;}
+            if (matchAddSub[1] === "subtracted") {spent *= INVERSE;}
             // parse date
-            date = Date.UTC(parseInt(match[3], 10), parseInt(match[4], 10) - 1, parseInt(match[5], 10));
+            date = Date.UTC(parseInt(matchAddSub[3], 10), parseInt(matchAddSub[4], 10) - 1, parseInt(matchAddSub[5], 10));
             tempSpentTimeList.push({date: date, spent: spent, issue: noteableIID, author: note.author.name});
           }
         }
       }
 
       // If time spent was removed
-      if (body === "removed time spent") {
+      if (note.body === "removed time spent") {
         tempSpentTimeList = [];
       }
     });
@@ -243,7 +244,7 @@ var burndown = (function () {
     idealEffort.push([day1, startHours]);
     remainEffort.push([day1, startHours]);
 
-    spentCummList = jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
+    spentCummList = jsonToChartSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
 
     for (let i = 0; i <= dayDiff; i += 1) {
       // Determine ideal effort
@@ -372,7 +373,7 @@ var burndown = (function () {
           type: "column",
           name: "Completed Hours",
           color: "#4682b4",
-          data: jsonToSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone])
+          data: jsonToChartSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone])
         }, {
           name: "Ideal Burndown",
           color: "rgba(255,0,0,0.75)",
