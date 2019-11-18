@@ -4,7 +4,7 @@ This file contains general code and global variable declarations
 */
 
 var baseURL, currURL, serverDetails, gitlabKey, projectID, currProjectName, currUserName, projectList,
-    lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, paramDict,
+    lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, estimateTimeList, paramDict,
     searchDict = {};
 const PERCENT = 100,
       MSperMIN = 60000;

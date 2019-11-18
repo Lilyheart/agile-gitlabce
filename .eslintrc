@@ -33,6 +33,7 @@
     "issueListJSON": true,
     "milestoneList": true,
     "spentTimeList": true,
+    "estimateTimeList": true,
     "paramDict": true,
     "searchDict": true,
 

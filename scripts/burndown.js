@@ -1,7 +1,7 @@
 /*eslint id-length: ["error", { "exceptions": ["i", "x", "y"] }]*/
 var burndown = (function () {
 
-  let startHours, startDate, endDate, today, idealEffort, remainEffort, trendEffort, issueNotesList,
+  let startHours, today, idealEffort, remainEffort, trendEffort, issueNotesList,
       isLoaded = false;
   /* eslint-disable */
   const CONVERTTABLE = {
@@ -106,9 +106,8 @@ var burndown = (function () {
 
   }
 
-  async function getNewData() {
-    let issueIID, url, addSubRE, estimateRE, tempSpentTimeList, matchAddSub, matchEst,
-        noteableIID, times, time, spent, date, newprogress;
+  async function getIssuesData() {
+    let startDate, endDate, issueIID, url, newprogress;
 
     issueNotesList = [];
     if (issueListArr.length === 0) {
@@ -152,9 +151,15 @@ var burndown = (function () {
       }
     }
 
+    return {startDate: startDate, endDate: endDate};
+  }
+
+  function setMilestoneData(dates) {
+    let startDate, endDate;
+
     // Determine milestone start and end dates
-    startDate = new Date(startDate);
-    endDate = new Date(endDate);
+    startDate = new Date(dates.startDate);
+    endDate = new Date(dates.endDate);
 
     for (let milestone in milestoneList) {
       if (milestoneList.hasOwnProperty(milestone)) {
@@ -173,52 +178,106 @@ var burndown = (function () {
     milestoneList["All"].due_date = endDate;
 
     createMilestoneDD();
+  }
+
+  function parseNotes() {
+    let noteableIID, addSubRE, estimateRE, tempSpentTimeList, tempEstTimeList,
+    matchAddSub, matchEst, time, times, spent, date;
 
     // Go through notes to get changes in spend & estimates
     noteableIID = "Empty Note";
+
     addSubRE = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
-    estimateRE = /(changed time estimate) to (1d)/;
     spentTimeList = [];
     tempSpentTimeList = [];
+
+    estimateRE = /(changed time estimate) to (.*)/;
+    estimateTimeList = [];
+    tempEstTimeList = [];
 
     issueNotesList.forEach(function(note) {
       if (noteableIID !== note.noteable_iid) {
         // parsing new issue - add spent time from last issue and reset accumulator
         spentTimeList = spentTimeList.concat(tempSpentTimeList);
+        estimateTimeList = estimateTimeList.concat(tempEstTimeList);
         tempSpentTimeList = [];
+        tempEstTimeList = [];
         noteableIID = note.noteable_iid;
       }
+
+      // SPENDS
+      // SPENDS
 
       // Check for changes in time spent
       matchAddSub = note.body.match(addSubRE);
 
       // If has added or subtracted
+      spent = 0;
       if (matchAddSub !== null) {
+        date = Date.UTC(parseInt(matchAddSub[3], 10), parseInt(matchAddSub[4], 10) - 1, parseInt(matchAddSub[5], 10));
         times = matchAddSub[2].split(" ");
         for (let timesIndex in times) {
           if (times.hasOwnProperty(timesIndex)) {
-            // parse spent
+            // parse time
             time = times[timesIndex].match(/([0-9]*)([a-zA-Z]*)/);
-            spent = time[1] * CONVERTTABLE[time[2]];
-            // update if subtracted
-            if (matchAddSub[1] === "subtracted") {spent *= INVERSE;}
-            // parse date
-            date = Date.UTC(parseInt(matchAddSub[3], 10), parseInt(matchAddSub[4], 10) - 1, parseInt(matchAddSub[5], 10));
-            tempSpentTimeList.push({date: date, spent: spent, issue: noteableIID, author: note.author.name});
+            // Inverse if subtracted
+            if (matchAddSub[1] === "subtracted") {time[1] *= INVERSE;}
+            spent += (time[1] * CONVERTTABLE[time[2]]);
           }
         }
+        tempSpentTimeList.push({date: date, spent: spent, issue: noteableIID, author: note.author.name});
       }
 
       // If time spent was removed
       if (note.body === "removed time spent") {
         tempSpentTimeList = [];
       }
+
+      // ESTIMATES
+      // ESTIMATES
+
+      // Check for changes in time spent
+      matchEst = note.body.match(estimateRE);
+
+      spent = 0;
+      date = (new Date(note.created_at)).valueOf();
+      // If has (changed time estimate)
+      if (matchEst !== null) {
+        times = matchEst[2].split(" ");
+        for (let timesIndex in times) {
+          if (times.hasOwnProperty(timesIndex)) {
+            // parse time
+            time = times[timesIndex].match(/([0-9]*)([a-zA-Z]*)/);
+            spent += (time[1] * CONVERTTABLE[time[2]]);
+          }
+        }
+        if (tempEstTimeList.length > 0) {
+          // spent -= tempEstTimeList[tempEstTimeList.length - 1].estimateChange;
+          spent -= tempEstTimeList.reduce((acc, cur) => acc + cur.estimateChange, 0);
+        }
+        tempEstTimeList.push({date: date, estimateChange: spent, issue: noteableIID, author: note.author.name});
+      }
+
+      // If time spent was removed
+      if (note.body === "removed time estimate") {
+        spent = tempEstTimeList.reduce((acc, cur) => acc + cur.estimateChange, 0) * INVERSE;
+        tempEstTimeList.push({date: date, estimateChange: spent, issue: noteableIID, author: note.author.name});
+      }
     });
     spentTimeList = spentTimeList.concat(tempSpentTimeList);
+    estimateTimeList = estimateTimeList.concat(tempEstTimeList);
+  }
+
+  async function getNewData() {
+    let dates;
+
+    dates = await getIssuesData();
+    await setMilestoneData(dates);
+    await parseNotes();
   }
 
   function updateData(selectedMilestone) {
-    let issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay, trendSlope;
+    let startDate, endDate, issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay, trendSlope;
 
     startDate = milestoneList[selectedMilestone].start_date;
     endDate = milestoneList[selectedMilestone].due_date;
