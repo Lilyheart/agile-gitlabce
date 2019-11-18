@@ -22,6 +22,7 @@
     # var variables
     "baseURL": true,
     "currURL": true,
+    "serverDetails": true,
     "gitlabKey": true,
     "projectID": true,
     "currProjectName": true,

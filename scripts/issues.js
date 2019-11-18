@@ -10,6 +10,7 @@ var issues = (function () {
 
     if (history.pushState) {
       window.history.pushState("object or string", "Title", currURL + "?project=" + projectID);
+      window.history.pushState("object or string", "Title", currURL + "?server=" + serverDetails.id + "&project=" + projectID);
     }
 
     projectName = $("#project-dropdown")[0].selectize.getOption($("#project-dropdown")[0].selectize.getValue())[0].innerHTML;

@@ -3,19 +3,19 @@ See Scripts folder for additional Scripts.
 This file contains general code and global variable declarations
 */
 
-var baseURL, currURL, gitlabKey, projectID, currProjectName, currUserName, projectList,
+var baseURL, currURL, serverDetails, gitlabKey, projectID, currProjectName, currUserName, projectList,
     lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, paramDict,
     searchDict = {};
 const PERCENT = 100,
       MSperMIN = 60000;
 
-let stateHASH, serverDetails, isCheckingUpdate, clientID, redirectURI,
+let stateHASH, isCheckingUpdate, clientID, redirectURI,
     authURL, accessToken,
     spinnerText = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>";
 
 $("#updateAlert").hide();
 currURL = window.location.origin + window.location.pathname;
-redirectURI = currURL + window.location.search;
+redirectURI = currURL;
 
 $("#auth-server-dropdown").selectize({
   valueField: "id",
@@ -294,7 +294,7 @@ function restart() {
   location.reload();
 }
 
-function authenticate(server) {
+function setupAuthenticate(server) {
   serverDetails = defiant.json.search( gitlabServers, '//*[id="' + server + '"]' )[0];
 
   document.getElementById("base_url").value = serverDetails.baseURL;
@@ -323,13 +323,17 @@ function parseHASH(hash) {
     param = element.split("=");
     paramDict[param[0]] = param[1];
   });
+
+  if (paramDict.hasOwnProperty("state")) {
+    searchDict.server = paramDict.state;
+  }
 }
 
 function parseSEARCH(search) {
   let searchList;
 
   searchList = search.replace("?", "");
-  searchList = searchList.split();
+  searchList = searchList.split("&");
 
   for (let line in searchList) {
     if (searchList.hasOwnProperty(line)) {
@@ -337,10 +341,19 @@ function parseSEARCH(search) {
       searchDict[line[0]] = line[1];
     }
   }
+
+  if (searchDict.hasOwnProperty("project")) {
+    redirectURI += "?project=" + searchDict.project;
+  }
+
+  // Set Default server
+  if (!searchDict.hasOwnProperty("server")) {
+    searchDict.server = "Bucknell";
+  }
 }
 
 $(document).ready(function() {
-  let searchString,
+  let searchString, newURL,
       feedbackOptions = {};
 
   feedbackOptions.appendTo = null;
@@ -368,6 +381,13 @@ $(document).ready(function() {
   searchString = window.location.search;
   if (searchString.length !== 0) {
      parseSEARCH(searchString);
+     if (searchDict.hasOwnProperty("project") && searchDict.hasOwnProperty("server")) {
+       $("#auth-server-dropdown").selectize()[0].selectize.setValue(searchDict.server, false);
+     }
+     if (window.location.hash.length === 0) {
+       setupAuthenticate(searchDict.server);
+       openAuthPage();
+     }
   }
 
   if (window.location.hash.length !== 0 || accessToken) {
@@ -375,17 +395,23 @@ $(document).ready(function() {
 
     parseHASH(window.location.hash);
     $("#auth-server-dropdown").selectize()[0].selectize.setValue(paramDict.state, false);
-    authenticate(paramDict.state);
+    setupAuthenticate(paramDict.state);
     accessToken = paramDict.access_token;
     document.getElementById("base_url").value = serverDetails.baseURL;
     document.getElementById("gitlab_key").value = paramDict.access_token;
 
+    if (searchDict.hasOwnProperty("project")) {
+      newURL = currURL + "?server=" + serverDetails.id + "&project=" + searchDict.project;
+    } else {
+      newURL = currURL;
+    }
+
     if (history.pushState) {
-      window.history.pushState("object or string", "Title", redirectURI);
+      window.history.pushState("object or string", "Title", newURL);
     }
     projects.getProjects("auto");
   } else {
-    authenticate("Bucknell");
+    setupAuthenticate("Bucknell");
     setPhase("start");
   }
 
