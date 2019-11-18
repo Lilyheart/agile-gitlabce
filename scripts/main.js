@@ -242,6 +242,7 @@ function setPhase(newPhase) {
     $("#gitlab_key").prop("disabled", true);
     $("#btnGetProjects").prop("disabled", true);
 
+    $("#radio0").prop("disabled", true);
     $("#radio1").prop("disabled", true);
     $("#radio2").prop("disabled", true);
     $("#project-dropdown").prop("disabled", true);
@@ -268,6 +269,7 @@ function setPhase(newPhase) {
     document.getElementById("show_hours").style.display = "block";
     document.getElementById("btnGetIssues").innerHTML = "Reload Issues";
 
+    $("#radio0").prop("disabled", false);
     $("#radio1").prop("disabled", false);
     $("#radio2").prop("disabled", false);
     $("#project-dropdown").prop("disabled", false);

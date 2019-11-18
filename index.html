@@ -126,16 +126,17 @@
 
           <div id="show_repo_options" class="row justify-content-end" style="display: none">
             <div class="col-8">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" name="filter" type="radio" id="radio1" value="my"  onclick="projects.getProjects('user')" checked>
-                <label class="form-check-label" for="radio1">Show only repos I maintain</label>
+              <div id="bookmark-input" class="form-check form-check-inline d-none">
+                <input class="form-check-input" name="filter" type="radio" id="radio0" value="bookmarked"  onclick="projects.getProjects('bookmarked')" checked>
+                <label class="form-check-label" for="radio0">Show bookmarked project</label>
               </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="filter" type="radio" id="radio1" value="user"  onclick="projects.getProjects('user')" checked>
+                  <label class="form-check-label" for="radio1">Show only repos I maintain</label>
+                </div>
               <div class="form-check form-check-inline">
                 <input class="form-check-input" name="filter" type="radio" id="radio2" value="all" onclick="projects.getProjects('all')" >
                 <label class="form-check-label" for="radio2">Show all repos</label>
-              </div>
-              <div id="bookmark-notice" class="form-check mt-3 d-none">
-                <label class="form-check-label" for="radio2">Showing bookmarked repo</label>
               </div>
             </div>
           </div>

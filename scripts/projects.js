@@ -67,13 +67,13 @@ var projects = (function () {
     });
 
     if (projFilter === "bookmarked") {
+      document.getElementById("radio0").checked = true;
       document.getElementById("radio1").checked = false;
       document.getElementById("radio2").checked = false;
-      $("#bookmark-notice")[0].classList.remove("d-none");
+      $("#bookmark-input")[0].classList.remove("d-none");
       $("#project-dropdown").selectize()[0].selectize.setValue(searchDict.project, false);
       issues.getIssues();
-    }
-
+    } 
   }
 
   async function getProjects(projFilter) {
