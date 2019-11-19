@@ -11,8 +11,6 @@ var projects = (function () {
     // projFilter = ["user", "all", "auto", "bookmarked"]
     let url, projectPages;
 
-    console.log(projFilter);
-
     // Build URL and get project list
     if (projFilter === "all" || currUserName === null) {
       url = baseURL + "projects?order_by=name&sort=asc&simple=true&" + gitlabKey;
@@ -73,7 +71,7 @@ var projects = (function () {
       $("#bookmark-input")[0].classList.remove("d-none");
       $("#project-dropdown").selectize()[0].selectize.setValue(searchDict.project, false);
       issues.getIssues();
-    } 
+    }
   }
 
   async function getProjects(projFilter) {

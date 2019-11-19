@@ -1,7 +1,7 @@
 /*eslint id-length: ["error", { "exceptions": ["i", "x", "y"] }]*/
 var burndown = (function () {
 
-  let startHours, today, idealEffort, remainEffort, trendEffort, issueNotesList,
+  let today, idealEffort, remainEffort, trendEffort, issueNotesList,
       isLoaded = false;
   /* eslint-disable */
   const CONVERTTABLE = {
@@ -242,8 +242,8 @@ var burndown = (function () {
       matchEst = note.body.match(estimateRE);
 
       spent = 0;
-      matchDate = note.created_at.match(dateRE);
-      date = Date.UTC(parseInt(matchDate[1], 10), parseInt(matchDate[2], 10) - 1, parseInt(matchDate[3], 10));
+      date = new Date(note.created_at);
+      date = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
       // If has (changed time estimate)
       if (matchEst !== null) {
         times = matchEst[2].split(" ");
@@ -291,8 +291,8 @@ var burndown = (function () {
     await parseNotes();
   }
 
-  function updateData(selectedMilestone) {
-    let startDate, endDate, issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay, trendSlope;
+  function updateDataSimple(selectedMilestone) {
+    let startDate, endDate, startHours, issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay, trendSlope;
 
     startDate = milestoneList[selectedMilestone].start_date;
     endDate = milestoneList[selectedMilestone].due_date;
@@ -334,6 +334,136 @@ var burndown = (function () {
         } else {
           effort = remainEffort[i][1] - thisDay[0].y;
         }
+        remainEffort.push([effortDay, effort]);
+      }
+    }
+
+    idealEffort.shift();
+    remainEffort.shift();
+
+    // Determine trend effort
+    /* eslint-disable */
+    let xVal, yVal, sumX, sumY, sumXY, sumXX, slope, intercept,
+        valuesLength = remainEffort.length;
+    /* eslint-enable */
+
+    sumX = sumY = sumXY = sumXX = 0;
+
+    for (let i = 0; i < valuesLength; i += 1) {
+      xVal = i + 1;
+      yVal = remainEffort[i][1];
+      sumX += xVal;
+      sumY += yVal;
+      sumXY += xVal * yVal;
+      sumXX += xVal * xVal;
+    }
+
+    slope = (valuesLength * sumXY - sumX * sumY) / (valuesLength * sumXX - sumX * sumX);
+    intercept = (sumY / valuesLength) - (slope * sumX) / valuesLength;
+
+    for (let i = 0; i <= dayDiff; i += 1) {
+      effortDay = day1 + (MSperDAY * (i));
+      yVal = slope * (i + 1) + intercept;
+      trendEffort.push([effortDay, Math.max(0, yVal)]);
+    }
+  }
+
+  function updateData(selectedMilestone) {
+    let startDate, endDate, startIdealHours, startRemainHours, estStartArray, estTrimedTimeList, issueIID, dayDiff, idealDaily, day1, spentCummList, estCummList, effort, effortDay, thisDaySpent, thisDayEst, trendSlope;
+
+    startDate = milestoneList[selectedMilestone].start_date;
+    endDate = milestoneList[selectedMilestone].due_date;
+
+    startIdealHours = 0;
+
+    for (let issue in milestoneList[selectedMilestone].issues) {
+      if (milestoneList[selectedMilestone].issues.hasOwnProperty(issue)) {
+        issueIID = milestoneList[selectedMilestone].issues[issue];
+        // Accumlate hours
+        startIdealHours += issueListJSON[issueIID].time_stats.time_estimate / SECperHOUR;
+      }
+    }
+
+    estStartArray = {};
+    for (let estimateIndex in estimateTimeList) {
+      if (estimateTimeList.hasOwnProperty(estimateIndex)) { // for each estimateTimeList
+        if (milestoneList[selectedMilestone].issues.includes(estimateTimeList[estimateIndex].issue)) {
+          if (estStartArray.hasOwnProperty(estimateTimeList[estimateIndex].issue)) {
+            if (estimateTimeList[estimateIndex].date < estStartArray[estimateTimeList[estimateIndex].issue].date) {
+              let estItem = {date: estimateTimeList[estimateIndex].date, estimateChange: estimateTimeList[estimateIndex].estimateChange};
+
+              estStartArray[estimateTimeList[estimateIndex].issue] = estItem;
+            }
+          } else {
+            let estItem = {date: estimateTimeList[estimateIndex].date, estimateChange: estimateTimeList[estimateIndex].estimateChange};
+
+            estStartArray[estimateTimeList[estimateIndex].issue] = estItem;
+          }
+        }
+      }
+    }
+
+    startRemainHours = 0;
+    for (let estIndex in estStartArray) {
+      if (estStartArray.hasOwnProperty(estIndex)) {
+        startRemainHours += estStartArray[estIndex].estimateChange;
+      }
+    }
+
+    // Deep copy
+    estTrimedTimeList = JSON.parse(JSON.stringify(estimateTimeList));
+
+    for (let estIndex in estTrimedTimeList) {
+      if (estTrimedTimeList.hasOwnProperty(estIndex)) {
+        let issueid = estTrimedTimeList[estIndex].issue;
+
+        // TODO Find better way to word
+        if (estStartArray.hasOwnProperty(issueid) && estStartArray[issueid].hasOwnProperty("date")) {
+          if ((estTrimedTimeList[estIndex].date === estStartArray[issueid].date)) {
+            estTrimedTimeList[estIndex].estimateChange = 0;
+          }
+        }
+      }
+    }
+
+    // Create Cummulative lines
+    dayDiff = Math.floor((endDate - startDate) / MSperDAY);
+    idealDaily = startIdealHours / dayDiff;
+
+    idealEffort = [];
+    remainEffort = [];
+    trendEffort = [];
+    day1 = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
+    idealEffort.push([day1, startIdealHours]);
+    remainEffort.push([day1, startRemainHours]);
+
+    spentCummList = jsonToChartSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
+    estCummList = jsonToChartSeries(estTrimedTimeList, "date", "estimateChange", ["issue", selectedMilestone]);
+    console.log(estCummList);
+
+    for (let i = 0; i <= dayDiff; i += 1) {
+      // Determine ideal effort
+      effort = Math.max(0, Math.round((startIdealHours - (idealDaily * i)) * TWOdigitROUND) / TWOdigitROUND);
+      effortDay = day1 + (MSperDAY * i);
+      idealEffort.push([effortDay, effort]);
+
+      // Determine remaining effort
+      if (effortDay <= today) {
+        effort = remainEffort[i][1];
+        console.log("Start " + effort + " on " + effortDay);
+        // subtract spent hours
+        thisDaySpent = spentCummList.filter(item => item.x === effortDay);
+        if (thisDaySpent.length !== 0) {
+          effort -= thisDaySpent[0].y;
+          console.log("-" + thisDaySpent[0].y + "=" + effort);
+        }
+        // add changes in estimate
+        thisDayEst = estCummList.filter(item => item.x === effortDay);
+        if (thisDayEst.length !== 0) {
+          effort += thisDayEst[0].y;
+          console.log("=" + thisDayEst[0].y + "=" + effort);
+        }
+
         remainEffort.push([effortDay, effort]);
       }
     }
