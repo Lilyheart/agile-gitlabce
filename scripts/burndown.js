@@ -181,8 +181,8 @@ var burndown = (function () {
   }
 
   function parseNotes() {
-    let noteableIID, addSubRE, estimateRE, tempSpentTimeList, tempEstTimeList,
-    matchAddSub, matchEst, time, times, spent, date;
+    let noteableIID, addSubRE, estimateRE, dateRE, tempSpentTimeList, tempEstTimeList,
+    matchAddSub, matchEst, matchDate, time, times, spent, date, dupDate;
 
     // Go through notes to get changes in spend & estimates
     noteableIID = "Empty Note";
@@ -194,6 +194,8 @@ var burndown = (function () {
     estimateRE = /(changed time estimate) to (.*)/;
     estimateTimeList = [];
     tempEstTimeList = [];
+
+    dateRE = /(.*)-(.*)-(.*)T(.*)/;
 
     issueNotesList.forEach(function(note) {
       if (noteableIID !== note.noteable_iid) {
@@ -240,7 +242,8 @@ var burndown = (function () {
       matchEst = note.body.match(estimateRE);
 
       spent = 0;
-      date = (new Date(note.created_at)).valueOf();
+      matchDate = note.created_at.match(dateRE);
+      date = Date.UTC(parseInt(matchDate[1], 10), parseInt(matchDate[2], 10) - 1, parseInt(matchDate[3], 10));
       // If has (changed time estimate)
       if (matchEst !== null) {
         times = matchEst[2].split(" ");
@@ -255,7 +258,19 @@ var burndown = (function () {
           // spent -= tempEstTimeList[tempEstTimeList.length - 1].estimateChange;
           spent -= tempEstTimeList.reduce((acc, cur) => acc + cur.estimateChange, 0);
         }
-        tempEstTimeList.push({date: date, estimateChange: spent, issue: noteableIID, author: note.author.name});
+        dupDate = false;
+        // check to see if date already in dictArray
+        for (let tempIndex in tempEstTimeList) {
+          if (tempEstTimeList.hasOwnProperty(tempIndex)) {
+            if (tempEstTimeList[tempIndex].date === date) {
+              tempEstTimeList[tempIndex].estimateChange += spent;
+              dupDate = true;
+            }
+          }
+        }
+        if (!dupDate) {
+          tempEstTimeList.push({date: date, estimateChange: spent, issue: noteableIID, author: note.author.name});
+        }
       }
 
       // If time spent was removed
