@@ -41,7 +41,7 @@
     "PERCENT": true,
     "MSperMIN": true,
 
-    # Functions
+    # Main Functions
     "getHeaderValue": true,
     "updateCurrUserName": true,
     "updateProjectname": true,
@@ -49,11 +49,11 @@
     "setPhase": true,
 
     # external files
+    "gitlabServers": true,
     "projects": true,
     "issues": true,
     "burndown": true,
-    "hours": true,
-    "gitlabServers": true
+    "hours": true
   },
   "rules": {
     "comma-dangle": 2,
