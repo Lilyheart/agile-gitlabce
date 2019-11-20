@@ -214,6 +214,13 @@
                     <select id="milestone-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
                     </select>
                   </div>
+                  <label for="estimate-type-dropdown" class="col-sm-3 col-form-label">Estimate Type:</label>
+                  <div class="col-sm-9">
+                    <select id="estimate-type-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.setEstimateStyle(this.value)">
+                      <option value="Final">Use Final Estimate Only</option>
+                      <option value="Changes">Show Changes in Estimate</option>
+                    </select>
+                  </div>
                 </div>
                 <div id="burndown-chart" style="height: 400px"></div>
                 <hr />

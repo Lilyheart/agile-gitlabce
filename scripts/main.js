@@ -379,6 +379,7 @@ $(document).ready(function() {
   ];
   Feedback(feedbackOptions);
   getAgilePlans();
+  $("#estimate-type-dropdown").selectize();
 
   searchString = window.location.search;
   if (searchString.length !== 0) {

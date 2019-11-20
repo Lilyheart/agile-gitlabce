@@ -1,6 +1,8 @@
 /*eslint id-length: ["error", { "exceptions": ["i", "x", "y"] }]*/
 var burndown = (function () {
   let today, issueNotesList, idealEffort, remainEffort, trendEffort,
+      selectedMilestone,
+      estimateStyle = "Final",
       isLoaded = false;
   const INVERSE = -1,
         // eslint-disable-next-line id-length, no-magic-numbers
@@ -36,7 +38,7 @@ var burndown = (function () {
     return chartSeries;
   }
 
-  function updateDataSimple(selectedMilestone) {
+  function updateDataEstFinal() {
     let startDate, endDate, startHours, issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay, trendSlope;
 
     startDate = milestoneList[selectedMilestone].start_date;
@@ -113,21 +115,22 @@ var burndown = (function () {
     }
   }
 
-  function updateDataEstim(selectedMilestone) {
-    let startDate, endDate, startIdealHours, issueIID, estStartArray,
+  function updateDataEstChanges() {
+    let msData, startDate, endDate, startIdealHours, issueIID, estStartArray,
         startRemainHours, estTrimedTimeList,
         dayDiff, idealDaily, day1, spentCummList, estCummList,
         effort, effortDay, thisDaySpent, thisDayEst;
     // let , trendSlope;
 
-    startDate = milestoneList[selectedMilestone].start_date;
-    endDate = milestoneList[selectedMilestone].due_date;
+    msData = milestoneList[selectedMilestone];
+    startDate = msData.start_date;
+    endDate = msData.due_date;
 
     // Sum total Ideal Hours
     startIdealHours = 0;
-    for (let issue in milestoneList[selectedMilestone].issues) {
-      if (milestoneList[selectedMilestone].issues.hasOwnProperty(issue)) {
-        issueIID = milestoneList[selectedMilestone].issues[issue];
+    for (let issue in msData.issues) {
+      if (msData.issues.hasOwnProperty(issue)) {
+        issueIID = msData.issues[issue];
         // Accumlate hours
         startIdealHours += issueListJSON[issueIID].time_stats.time_estimate / SECperHOUR;
       }
@@ -135,23 +138,15 @@ var burndown = (function () {
 
     // Make array of start estimates
     estStartArray = {};
-    for (let estimateIndex in estimateTimeList) {
-      if (estimateTimeList.hasOwnProperty(estimateIndex)) { // for each estimateTimeList
-        if (milestoneList[selectedMilestone].issues.includes(estimateTimeList[estimateIndex].issue)) {
-          if (estStartArray.hasOwnProperty(estimateTimeList[estimateIndex].issue)) {
-            if (estimateTimeList[estimateIndex].date < estStartArray[estimateTimeList[estimateIndex].issue].date) {
-              let estItem = {date: estimateTimeList[estimateIndex].date, estimateChange: estimateTimeList[estimateIndex].estimateChange};
-
-              estStartArray[estimateTimeList[estimateIndex].issue] = estItem;
-            }
-          } else {
-            let estItem = {date: estimateTimeList[estimateIndex].date, estimateChange: estimateTimeList[estimateIndex].estimateChange};
-
-            estStartArray[estimateTimeList[estimateIndex].issue] = estItem;
-          }
-        }
+    estimateTimeList.forEach(function(estimateTime) {
+      // If the estimate is on the list of issues of the milestone
+      if (msData.issues.includes(estimateTime.issue) &&
+         (!estStartArray.hasOwnProperty(estimateTime.issue) ||
+            estimateTime.date < estStartArray[estimateTime.issue].date)) {
+              estStartArray[estimateTime.issue] = {date: estimateTime.date, estimateChange: estimateTime.estimateChange};
       }
-    }
+    });
+
 
     // Sum total Ideal Hours
     startRemainHours = 0;
@@ -241,6 +236,18 @@ var burndown = (function () {
       effortDay = day1 + (MSperDAY * (i));
       yVal = slope * (i + 1) + intercept;
       trendEffort.push([effortDay, Math.max(0, yVal)]);
+    }
+  }
+
+  function updateData() {
+    switch (estimateStyle) {
+      case "Final":
+        updateDataEstFinal(selectedMilestone);
+        break;
+      case "Changes":
+        updateDataEstChanges(selectedMilestone);
+        break;
+      default:
     }
   }
 
@@ -462,7 +469,7 @@ var burndown = (function () {
     await parseNotes();
   }
 
-  async function updateBurndownData(selectedMilestone) {
+  async function updateBurndownData() {
     let title;
 
     await checkForUpdates();
@@ -481,7 +488,7 @@ var burndown = (function () {
       isLoaded = true;
     }
 
-    updateDataEstim(selectedMilestone);
+    updateData(selectedMilestone);
 
     if (selectedMilestone === "All") {
       title = "Project";
@@ -597,14 +604,19 @@ var burndown = (function () {
   }
 
   return {
-    updateBurndownData: async function(selectedMilestone) {
+    updateBurndownData: async function(newMilestone) {
       today = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - (new Date()).getTimezoneOffset() * MSperMIN;
-      await updateBurndownData(selectedMilestone);
+      selectedMilestone = newMilestone;
+      await updateBurndownData();
 
       return;
     },
     setBurndownUnloaded: function() {
       isLoaded = false;
+    },
+    setEstimateStyle: function(newstyle) {
+      estimateStyle = newstyle;
+      updateBurndownData();
     }
   };
 
