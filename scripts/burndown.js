@@ -350,6 +350,22 @@ var burndown = (function () {
     // concat data from last issue
     spentTimeList = spentTimeList.concat(tempSpentTimeList);
     estimateTimeList = estimateTimeList.concat(tempEstTimeList);
+
+    // Estimate Sanity check
+    issueListArr.forEach(function(issue) {
+      let loggedEst, gitlabEst;
+
+      loggedEst = estimateTimeList.filter(row => row.issue === issue.iid).reduce((acc, cur) => acc + cur.estimateChange, 0);
+      gitlabEst = issue.time_stats.time_estimate / SECperHOUR;
+
+      if (loggedEst !== gitlabEst) {
+        date = new Date(issue.created_at);
+        date = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+
+        // update estimateTimeList
+        estimateTimeList.push({date: date, estimateChange: gitlabEst, issue: issue.iid, author: issue.author.name});
+      }
+    });
   }
 
   function createMilestoneDD() {
