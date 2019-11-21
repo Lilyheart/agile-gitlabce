@@ -406,7 +406,7 @@ var burndown = (function () {
       disabledField: "disabled",
       create: false
     });
-    $("#milestone-dropdown").selectize()[0].selectize.setValue("All", false);
+    $("#milestone-dropdown").selectize()[0].selectize.setValue(selectedMilestone, false);
 
   }
 
@@ -636,8 +636,14 @@ var burndown = (function () {
 
   return {
     updateBurndownData: async function(newMilestone) {
+      if (newMilestone === "Auto" && !selectedMilestone) {
+        selectedMilestone = "All";
+      } else if (newMilestone === "Auto") {
+        // No changes to selectedMilestone
+      } else {
+        selectedMilestone = newMilestone;
+      }
       today = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - (new Date()).getTimezoneOffset() * MSperMIN;
-      selectedMilestone = newMilestone;
       await updateBurndownData();
 
       return;

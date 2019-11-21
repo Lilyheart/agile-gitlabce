@@ -168,7 +168,7 @@ var issues = (function () {
     setPhase("issue_end");
 
     burndown.setBurndownUnloaded();
-    await burndown.updateBurndownData("All");
+    await burndown.updateBurndownData("Auto");
   }
 
   return {
