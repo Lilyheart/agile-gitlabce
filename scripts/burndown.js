@@ -337,7 +337,6 @@ var burndown = (function () {
         if (!dupDate) {
           tempEstTimeList.push({date: date, estimateChange: estimate, issue: noteableIID, author: note.author.name});
         }
-        // TODO to here
       }
 
       // if estimate is removed
@@ -351,6 +350,23 @@ var burndown = (function () {
     spentTimeList = spentTimeList.concat(tempSpentTimeList);
     estimateTimeList = estimateTimeList.concat(tempEstTimeList);
 
+    // *************************** END OF NOTE LOOP ***************************
+
+    // Spent Sanity check
+    issueListArr.forEach(function(issue) {
+      let loggedSpent, gitlabSpent;
+
+      loggedSpent = spentTimeList.filter(row => row.issue === issue.iid).reduce((acc, cur) => acc + cur.spent, 0);
+      gitlabSpent = issue.time_stats.total_time_spent / SECperHOUR;
+
+      if (loggedSpent !== gitlabSpent) {
+        date = new Date(issue.created_at);
+        date = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+
+        spentTimeList.push({date: date, spent: gitlabSpent, issue: issue.iid, author: issue.author.name});
+      }
+    });
+
     // Estimate Sanity check
     issueListArr.forEach(function(issue) {
       let loggedEst, gitlabEst;
@@ -362,7 +378,6 @@ var burndown = (function () {
         date = new Date(issue.created_at);
         date = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
 
-        // update estimateTimeList
         estimateTimeList.push({date: date, estimateChange: gitlabEst, issue: issue.iid, author: issue.author.name});
       }
     });
