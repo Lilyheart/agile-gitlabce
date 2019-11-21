@@ -220,6 +220,11 @@ function setPhase(newPhase) {
     document.getElementById("loading_projects").style.display = "none";
     document.getElementById("gitlab_get_project").style.display = "block";
     $("#btnGetProjects").prop("disabled", false);
+
+    if (!isBookmark || !document.getElementById("radio0").checked) {
+      $("#project-dropdown").prop("disabled", false);
+      $("#project-dropdown")[0].selectize.enable();
+    }
   }
 
   if (newPhase === "issue_start") {
@@ -275,8 +280,10 @@ function setPhase(newPhase) {
     $("#radio0").prop("disabled", false);
     $("#radio1").prop("disabled", false);
     $("#radio2").prop("disabled", false);
-    $("#project-dropdown").prop("disabled", false);
-    $("#project-dropdown")[0].selectize.enable();
+    if (!isBookmark || !document.getElementById("radio0").checked) {
+      $("#project-dropdown").prop("disabled", false);
+      $("#project-dropdown")[0].selectize.enable();
+    }
     $("#btnGetIssues").prop("disabled", false);
   }
 
