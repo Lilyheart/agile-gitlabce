@@ -1,19 +1,25 @@
-<div class="accordion" id="faq-accordion">
+<div class="accordion mb-5" id="faq-accordion">
 
   <div class="card">
-    <div class="card-header" id="faq1">
-      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+    <div class="card-header" id="faq-started">
+      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-started" aria-expanded="true" aria-controls="collapse-started">
         Getting Started
       </button>
     </div>
-    <div id="collapse1" class="collapse show" aria-labelledby="faq1" data-parent="#faq-accordion">
+    <div id="collapse-started" class="collapse show" aria-labelledby="faq-started" data-parent="#faq-accordion">
       <div class="card-body">
         <h3>New</h3>
         <p>
           <ul>
-            <li class="new">2019/11/16 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.5">v0.2.5</a></u></strong>: You can now bookmark your project after it's been loaded.</li>
-            <li>2019/11/12 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.4">v0.2.4</a></u></strong>: Add List of future plans to FAQ list</li>
-            <li>2019/11/08 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.3">v0.2.3</a></u></strong>: Minor bug fixes</li>
+            <li>2019/12/02 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.6">v0.2.6</a></u></strong>:
+              <ul>
+                <li class="new">New burndown chart style <a href="#" data-toggle="collapse" data-target="#collapse-burndown-types">(See details)</a></li>
+                <li class="new">If loading from a bookmark, site no longer loads the entire project list by default.  This speeds up response for users with many projects</li>
+              </ul>
+              <!-- When deleting this section, be sure to remove new tag -->
+            </li>
+            <li>2019/11/16 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.5">v0.2.5</a></u></strong>: You can now bookmark your project after it's been loaded <span class="badge badge-primary">New</span></li>
+            <li>2019/11/12 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.4">v0.2.4</a></u></strong>: Add List of future plans to FAQ list <span class="badge badge-primary">New</span></li>
           </ul>
         </p>
         <h3>Getting Started</h3>
@@ -21,9 +27,9 @@
           This site currently allows you to view issues and burndown charts for code repositories stored on a Gitlab server.  Features include:
         </p>
         <ul>
-          <li>Filter issue lists by Name, sprint, state, and assignee.</li>
-          <li>View and <strong><em>download</em></strong> Burndown charts for the project or by sprint (i.e., Gitlab's Milestones).</li>
-          <li>See the amount of time logged spent by team members for the project or by sprint.</li>
+          <li>Filter issue lists by Name, sprint, state, and assignee</li>
+          <li>View and <strong><em>download</em></strong> Burndown charts for the project or by sprint (i.e., Gitlab's Milestones)</li>
+          <li>See the amount of time logged spent by team members for the project or by sprint</li>
         </ul>
         <p>
           The website is continuously being improved, and new features are added regularly.  Feedback can be provided using the Send Feedback button above.
@@ -33,16 +39,16 @@
             Log in
           </button >
           <div class="collapse show" id="login-details" data-parent="#login-accordion">
-            The easiest way to authenticate is by logging into Gitlab through this application.  In the Gitlab setup, select the Log in button
+            The easiest way to authenticate is by logging into Gitlab through this application.  In the Gitlab setup, select the Log in button.
             <ul>
-              <li>Select the specific GitLab website you want to access in the dropdown. </li>
+              <li>Select the specific GitLab website you want to access in the dropdown</li>
               <ul>
-                <li>If your website is missing, you will need to use the API Key method.  </li>
+                <li>If your website is missing, you will need to use the API Key method</li>
                 <li>If you want your add your website, see the instructions later in this FAQ</li>
               </ul>
               <li>Click the Login to Gitlab button</li>
-              <li>This will forward you to your Gitlab website.  If you are not already logged into the site, you will be prompted to log in.</li>
-              <li>The first time you log in, you will need to authorize AgileGitlab to use your account. AgileGitlab requests API access to your account to analyze the issue data. This access can be revoked following the steps later in this FAQ.</li>
+              <li>This will forward you to your Gitlab website.  If you are not already logged into the site, you will be prompted to log in</li>
+              <li>The first time you log in, you will need to authorize AgileGitlab to use your account. AgileGitlab requests API access to your account to analyze the issue data. This access can be revoked following the steps later in this FAQ</li>
             </ul>
           </div>
 
@@ -51,18 +57,18 @@
           </button >
           <div class="collapse" id="apikey-details" data-parent="#login-accordion">
             <ul>
-              <li>To find your Gitlab URL</li>
+              <li>To find your Gitlab URL:</li>
               <ul>
-                <li>There is no single place to determine your Gitlab URL.</li>
+                <li>There is no single place to determine your Gitlab URL</li>
                 <li>The URL is in the form https://gitlab.example.com/api/v4</li>
-                <li>The to begin with, try adding /api/v4 to the end of the URL you use to access Gitlab.  If this doesn’t work, you will need to contact your Gitlab administrator to find out the API URL.</li>
+                <li>The to begin with, try adding /api/v4 to the end of the URL you use to access Gitlab.  If this doesn’t work, you will need to contact your Gitlab administrator to find out the API URL</li>
               </ul>
-              <li>To find your API Key</li>
+              <li>To find your API Key:</li>
               <ul>
-                <li>Log into your Gitlab website.</li>
-                <li>In the top left corner, click your profile image and select Settings.</li>
-                <li>On the left-hand side, select Access Tokens.</li>
-                <li>Create a new token with API access.  You will need to store this token somewhere, as Gitlab will only display it once.</li>
+                <li>Log into your Gitlab website</li>
+                <li>In the top left corner, click your profile image and select Settings</li>
+                <li>On the left-hand side, select Access Tokens</li>
+                <li>Create a new token with API access.  You will need to store this token somewhere, as Gitlab will only display it once</li>
               </ul>
             </ul>
           </div>
@@ -73,12 +79,12 @@
   </div>
 
   <div class="card">
-    <div class="card-header" id="faq2">
-      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+    <div class="card-header" id="faq-project">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-project" aria-expanded="false" aria-controls="collapse-project">
         Selecting a Project
       </button>
     </div>
-    <div id="collapse2" class="collapse" aria-labelledby="faq2" data-parent="#faq-accordion">
+    <div id="collapse-project" class="collapse" aria-labelledby="faq-project" data-parent="#faq-accordion">
       <div class="card-body">
         <p>
           By default, only projects where you have maintainer access are shown.  If you need to see all repositories you have access to on this Gitlab website, select Show all Repos.  Note, this may take a while to load.
@@ -91,12 +97,12 @@
   </div>
 
   <div class="card">
-    <div class="card-header" id="faq3">
-      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+    <div class="card-header" id="faq-issue">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-issue" aria-expanded="false" aria-controls="collapse-issue">
         The Issues Tab
       </button>
     </div>
-    <div id="collapse3" class="collapse" aria-labelledby="faq3" data-parent="#faq-accordion">
+    <div id="collapse-issue" class="collapse" aria-labelledby="faq-issue" data-parent="#faq-accordion">
       <div class="card-body">
         <p>This tab displays all issues in the repository.</p>
         <p>The search box will search all fields and filter the table to display the results.</p>
@@ -106,15 +112,15 @@
   </div>
 
   <div class="card">
-    <div class="card-header" id="faq4">
-      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+    <div class="card-header" id="faq-burndown">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-burndown" aria-expanded="false" aria-controls="collapse-burndown">
         The Burndown Tab
       </button>
     </div>
-    <div id="collapse4" class="collapse" aria-labelledby="faq4" data-parent="#faq-accordion">
+    <div id="collapse-burndown" class="collapse" aria-labelledby="faq-burndown" data-parent="#faq-accordion">
       <div class="card-body">
         <p>
-          This tab display burndown charts and hours spent by each teammember.  The chart can be filtered by:
+          This tab display burndown charts and hours spent by each team member.  The chart can be filtered by:
         </p>
         <ul>
           <li>All Issues in the project</li>
@@ -132,12 +138,210 @@
   </div>
 
   <div class="card">
-    <div class="card-header" id="faq5">
-      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+    <div class="card-header" id="faq-burndown-types">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-burndown-types" aria-expanded="false" aria-controls="collapse-burndown-types">
+        The Burndown Chart Types
+      </button>
+    </div>
+    <div id="collapse-burndown-types" class="collapse" aria-labelledby="faq-burndown-types" data-parent="#faq-accordion">
+      <div class="card-body">
+        <h3>Chart Types <span class="badge badge-primary">New</span></h3>
+        <p>
+          There are two types of burndown charts:
+        </p>
+        <ul>
+          <li>Use Final Estimates Only: <strong>Takes into account only the last estimated time entered</strong></li>
+          <li>Show Changes in Estimate: <strong>Indicates any changes to estimates on the date the new estimate was entered</strong></li>
+        </ul>
+        <h4>Differences</h4>
+
+        The following features are different between the two different burndown chart types.
+
+        <table id="burndownchart-types" class="table table-dark table-striped"  style="width:100%">
+          <thead>
+            <tr>
+              <th width="34%" scope="col" class="text-center"> </th>
+              <th width="33%" scope="col" class="text-center">Use Final<br />Estimate Only</th>
+              <th width="33%" scope="col" class="text-center">Show Changes<br />in estimate</th>
+            </tr>
+          </thead>
+          <tbody>
+
+
+            <tr class="bg-primary">
+              <td></td>
+              <td scope="row" class="text-center">Estimates</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td scope="row">What times are used?</td>
+              <td>Only last estimate entered</td>
+              <td>Changes in estimates show on the days changes are made</td>
+            </tr>
+            <tr>
+              <td scope="row">Estimate changes entered after the end of the chart?</td>
+              <td>Is included in the sum used at the beginning of the chart</td>
+              <td>Shows on the date estimated added/updated</td>
+            </tr>
+
+
+
+            <tr class="bg-primary">
+              <td></td>
+              <td scope="row" class="text-center">Ideal Burndown Line</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td scope="row">Begins</td>
+              <td>The sum of the last estimated times entered</td>
+              <td>The sum of the estimated times entered as of the first date on the chart</td>
+            </tr>
+
+
+
+            <tr class="bg-primary">
+              <td></td>
+              <td scope="row" class="text-center">Remaining Effort Line</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td scope="row">Begins</td>
+              <td>The sum of the last estimated times entered minus any spent time on that day</td>
+              <td>The sum of the estimated times entered as of the first date on the chart minus any spent time on that day</td>
+            </tr>
+            <tr>
+              <td>Changes</td>
+              <td>The previous day's ramining effort minus any spent time on that day</td>
+              <td>The previous day's ramining effort minus any spent time on that day and plus/minus any changes to estimated times submitted on that day</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>Consistant Features</h4>
+
+        The following features are consistant between the two different burndown chart types.
+
+        <table id="burndownchart-types" class="table table-dark table-striped"  style="width:100%">
+          <!-- <thead>
+            <tr>
+              <th scope="col" class="text-center"></th>
+              <th scope="col" class="text-center"></th>
+            </tr>
+          </thead> -->
+          <tbody>
+            <tr class="bg-primary">
+              <td scope="row" colspan=2 class="text-center">Start Dates</td>
+            </tr>
+          </tbody>
+          <tr>
+            <td scope="row">What is the first date?<br /><strong>(Project wide chart)</strong></td>
+            <td>The earliest date of:
+              <ul>
+                  <li>Issue Creation</li>
+                  <li>Milestone start date</li>
+                  <li>Spent Time</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td scope="row">What is the first date?<br /><strong>(Milestone/Sprint chart)</strong></td>
+            <td>Milestone start date</td>
+          </tr>
+          <tr>
+            <td scope="row">Spent before the start of the sprint</td>
+            <td>Combined with the first date of the chart</td>
+          </tr>
+          <tr>
+            <td scope="row">Estimate changes entered before the start of the chart</td>
+            <td>Combined with the first date of the chart</td>
+          </tr>
+
+
+
+          <tr class="bg-primary">
+            <td scope="row" colspan=2 class="text-center">End Dates</td>
+          </tr>
+          <tr>
+            <td scope="row">What is the last date?<br /><strong>(Project wide chart)</strong></td>
+            <td>The latest date of:
+              <ul>
+                  <li>Issue creation date</li>
+                  <li>Milestone end date</li>
+                  <li>Latest spent time</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td scope="row">What is the last date?<br /><strong>(Milestone/Sprint chart)</strong></td>
+            <td>The latest date of:
+              <ul>
+                  <li>Milestone end date</li>
+                  <li>Latest estimated time</li>
+                  <li>Latest spent time</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td scope="row">Spent after the end of the sprint?</td>
+            <td>Shows on the date spent</td>
+          </tr>
+
+
+
+          <tr class="bg-primary">
+            <td scope="row" colspan=2 class="text-center">Ideal Burndown Line</td>
+          </tr>
+          <tr>
+            <td>Changes</td>
+            <td>Decreases at a constant rate</td>
+          </tr>
+          <tr>
+            <td scope="row">Ends</td>
+            <td>Zero at the end date of the project (see above) or end date of the sprint if applicable</td>
+          </tr>
+
+
+
+          <tr class="bg-primary">
+            <td scope="row" colspan=2 class="text-center">Remaining Effort Line</td>
+          </tr>
+          <tr>
+            <td scope="row">Excess Spends</td>
+            <td>If more time is spent than estimated, the estimated time is not altered.  This means a negative remaining effort is possible.</td>
+          </tr>
+
+
+
+          <tr class="bg-primary">
+            <td scope="row" colspan=2 class="text-center">Actual Effort Trend Line</td>
+          </tr>
+          <tr>
+            <td>Changes</td>
+            <td>Linear Regression of the Remaining Effort line</td>
+          </tr>
+
+
+
+          <tr class="bg-primary">
+            <td scope="row" colspan=2 class="text-center">Completed Hours Bars</td>
+          </tr>
+          <tr>
+            <td>What is included?</td>
+            <td>The sum of all hours spent on that day</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-header" id="faq-fixtime">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-fixtime" aria-expanded="false" aria-controls="collapse-fixtime">
         How to fix estimated and spent hours
       </button>
     </div>
-    <div id="collapse5" class="collapse" aria-labelledby="faq5" data-parent="#faq-accordion">
+    <div id="collapse-fixtime" class="collapse" aria-labelledby="faq-fixtime" data-parent="#faq-accordion">
       <div class="card-body">
         Coming Soon
       </div>
@@ -145,12 +349,12 @@
   </div>
 
   <div class="card">
-    <div class="card-header" id="faq6">
-      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+    <div class="card-header" id="faq-future">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-future" aria-expanded="false" aria-controls="collapse-future">
         Future Plans
       </button>
     </div>
-    <div id="collapse6" class="collapse" aria-labelledby="faq6" data-parent="#faq-accordion">
+    <div id="collapse-future" class="collapse" aria-labelledby="faq-future" data-parent="#faq-accordion">
       <div class="card-body">
         <p>
           Below you will find a summary of future changes to this site.
@@ -161,12 +365,12 @@
   </div>
 
   <!-- <div class="card">
-    <div class="card-header" id="faq6">
-      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+    <div class="card-header" id="faq-X">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-X" aria-expanded="false" aria-controls="collapse-X">
         How to revoke access
       </button>
     </div>
-    <div id="collapse6" class="collapse" aria-labelledby="faq6" data-parent="#faq-accordion">
+    <div id="collapse-X" class="collapse" aria-labelledby="faq-X" data-parent="#faq-accordion">
       <div class="card-body">
         Coming Soon
       </div>
@@ -174,12 +378,12 @@
   </div> -->
 
   <!-- <div class="card">
-    <div class="card-header" id="faq7">
-      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+    <div class="card-header" id="faq-XX">
+      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-XX" aria-expanded="false" aria-controls="collapse-XX">
         How to add a new Gitlab website
       </button>
     </div>
-    <div id="collapse7" class="collapse" aria-labelledby="faq7" data-parent="#faq-accordion">
+    <div id="collapse-XX" class="collapse" aria-labelledby="faq-XX" data-parent="#faq-accordion">
       <div class="card-body">
         Coming Soon
       </div>

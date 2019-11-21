@@ -213,7 +213,7 @@ function setPhase(newPhase) {
     }
 
     $("#btnGetProjects").prop("disabled", true);
-    if (!isBookmark) {$("#collapse2").collapse("show");}
+    if (!isBookmark) {$("#collapse-project").collapse("show");}
   }
 
   if (newPhase === "project_end") {
@@ -237,7 +237,7 @@ function setPhase(newPhase) {
     document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Issues";
     document.getElementById("gitlab_show_issues").style.display = "none";
     document.getElementById("issues-tab").classList.remove("disabled");
-    if (!isBookmark) {$("#collapse3").collapse("show");}
+    if (!isBookmark) {$("#collapse-issue").collapse("show");}
 
     // Setup burndown sections
     document.getElementById("burndown-tab").classList.add("disabled");
@@ -364,9 +364,8 @@ function parseSEARCH(search) {
   }
 }
 
-$(document).ready(function() {
-  let searchString, newURL,
-      feedbackOptions = {};
+function setFeedback() {
+  let feedbackOptions = {};
 
   document.getElementById("faq-tab").click();
 
@@ -390,8 +389,33 @@ $(document).ready(function() {
       // new window.Feedback.Review()
   ];
   Feedback(feedbackOptions);
-  getAgilePlans();
+}
+
+function setInit() {
+  let scrollAnimate = 500;
+
   $("#estimate-type-dropdown").selectize();
+
+  $(".collapse").on("shown.bs.collapse", function(event) {
+    let $card = $(this).closest(".card");
+
+    $("html,body").animate({
+      scrollTop: $card.offset().top
+    }, scrollAnimate);
+  });
+
+  // $("#burndownchart-types").DataTable({
+  //   scrollY: "200px"
+  // });
+
+}
+
+$(document).ready(function() {
+  let searchString, newURL;
+
+  setFeedback();
+  getAgilePlans();
+  setInit();
 
   searchString = window.location.search;
   if (searchString.length !== 0) {

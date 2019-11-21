@@ -111,88 +111,95 @@ var burndown = (function () {
     for (let i = 0; i <= dayDiff; i += 1) {
       effortDay = day1 + (MSperDAY * (i));
       yVal = slope * (i + 1) + intercept;
-      trendEffort.push([effortDay, Math.max(0, yVal)]);
+      if (slope > 0 || yVal > 0) {
+        trendEffort.push([effortDay, yVal]);
+      }
     }
   }
 
   function updateDataEstChanges() {
-    let msData, startDate, endDate, startIdealHours, issueIID, estStartArray,
-        startRemainHours, estTrimedTimeList,
+    let startDate, endDate, startIdealHours, startRemainHours, startArray,
+        estTrimedTimeList, spentTrimedTimeList,
         dayDiff, idealDaily, day1, spentCummList, estCummList,
-        effort, effortDay, thisDaySpent, thisDayEst;
-    // let , trendSlope;
-
-    msData = milestoneList[selectedMilestone];
-    startDate = msData.start_date;
-    endDate = msData.due_date;
-
-    // Sum total Ideal Hours
-    startIdealHours = 0;
-    for (let issue in msData.issues) {
-      if (msData.issues.hasOwnProperty(issue)) {
-        issueIID = msData.issues[issue];
-        // Accumlate hours
-        startIdealHours += issueListJSON[issueIID].time_stats.time_estimate / SECperHOUR;
-      }
-    }
-
-    // Make array of start estimates
-    estStartArray = {};
-    estimateTimeList.forEach(function(estimateTime) {
-      // If the estimate is on the list of issues of the milestone
-      if (msData.issues.includes(estimateTime.issue) &&
-         (!estStartArray.hasOwnProperty(estimateTime.issue) ||
-            estimateTime.date < estStartArray[estimateTime.issue].date)) {
-              estStartArray[estimateTime.issue] = {date: estimateTime.date, estimateChange: estimateTime.estimateChange};
-      }
-    });
-
-
-    // Sum total Ideal Hours
-    startRemainHours = 0;
-    for (let estIndex in estStartArray) {
-      if (estStartArray.hasOwnProperty(estIndex)) {
-        startRemainHours += estStartArray[estIndex].estimateChange;
-      }
-    }
-
-    // Make estimateTimeList deepcopy and remove start times
-    estTrimedTimeList = JSON.parse(JSON.stringify(estimateTimeList));
-    for (let estIndex in estTrimedTimeList) {
-      if (estTrimedTimeList.hasOwnProperty(estIndex)) {
-        let issueid = estTrimedTimeList[estIndex].issue;
-
-        // TODO Find better way to word
-        if (estStartArray.hasOwnProperty(issueid) && estStartArray[issueid].hasOwnProperty("date")) {
-          if ((estTrimedTimeList[estIndex].date === estStartArray[issueid].date)) {
-            estTrimedTimeList[estIndex].estimateChange = 0;
-          }
-        }
-      }
-    }
-
-    // Create Cummulative lines
-    dayDiff = Math.floor((endDate - startDate) / MSperDAY);
-    idealDaily = startIdealHours / dayDiff;
+        effort, effortDay, thisDaySpent, thisDayEst,
+        msData = milestoneList[selectedMilestone];
 
     idealEffort = [];
     remainEffort = [];
     trendEffort = [];
+
+    // ******************************* Ideal *******************************
+
+    startDate = msData.start_date;
+    endDate = msData.due_date;
+
+    // Sum total Ideal Hours      msData.issues.includes(estimateTime.issue)
+    startIdealHours = issueListArr.filter(issue => msData.issues.includes(issue.iid))
+                                  .reduce((acc, cur) => acc + cur.time_stats.time_estimate, 0);
+    startIdealHours /= SECperHOUR;
+
+    dayDiff = Math.floor((endDate - startDate) / MSperDAY);
+    idealDaily = startIdealHours / dayDiff;
+
     day1 = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
     idealEffort.push([day1, startIdealHours]);
-    remainEffort.push([day1, startRemainHours]);
-
-    spentCummList = jsonToChartSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone]);
-    estCummList = jsonToChartSeries(estTrimedTimeList, "date", "estimateChange", ["issue", selectedMilestone]);
 
     for (let i = 0; i <= dayDiff; i += 1) {
       // Determine ideal effort
       effort = Math.max(0, Math.round((startIdealHours - (idealDaily * i)) * TWOdigitROUND) / TWOdigitROUND);
       effortDay = day1 + (MSperDAY * i);
       idealEffort.push([effortDay, effort]);
+    }
 
-      // Determine remaining effort
+    idealEffort.shift();
+
+    // ******************************* Remaining *******************************
+
+    // Make estimateTimeList deepcopy
+    estTrimedTimeList = JSON.parse(JSON.stringify(estimateTimeList));
+    spentTrimedTimeList = JSON.parse(JSON.stringify(spentTimeList));
+
+    // Make array of estimates and spends before the start date
+    startArray = {};
+    estTrimedTimeList.forEach(function(estimateTime) {
+      // If the estimate is on the list of issues prior to the chart
+      if (msData.issues.includes(estimateTime.issue) && estimateTime.date < startDate.valueOf()) {
+        // Add to start array
+        startArray[estimateTime.issue] = startArray[estimateTime.issue] || {date: estimateTime.date, time: 0};
+        startArray[estimateTime.issue].time += estimateTime.estimateChange;
+
+        // Remove from trimmed issueListArr
+        estimateTime.estimateChange = 0;
+      }
+      if (msData.issues.includes(estimateTime.issue) && estimateTime.date > endDate.valueOf()) {
+        endDate = new Date(estimateTime.date);
+      }
+    });
+    spentTrimedTimeList.forEach(function(spentTime) {
+      // If the estimate is on the list of issues prior to the chart
+      if (msData.issues.includes(spentTime.issue) && spentTime.date < startDate.valueOf()) {
+        // Add to start array
+        startArray[spentTime.issue] = startArray[spentTime.issue] || {date: spentTime.date, time: 0};
+        startArray[spentTime.issue].time -= spentTime.spent;
+
+        // Remove from trimmed issueListArr
+        spentTime.spent = 0;
+      }
+    });
+
+    // Calculate chart line
+    startRemainHours = Object.values(startArray).reduce((acc, cur) => acc + cur.time, 0);
+    remainEffort.push([day1, startRemainHours]);
+
+    spentCummList = jsonToChartSeries(spentTrimedTimeList, "date", "spent", ["issue", selectedMilestone]);
+    estCummList = jsonToChartSeries(estTrimedTimeList, "date", "estimateChange", ["issue", selectedMilestone]);
+
+    dayDiff = Math.floor((endDate - startDate) / MSperDAY);
+    for (let i = 0; i <= dayDiff; i += 1) {
+      effortDay = day1 + (MSperDAY * i);
+
       if (effortDay <= today) {
+
         effort = remainEffort[i][1];
         // subtract spent hours
         thisDaySpent = spentCummList.filter(item => item.x === effortDay);
@@ -209,8 +216,9 @@ var burndown = (function () {
       }
     }
 
-    idealEffort.shift();
     remainEffort.shift();
+
+    // ********************************* Trend *********************************
 
     // Determine trend effort
     /* eslint-disable */
@@ -235,7 +243,9 @@ var burndown = (function () {
     for (let i = 0; i <= dayDiff; i += 1) {
       effortDay = day1 + (MSperDAY * (i));
       yVal = slope * (i + 1) + intercept;
-      trendEffort.push([effortDay, Math.max(0, yVal)]);
+      if (slope > 0 || yVal > 0) {
+        trendEffort.push([effortDay, yVal]);
+      }
     }
   }
 
@@ -411,7 +421,7 @@ var burndown = (function () {
   }
 
   function setMilestoneData() {
-    let startDate, endDate;
+    let startDate, endDate, issueStartDate, issueEndDate;
 
     // Find extreme start and end dates
     if (issueListArr.length === 0) {
@@ -419,18 +429,26 @@ var burndown = (function () {
       endDate = today;
     } else {
       startDate = issueListArr[0].created_at;
-        endDate = issueListArr[0].updated_at;
-    }
+      endDate = issueListArr[0].updated_at;
 
-    // Determine milestone start and end dates
-    startDate = new Date(startDate);
-    endDate = new Date(endDate);
+      // Determine milestone start and end dates
+      startDate = new Date(startDate);
+      startDate = new Date(Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()));
+      endDate = new Date(endDate);
+      endDate = new Date(Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()));
+    }
 
     // Search issues for extreme dates
     for (let issue in issueListArr) {
       if (issueListArr.hasOwnProperty(issue)) {
-        if (startDate > issueListArr[issue].created_at) {startDate = issueListArr[issue].created_at;}
-        if (endDate < issueListArr[issue].updated_at) {endDate = issueListArr[issue].updated_at;}
+        issueStartDate = new Date(issueListArr[issue].created_at);
+        issueStartDate = new Date(Date.UTC(issueStartDate.getFullYear(), issueStartDate.getMonth(), issueStartDate.getDate()));
+
+        issueEndDate = new Date(issueListArr[issue].updated_at);
+        issueEndDate = new Date(Date.UTC(issueEndDate.getFullYear(), issueEndDate.getMonth(), issueEndDate.getDate()));
+
+        if (startDate > issueStartDate) {startDate = issueStartDate;}
+        if (endDate < issueEndDate) {endDate = issueEndDate;}
       }
     }
 
@@ -643,7 +661,8 @@ var burndown = (function () {
       } else {
         selectedMilestone = newMilestone;
       }
-      today = new Date(new Date().setHours(0, 0, 0, 0)).getTime() - (new Date()).getTimezoneOffset() * MSperMIN;
+      today = new Date();
+      today = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
       await updateBurndownData();
 
       return;

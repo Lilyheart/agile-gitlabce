@@ -77,10 +77,12 @@ var issues = (function () {
         if (milestoneList[milestone.iid].start_date !== null) {
           startDate = milestoneList[milestone.iid].start_date.split("-");
           startDate = new Date(startDate[0], startDate[1] - 1, startDate[2]);
+          startDate = new Date(Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()));
         }
         if (milestoneList[milestone.iid].due_date !== null) {
           dueDate = milestoneList[milestone.iid].due_date.split("-");
           dueDate = new Date(dueDate[0], dueDate[1] - 1, dueDate[2]);
+          dueDate = new Date(Date.UTC(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate()));
         }
 
         /* eslint-disable */

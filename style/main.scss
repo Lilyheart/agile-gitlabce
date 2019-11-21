@@ -72,12 +72,6 @@ a, a:hover {
 .milestone-selection.row {
   margin: $row-margins;
 }
-.new {
-  color: $color-primary-0-inverse;
-  background-color: $color-secondary-2-4;
-  padding: 6px 0;
-  border-radius: 2px;
-}
 
 /* NAV STUFFS */
 
@@ -163,6 +157,23 @@ a, a:hover {
     font-size: 1.2em;
     margin-bottom: 10px;
   }
+  li {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+.new, ul li.new { // Heavily weighted for specificity reasons
+  color: $color-primary-0-inverse;
+  background-color: $color-secondary-2-4;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+.badge-primary {
+  background-color: $color-primary-0;
 }
 
 /* SELECT STUFFS */
@@ -212,4 +223,8 @@ td a {
       border-color: $color-primary-0-inverse;
     }
   }
+}
+
+.bg-primary{
+  background-color: $color-primary-0 !important;
 }

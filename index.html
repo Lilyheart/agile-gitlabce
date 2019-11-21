@@ -214,7 +214,7 @@
                     <select id="milestone-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
                     </select>
                   </div>
-                  <label for="estimate-type-dropdown" class="col-sm-3 col-form-label">Estimate Type:</label>
+                  <label for="estimate-type-dropdown" class="col-sm-3 col-form-label">Estimate Type <a href="#" data-target="#collapse-burndown-types" onclick="document.getElementById('faq-tab').click();$('#collapse-burndown-types').collapse('show')"><i class="fa fa-info-circle" aria-hidden="true"></i></a>: </label>
                   <div class="col-sm-9">
                     <select id="estimate-type-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.setEstimateStyle(this.value)">
                       <option value="Final">Use Final Estimate Only</option>
