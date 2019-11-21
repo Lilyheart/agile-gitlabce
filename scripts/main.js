@@ -5,7 +5,9 @@ This file contains general code and global variable declarations
 
 var baseURL, currURL, serverDetails, gitlabKey, projectID, currProjectName, currUserName, projectList,
     lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, estimateTimeList, paramDict,
-    searchDict = {};
+    searchDict = {},
+    isBookmark = false,
+    isLoaded = false;
 const PERCENT = 100,
       MSperMIN = 60000;
 
@@ -211,7 +213,7 @@ function setPhase(newPhase) {
     }
 
     $("#btnGetProjects").prop("disabled", true);
-    $("#collapse2").collapse("show");
+    if (!isBookmark) {$("#collapse2").collapse("show");}
   }
 
   if (newPhase === "project_end") {
@@ -224,14 +226,13 @@ function setPhase(newPhase) {
     // Setup issues sections
     document.getElementById("issues-tab").classList.remove("disabled");
     isCheckingUpdate = false;
-    document.getElementById("issues-tab").click();
+    if (!isBookmark && !isLoaded) {document.getElementById("issues-tab").click();}
     isCheckingUpdate = true;
     document.getElementById("loading_issues").style.display = "block";
     document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Issues";
     document.getElementById("gitlab_show_issues").style.display = "none";
-    document.getElementById("issues-tab").classList.add("active");
     document.getElementById("issues-tab").classList.remove("disabled");
-    $("#collapse3").collapse("show");
+    if (!isBookmark) {$("#collapse3").collapse("show");}
 
     // Setup burndown sections
     document.getElementById("burndown-tab").classList.add("disabled");
@@ -269,6 +270,8 @@ function setPhase(newPhase) {
     document.getElementById("show_hours").style.display = "block";
     document.getElementById("btnGetIssues").innerHTML = "Reload Issues";
 
+    isLoaded = true;
+
     $("#radio0").prop("disabled", false);
     $("#radio1").prop("disabled", false);
     $("#radio2").prop("disabled", false);
@@ -287,7 +290,7 @@ function setPhase(newPhase) {
 }
 
 function reloadIssues() {
-  document.getElementById("issues-tab").click();
+  // document.getElementById("issues-tab").click();
   issues.getIssues();
 }
 
@@ -358,6 +361,8 @@ $(document).ready(function() {
   let searchString, newURL,
       feedbackOptions = {};
 
+  document.getElementById("faq-tab").click();
+
   feedbackOptions.appendTo = null;
   feedbackOptions.url = "https://agile-gitlab.prod.with-datafire.io/feedback";
   // feedbackOptions.url = "https://agile-gitlab.dev.with-datafire.io/feedback";
@@ -383,6 +388,7 @@ $(document).ready(function() {
 
   searchString = window.location.search;
   if (searchString.length !== 0) {
+    isBookmark = true;
      parseSEARCH(searchString);
      if (searchDict.hasOwnProperty("project") && searchDict.hasOwnProperty("server")) {
        $("#auth-server-dropdown").selectize()[0].selectize.setValue(searchDict.server, false);
