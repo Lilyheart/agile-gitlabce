@@ -38,17 +38,55 @@ var burndown = (function () {
     return chartSeries;
   }
 
-  function updateDataEstFinal() {
-    let startDate, endDate, startHours, issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay, trendSlope;
+  function updateTrendEffort(day1, dayDiff) {
+    let xVal, yVal, sumX, sumY, sumXY, sumXX, slope, intercept, effortDay,
+        valuesLength = remainEffort.length;
 
-    startDate = milestoneList[selectedMilestone].start_date;
-    endDate = milestoneList[selectedMilestone].due_date;
+    sumX = sumY = sumXY = sumXX = 0;
+
+    for (let i = 0; i < valuesLength; i += 1) {
+      xVal = i + 1;
+      yVal = remainEffort[i][1];
+      sumX += xVal;
+      sumY += yVal;
+      sumXY += xVal * yVal;
+      sumXX += xVal * xVal;
+    }
+
+    slope = (valuesLength * sumXY - sumX * sumY) / (valuesLength * sumXX - sumX * sumX);
+    intercept = (sumY / valuesLength) - (slope * sumX) / valuesLength;
+
+    for (let i = 0; i <= dayDiff; i += 1) {
+      effortDay = day1 + (MSperDAY * (i));
+      yVal = slope * (i + 1) + intercept;
+      if (slope > 0 || yVal > 0) {
+        trendEffort.push([effortDay, yVal]);
+      }
+    }
+
+  }
+
+  function updateDataEstFinal() {
+    let startDate, endDate, startHours, issueIID, dayDiff, idealDaily, day1, spentCummList, effort, effortDay, thisDay,
+    msData = milestoneList[selectedMilestone];
+
+    idealEffort = [];
+    remainEffort = [];
+    trendEffort = [];
+
+    // ******************************* Ideal *******************************
+    // ***************************** Remaining *****************************
+
+    startDate = msData.start_date;
+    endDate = msData.due_date;
+
+    // Sum total Ideal/Remaining Hours
 
     startHours = 0;
 
-    for (let issue in milestoneList[selectedMilestone].issues) {
-      if (milestoneList[selectedMilestone].issues.hasOwnProperty(issue)) {
-        issueIID = milestoneList[selectedMilestone].issues[issue];
+    for (let issue in msData.issues) {
+      if (msData.issues.hasOwnProperty(issue)) {
+        issueIID = msData.issues[issue];
         // Accumlate hours
         startHours += issueListJSON[issueIID].time_stats.time_estimate / SECperHOUR;
       }
@@ -57,10 +95,6 @@ var burndown = (function () {
     // Create Cummulative lines
     dayDiff = Math.floor((endDate - startDate) / MSperDAY);
     idealDaily = startHours / dayDiff;
-
-    idealEffort = [];
-    remainEffort = [];
-    trendEffort = [];
     day1 = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
     idealEffort.push([day1, startHours]);
     remainEffort.push([day1, startHours]);
@@ -88,33 +122,9 @@ var burndown = (function () {
     idealEffort.shift();
     remainEffort.shift();
 
-    // Determine trend effort
-    /* eslint-disable */
-    let xVal, yVal, sumX, sumY, sumXY, sumXX, slope, intercept,
-        valuesLength = remainEffort.length;
-    /* eslint-enable */
+    // ********************************* Trend *********************************
+    updateTrendEffort(day1, dayDiff);
 
-    sumX = sumY = sumXY = sumXX = 0;
-
-    for (let i = 0; i < valuesLength; i += 1) {
-      xVal = i + 1;
-      yVal = remainEffort[i][1];
-      sumX += xVal;
-      sumY += yVal;
-      sumXY += xVal * yVal;
-      sumXX += xVal * xVal;
-    }
-
-    slope = (valuesLength * sumXY - sumX * sumY) / (valuesLength * sumXX - sumX * sumX);
-    intercept = (sumY / valuesLength) - (slope * sumX) / valuesLength;
-
-    for (let i = 0; i <= dayDiff; i += 1) {
-      effortDay = day1 + (MSperDAY * (i));
-      yVal = slope * (i + 1) + intercept;
-      if (slope > 0 || yVal > 0) {
-        trendEffort.push([effortDay, yVal]);
-      }
-    }
   }
 
   function updateDataEstChanges() {
@@ -133,7 +143,7 @@ var burndown = (function () {
     startDate = msData.start_date;
     endDate = msData.due_date;
 
-    // Sum total Ideal Hours      msData.issues.includes(estimateTime.issue)
+    // Sum total Ideal Hours
     startIdealHours = issueListArr.filter(issue => msData.issues.includes(issue.iid))
                                   .reduce((acc, cur) => acc + cur.time_stats.time_estimate, 0);
     startIdealHours /= SECperHOUR;
@@ -219,34 +229,7 @@ var burndown = (function () {
     remainEffort.shift();
 
     // ********************************* Trend *********************************
-
-    // Determine trend effort
-    /* eslint-disable */
-    let xVal, yVal, sumX, sumY, sumXY, sumXX, slope, intercept,
-        valuesLength = remainEffort.length;
-    /* eslint-enable */
-
-    sumX = sumY = sumXY = sumXX = 0;
-
-    for (let i = 0; i < valuesLength; i += 1) {
-      xVal = i + 1;
-      yVal = remainEffort[i][1];
-      sumX += xVal;
-      sumY += yVal;
-      sumXY += xVal * yVal;
-      sumXX += xVal * xVal;
-    }
-
-    slope = (valuesLength * sumXY - sumX * sumY) / (valuesLength * sumXX - sumX * sumX);
-    intercept = (sumY / valuesLength) - (slope * sumX) / valuesLength;
-
-    for (let i = 0; i <= dayDiff; i += 1) {
-      effortDay = day1 + (MSperDAY * (i));
-      yVal = slope * (i + 1) + intercept;
-      if (slope > 0 || yVal > 0) {
-        trendEffort.push([effortDay, yVal]);
-      }
-    }
+    updateTrendEffort(day1, dayDiff);
   }
 
   function updateData() {
@@ -591,11 +574,6 @@ var burndown = (function () {
           padding: 15
         },
         series: [{
-          type: "column",
-          name: "Completed Hours",
-          color: "#4682b4",
-          data: jsonToChartSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone])
-        }, {
           name: "Ideal Burndown",
           color: "rgba(255,0,0,0.75)",
           marker: {
@@ -621,6 +599,11 @@ var burndown = (function () {
           lineWidth: 1,
           data: trendEffort,
           enableMouseTracking: false
+        }, {
+          type: "column",
+          name: "Completed Hours",
+          color: "#4682b4",
+          data: jsonToChartSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone])
         }],
         exporting: {
           sourceWidth: 800,
