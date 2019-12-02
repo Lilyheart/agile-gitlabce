@@ -502,7 +502,7 @@ var burndown = (function () {
   }
 
   async function updateBurndownData() {
-    let title;
+    let title, footnote;
 
     await checkForUpdates();
 
@@ -530,10 +530,36 @@ var burndown = (function () {
       title = "Sprint";
     }
 
+    if (estimateStyle === "Final") {
+      footnote = "Using final estimates only";
+    } else { //"Changes"
+      footnote = "Showing changes in estimates";
+    }
+
     $(function () {
       $("#burndown-chart").highcharts({
         title: {text: title + " Burndown Chart"},
         subtitle: {text: currProjectName + " - " + milestoneList[selectedMilestone].title},
+        chart: {
+          events: {
+            load: function () {
+              var label = this.renderer.label(footnote)
+              .css({
+                fontSize: "11px",
+                color: "#555555"
+              })
+              .add();
+
+              label.align(Highcharts.extend(label.getBBox(), {
+                align: "right",
+                verticalAlign: "bottom",
+                x: 3,
+                y: 0
+              }), null, "spacingBox");
+            }
+          },
+          marginBottom: 120
+        },
         xAxis: {
           type: "datetime",
           title: {text: "Date"},
@@ -610,7 +636,7 @@ var burndown = (function () {
           sourceHeight: 400
         },
         credits: {
-          text: "Highcarts.com and lilyheart.github.io/agile-gitlabce",
+          text: "Highcharts.com and lilyheart.github.io/agile-gitlabce",
           href: "https://lilyheart.github.io/agile-gitlabce/"
         },
         responsive: {

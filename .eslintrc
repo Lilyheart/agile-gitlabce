@@ -49,6 +49,7 @@
     "setPhase": true,
 
     # external files
+    "Highcharts": true,
     "gitlabServers": true,
     "projects": true,
     "issues": true,
