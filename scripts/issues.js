@@ -1,8 +1,201 @@
 var issues = (function () {
+  let issueErrorArr;
 
   function enableIssueBtn() {
     document.getElementById("btnGetIssues").innerHTML = "Get Issues";
     $("#btnGetIssues").prop("disabled", false);
+  }
+
+  function loadErrorTable() {
+    let label, errCount, warnCount;
+
+    if (issueErrorArr.length === 0) {
+      return;
+    }
+
+    errCount = issueErrorArr.filter(issue => issue.hasOwnProperty("error")).length;
+    warnCount = issueErrorArr.filter(issue => issue.hasOwnProperty("warning")).length;
+
+    // Set label
+    label = "There";
+    if (issueErrorArr.length === 1) {
+      label += " is ";
+    } else {
+      label += " are ";
+    }
+    if (errCount > 0) {
+      label += errCount;
+      label += " error";
+      if (errCount > 1) {
+        label += "s";
+      }
+      if (issueErrorArr.length > errCount) {
+        label += " and ";
+      }
+    }
+    if (warnCount > 0) {
+      label += warnCount;
+      label += " warning";
+      if (warnCount > 1) {
+        label += "s";
+      }
+    }
+    label += ".";
+
+    // Set visuals
+    document.getElementById("error-counts").innerHTML = label;
+
+    if (errCount > 0) {
+      document.getElementById("errors-tab").innerHTML = "Errors";
+      document.getElementById("errors-tab").classList.add("error");
+    } else if (warnCount > 0) {
+      document.getElementById("errors-tab").innerHTML = "Warnings";
+      document.getElementById("errors-tab").classList.remove("error");
+    }
+
+    if (errCount > 0) {
+      document.getElementById("issue_error_section").style.display = "block";
+    } else {
+      document.getElementById("issue_error_section").style.display = "none";
+    }
+    if (warnCount > 0) {
+      document.getElementById("issue_warning_section").style.display = "block";
+    } else {
+      document.getElementById("issue_warning_section").style.display = "none";
+    }
+
+    // Reset error table
+    if ( $.fn.dataTable.isDataTable( "#issueerrorstable" ) ) {
+      $("#issueerrorstable").dataTable().fnDestroy();
+      $("#issueerrorstablerows tr").remove();
+    }
+    $("#issueerrorstable").DataTable({
+      responsive: true,
+      data: issueErrorArr.filter(issue => issue.hasOwnProperty("error")),
+      columns: [
+        {title: "Issue", data: "error"},
+        {title: "Title", data: "title"},
+        {title: "State", data: "state"},
+        {title: "Time Spent", className: "none", data: "time_stats.human_total_time_spent"},
+        {title: "Time Est.", className: "none", data: "time_stats.human_time_estimate"},
+        {title: "Assigned", className: "none", data: "assignee"}
+      ],
+      columnDefs: [{
+        targets: 0, width: 250, responsivePriority: 1
+      }, {
+        targets: 1, width: 600, responsivePriority: 1,
+        render: function ( data, type, row ) {
+          return "<a href='" + row.web_url + "' target='_blank'>" + row.title + "</a>";
+        }
+      }, {
+        targets: 3,
+        render: function ( data, type, row ) {
+          if (row.time_stats.human_total_time_spent === null) {
+            return "None";
+          } else {
+            return row.time_stats.human_total_time_spent;
+          }
+        }
+      }, {
+        targets: 5,
+        render: function ( data, type, row ) {
+          if (row.assignee === null) {
+            return "None";
+          } else {
+            return row.assignee.name;
+          }
+        }
+      }]
+    });
+
+    // Reset warning table
+    if ( $.fn.dataTable.isDataTable( "#issuewarningstable" ) ) {
+      $("#issuewarningstable").dataTable().fnDestroy();
+      $("#issuewarningstablerows tr").remove();
+    }
+    $("#issuewarningstable").DataTable({
+      responsive: true,
+      data: issueErrorArr.filter(issue => issue.hasOwnProperty("warning")),
+      columns: [
+        {title: "Issue", data: "warning"},
+        {title: "Title", data: "title"},
+        {title: "State", data: "state"},
+        {title: "Time Spent", className: "none", data: "time_stats.human_total_time_spent"},
+        {title: "Time Est.", className: "none", data: "time_stats.human_time_estimate"},
+        {title: "Assigned", className: "none", data: "assignee"}
+      ],
+      columnDefs: [{
+        targets: 0, width: 250, responsivePriority: 1
+      }, {
+        targets: 1, width: 600, responsivePriority: 1,
+        render: function ( data, type, row ) {
+          return "<a href='" + row.web_url + "' target='_blank'>" + row.title + "</a>";
+        }
+      }, {
+        targets: 3,
+        render: function ( data, type, row ) {
+          if (row.time_stats.human_total_time_spent === null) {
+            return "None";
+          } else {
+            return row.time_stats.human_total_time_spent;
+          }
+        }
+      }, {
+        targets: 5,
+        render: function ( data, type, row ) {
+          if (row.assignee === null) {
+            return "None";
+          } else {
+            return row.assignee.name;
+          }
+        }
+      }]
+    });
+
+    // Display tab
+    document.getElementById("errors-tab").classList.remove("disabled");
+    document.getElementById("error-tab-item").classList.remove("d-none");
+  }
+
+  function addIssueError(issue, errorMessage) {
+    let newIssue = JSON.parse(JSON.stringify(issue));
+
+    newIssue.error = errorMessage;
+    issueErrorArr.push(newIssue);
+  }
+
+  function addIssueWarning(issue, warningMessage) {
+    let newIssue = JSON.parse(JSON.stringify(issue));
+
+    newIssue.warning = warningMessage;
+    issueErrorArr.push(newIssue);
+  }
+
+  async function checkForErrors() {
+    let issue;
+
+    issueErrorArr = [];
+
+    document.getElementById("errors-tab").classList.add("disabled");
+    document.getElementById("error-tab-item").classList.add("d-none");
+
+    for (let issueIndex in issueListArr) {
+      if (issueListArr.hasOwnProperty(issueIndex)) {
+        issue = issueListArr[issueIndex];
+        if (issue.time_stats.time_estimate === 0) {
+          // Issues no estimate and either has time spent (error) or is open (warning)
+          if (issue.time_stats.total_time_spent > 0) {
+            addIssueError(issue, "Spent time with no estimate");
+          }
+          if (issue.time_stats.total_time_spent === 0 && issue.state === "opened") {
+            addIssueWarning(issue, "Missing estimate");
+          }
+        } else if (issue.time_stats.total_time_spent > issue.time_stats.time_estimate) {
+          // Issues with spend > estimate (report differently than the previous line)
+          addIssueError(issue, "More spent time than estimated");
+        }
+      }
+    }
   }
 
   async function getIssuesList() {
@@ -167,6 +360,7 @@ var issues = (function () {
     await updateProjectname();
 
     await loadIssueTable();
+    checkForErrors();
     setPhase("issue_end");
 
     burndown.setBurndownUnloaded();
@@ -180,6 +374,18 @@ var issues = (function () {
 
     enableIssueBtn: function() {
       enableIssueBtn();
+    },
+
+    addIssueError: function(issue, errorMessage) {
+      addIssueError(issue, errorMessage);
+    },
+
+    addIssueWarning: function(issue, warningMessage) {
+      addIssueWarning(issue, warningMessage);
+    },
+
+    loadErrorTable: function() {
+      loadErrorTable();
     }
   };
 

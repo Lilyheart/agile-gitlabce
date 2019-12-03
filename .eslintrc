@@ -26,6 +26,7 @@
     "gitlabKey": true,
     "projectID": true,
     "currProjectName": true,
+    "currProjStartDate": true,
     "currUserName": true,
     "projectList": true,
     "lastUpdate": true,

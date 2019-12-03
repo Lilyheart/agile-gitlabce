@@ -178,8 +178,11 @@
               <a class="nav-link disabled" id="burndown-tab" data-toggle="tab" href="#burndowntab" role="tab" aria-controls="burndowntab"
                 aria-selected="false" onclick="checkForUpdates()">Burndown</a>
             </li>
+					  <li class="nav-item d-none" id="error-tab-item">
+					    <a class="nav-link error" id="errors-tab" data-toggle="tab" href="#errorstab" role="tab" aria-controls="faqtab" aria-selected="true">Errors</a>
+					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" id="faq-tab" data-toggle="tab" href="#faqtab" role="tab" aria-controls="fawtab"
+					    <a class="nav-link" id="faq-tab" data-toggle="tab" href="#faqtab" role="tab" aria-controls="faqtab"
 					      aria-selected="true">FAQ</a>
 					  </li>
 					</ul>
@@ -209,6 +212,9 @@
               </div>
               <div id="burndown" style="display: none">
                 <div id="milestone-selection" class="milestone-selection form-group row">
+                  <p class="col-sm-12">
+                    <span class="badge badge-primary">Hint</span> Click on three lines on the upper right of the chart to download, print, and view in full screen.
+                  </p>
                   <label for="milestone-dropdown" class="col-sm-3 col-form-label">Show Milestone:</label>
                   <div class="col-sm-9">
                     <select id="milestone-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
@@ -244,6 +250,62 @@
                   </p>
                 </div>
               </div>
+            </div>
+					  <div class="tab-pane fade show active" id="errorstab" role="tabpanel" aria-labelledby="errors-tab">
+              <p id="error-counts">
+                There are 0 errors and 0 warnings.
+              </p>
+              <p>
+                <span class="badge badge-primary">Hint</span> Click on the issue title to open the issue on Gitlab.
+              </p>
+
+              <div id="issue_error_section">
+                <div class="alert alert-primary" role="alert" data-toggle="collapse" data-target="#issue_errors">
+                  <h4 class="d-inline-flex">Errors</h4>
+                  <button type="button" class="h-100">
+                    <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                  </button>
+                </div>
+                <div id="issue_errors" class="collapse show mb-5">
+                  <p>Types of issues and possible solution ideas.</p>
+                  <ul class="mb-4">
+                    <li><strong>Spent time with no estimate:</strong>
+                      <ul>
+                        <li>Add estimated time</li>
+                        <li>Remove incorrectly added spent time</li>
+                      </ul>
+                    </li>
+                    <li><strong>More spent time than estimated:</strong>
+                      <ul>
+                        <li>Correct estimated time</li>
+                        <li>Remove incorrectly added spent time</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <table id="issueerrorstable" class="table table-dark table-hover" style="width:100%;"></table>
+                </div>
+              </div>
+
+              <div id="issue_warning_section" class="mb-3">
+                <div class="alert alert-primary mt-3" role="alert"  data-toggle="collapse" data-target="#issue_warning">
+                  <h4 class="d-inline-flex">Warnings</h4>
+                  <button type="button" class="h-100">
+                    <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                  </button>
+                </div>
+                <div id="issue_warning" class="collapse show">
+                <p>Types of issues and possible solution ideas.</p>
+                  <ul class="mb-4">
+                    <li><strong>Missing estimate:</strong> </li>
+                    <ul>
+                      <li>Close the issue</li>
+                      <li>Add an estimate</li>
+                    </ul>
+                  </ul>
+                  <table id="issuewarningstable" class="table table-dark table-hover" style="width:100%;"></table>
+                </div>
+            </div>
+
             </div>
 					  <div class="tab-pane fade show active" id="faqtab" role="tabpanel" aria-labelledby="faq-tab">
               <div id="faqtab-html">
