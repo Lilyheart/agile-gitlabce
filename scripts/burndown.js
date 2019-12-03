@@ -16,7 +16,8 @@ var burndown = (function () {
     let filteredJSON, chartSeries;
 
     // for each note, determine if it's from an issue of interest
-    if (filter !== null) {
+    // eslint-disable-next-line no-undefined
+    if (filter !== undefined) {
       filteredJSON = source.filter(row => milestoneList[filter[1]].issues.includes(row.issue));
     } else {
       filteredJSON = source;
@@ -288,12 +289,6 @@ var burndown = (function () {
           }
         }
         tempSpentTimeList.push({date: date, spent: spent, issue: noteableIID, author: note.author.name});
-
-        // **************************** CHECK DATE ****************************
-
-        if (new Date(date) < currProjStartDate) {
-          issues.addIssueError(issueListJSON[noteableIID], "Spend prior to project's creation date");
-        }
       }
 
       // If time spent was removed
@@ -348,6 +343,23 @@ var burndown = (function () {
     // concat data from last issue
     spentTimeList = spentTimeList.concat(tempSpentTimeList);
     estimateTimeList = estimateTimeList.concat(tempEstTimeList);
+
+    tempSpentTimeList = spentTimeList.reduce((acc, cur) => {
+      acc[cur.issue + "-" + cur.date] = acc[cur.issue + "-" + cur.date] || {date: cur.date, issue: cur.issue, spent: 0};
+      acc[cur.issue + "-" + cur.date].spent += +cur.spent;
+
+      return acc;
+    }, {});
+
+    for (let issue in tempSpentTimeList) {
+      if (tempSpentTimeList.hasOwnProperty(issue)) {
+        // **************************** CHECK DATE ****************************
+        if (tempSpentTimeList[issue].spent > 0 && new Date(tempSpentTimeList[issue].date) < currProjStartDate) {
+          noteableIID = tempSpentTimeList[issue].issue;
+          issues.addIssueError(issueListJSON[noteableIID], "Spend prior to project's creation date");
+        }
+      }
+    }
 
     // *************************** END OF NOTE LOOP ***************************
 
