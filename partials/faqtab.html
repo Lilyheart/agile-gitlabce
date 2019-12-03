@@ -11,15 +11,24 @@
         <h3>New</h3>
         <p>
           <ul>
-            <li>2019/12/02 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.6">v0.2.6</a></u></strong>:
+            <!-- <li class="new">2019/MM/DD <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/vX.X.X">vX.X.X</a></u></strong>: XXXXXX <span class="badge badge-primary">New</span></li> -->
+            <li>2019/12/03 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.7">v0.2.7</a></u></strong>: <span class="badge badge-primary">New</span>
+              <ul>
+                <li class="new">Any issues that might cause problems on the burndown chart will now appear on a new Errors/Warnings tab</li>
+              </ul>
+            </li>
+            <li>2019/12/02 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.6">v0.2.6</a></u></strong>: <span class="badge badge-primary">New</span>
               <ul>
                 <li class="new">New burndown chart style <a href="#" data-toggle="collapse" data-target="#collapse-burndown-types">(See details)</a></li>
                 <li class="new">If loading from a bookmark, site no longer loads the entire project list by default.  This speeds up response for users with many projects</li>
               </ul>
               <!-- When deleting this section, be sure to remove new tag -->
             </li>
-            <li>2019/11/16 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.5">v0.2.5</a></u></strong>: You can now bookmark your project after it's been loaded <span class="badge badge-primary">New</span></li>
-            <li>2019/11/12 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.4">v0.2.4</a></u></strong>: Add List of future plans to FAQ list <span class="badge badge-primary">New</span></li>
+            <li>2019/11/16 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.5">v0.2.5</a></u></strong>:
+              <ul>
+                <li>You can now bookmark your project after it's been loaded</li>
+              </ul>
+            </li>
           </ul>
         </p>
         <h3>Getting Started</h3>
@@ -192,7 +201,7 @@
               <td></td>
             </tr>
             <tr>
-              <td scope="row">Begins</td>
+              <td scope="row">Beginning value</td>
               <td>The sum of the last estimated times entered</td>
               <td>The sum of the estimated times entered as of the first date on the chart</td>
             </tr>
@@ -205,12 +214,12 @@
               <td></td>
             </tr>
             <tr>
-              <td scope="row">Begins</td>
+              <td scope="row">Beginning value</td>
               <td>The sum of the last estimated times entered minus any spent time on that day</td>
               <td>The sum of the estimated times entered as of the first date on the chart minus any spent time on that day</td>
             </tr>
             <tr>
-              <td>Changes</td>
+              <td>How value changes</td>
               <td>The previous day's remaining effort minus any spent time on that day</td>
               <td>The previous day's remaining effort minus any spent time on that day and plus/minus any changes to estimated times submitted on that day</td>
             </tr>
@@ -291,11 +300,11 @@
               <td scope="row" colspan=2 class="text-center">Ideal Burndown Line</td>
             </tr>
             <tr>
-              <td>Changes</td>
+              <td>How value changes</td>
               <td>Decreases at a constant rate</td>
             </tr>
             <tr>
-              <td scope="row">Ends</td>
+              <td scope="row">How value ends</td>
               <td>Zero at the end date of the project (see above) or end date of the sprint if applicable</td>
             </tr>
 
@@ -315,7 +324,7 @@
               <td scope="row" colspan=2 class="text-center">Actual Effort Trend Line</td>
             </tr>
             <tr>
-              <td>Changes</td>
+              <td>How value changes</td>
               <td>Linear Regression of the Remaining Effort line</td>
             </tr>
 

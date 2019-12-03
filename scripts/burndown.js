@@ -288,6 +288,12 @@ var burndown = (function () {
           }
         }
         tempSpentTimeList.push({date: date, spent: spent, issue: noteableIID, author: note.author.name});
+
+        // **************************** CHECK DATE ****************************
+
+        if (new Date(date) < currProjStartDate) {
+          issues.addIssueError(issueListJSON[noteableIID], "Spend prior to project's creation date");
+        }
       }
 
       // If time spent was removed
@@ -499,6 +505,7 @@ var burndown = (function () {
     await getIssuesData();
     await setMilestoneData();
     await parseNotes();
+    issues.loadErrorTable();
   }
 
   async function updateBurndownData() {

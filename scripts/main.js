@@ -3,8 +3,9 @@ See Scripts folder for additional Scripts.
 This file contains general code and global variable declarations
 */
 
-var baseURL, currURL, serverDetails, gitlabKey, projectID, currProjectName, currUserName, projectList,
-    lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList, estimateTimeList, paramDict,
+var baseURL, currURL, serverDetails, gitlabKey, projectID, currProjectName,
+    currProjStartDate, currUserName, projectList, lastUpdate, issueListArr,
+    issueListJSON, milestoneList, spentTimeList, estimateTimeList, paramDict,
     searchDict = {},
     isBookmark = false,
     isLoaded = false;
@@ -97,6 +98,7 @@ async function updateProjectname() {
     console.log("Obtaining data at: " + url);
     await $.getJSON(url, function(data) {
       currProjectName = data.name;
+      currProjStartDate = new Date(data.created_at);
     });
   }
 }

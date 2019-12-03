@@ -127,6 +127,12 @@ a, a:hover {
     border-bottom-color: $nav-tab-border;
   }
 }
+.nav-tabs .nav-link.error:not(.active):not(button) {
+  background-color: $color-error;
+  border-color: $color-error;
+  border-bottom-color: $nav-tab-border;
+  color: $color-primary-3;
+}
 
 /* CARDS */
 
@@ -186,6 +192,22 @@ a, a:hover {
 
 /* DATATABLES */
 
+.alert-primary {
+  color: $color-primary-0-inverse;
+  background-color: $color-primary-0;
+  border-color: $color-primary-4;
+  h4 {
+    margin-bottom: 0;
+  }
+  button {
+    float: right;
+    line-height: 1;
+    font-size: 1.5rem;
+    background-color: transparent;
+    border: 0;
+    opacity: .5;
+  }
+}
 table {
   &.dataTable.dtr-inline.collapsed>tbody>tr {
     &[role="row"] {
