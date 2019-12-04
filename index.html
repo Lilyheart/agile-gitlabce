@@ -212,12 +212,17 @@
                   <p class="col-sm-12">
                     <span class="badge badge-primary">Hint</span> Click on three lines on the upper right of the chart to download, print, and view in full screen.
                   </p>
-                  <label for="milestone-dropdown" class="col-sm-3 col-form-label">Show Milestone:</label>
+                  <label for="milestone-dropdown" class="col-sm-3 col-form-label">
+                    Show Milestone:
+                    <a id="milestone-link" class="d-none" href="#" target="_blank">
+                      <i class="fa fa-external-link" aria-hidden="true"></i>
+                    </a>
+                  </label>
                   <div class="col-sm-9">
-                    <select id="milestone-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.updateBurndownData(this.options[this.selectedIndex].value)">
+                    <select id="milestone-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.updateBurndown(this.options[this.selectedIndex].value)">
                     </select>
                   </div>
-                  <label for="estimate-type-dropdown" class="col-sm-3 col-form-label">Estimate Type <a href="#" data-target="#collapse-burndown-types" onclick="document.getElementById('faq-tab').click();$('#collapse-burndown-types').collapse('show')"><i class="fa fa-info-circle" aria-hidden="true"></i></a>: </label>
+                  <label for="estimate-type-dropdown" class="col-sm-3 col-form-label">Estimate Type: <a href="#" data-target="#collapse-burndown-types" onclick="document.getElementById('faq-tab').click();$('#collapse-burndown-types').collapse('show')"><i class="fa fa-info-circle" aria-hidden="true"></i></a></label>
                   <div class="col-sm-9">
                     <select id="estimate-type-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.setEstimateStyle(this.value)">
                       <option value="Final">Use Final Estimate Only</option>

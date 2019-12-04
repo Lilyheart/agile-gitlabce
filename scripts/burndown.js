@@ -520,7 +520,7 @@ var burndown = (function () {
     issues.loadErrorTable();
   }
 
-  async function updateBurndownData() {
+  async function updateBurndown() {
     let title, footnote;
 
     await checkForUpdates();
@@ -543,10 +543,14 @@ var burndown = (function () {
 
     if (selectedMilestone === "All") {
       title = "Project";
+      document.getElementById("milestone-link").classList.add("d-none");
     } else if (selectedMilestone === "None") {
       title = "";
+      document.getElementById("milestone-link").classList.add("d-none");
     } else {
       title = "Sprint";
+      document.getElementById("milestone-link").href = currProjecURL + "/-/milestones/" + selectedMilestone;
+      document.getElementById("milestone-link").classList.remove("d-none");
     }
 
     if (estimateStyle === "Final") {
@@ -681,7 +685,7 @@ var burndown = (function () {
   }
 
   return {
-    updateBurndownData: async function(newMilestone) {
+    updateBurndown: async function(newMilestone) {
       if (newMilestone === "Auto" && !selectedMilestone) {
         selectedMilestone = "All";
       } else if (newMilestone === "Auto") {
@@ -691,7 +695,7 @@ var burndown = (function () {
       }
       today = new Date();
       today = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
-      await updateBurndownData();
+      await updateBurndown();
 
       return;
     },
@@ -700,7 +704,7 @@ var burndown = (function () {
     },
     setEstimateStyle: function(newstyle) {
       estimateStyle = newstyle;
-      updateBurndownData();
+      updateBurndown();
     }
   };
 
