@@ -233,7 +233,10 @@ function setPhase(newPhase) {
     // Setup issues sections
     document.getElementById("issues-tab").classList.remove("disabled");
     isCheckingUpdate = false;
-    if (!isBookmark && !isLoaded) {document.getElementById("issues-tab").click();}
+    if ((!isBookmark && !isLoaded) || document.getElementById("errors-tab").classList.contains("active")) {
+      document.getElementById("issues-tab").click();
+      document.getElementById("error-tab-item").classList.add("d-none");
+    }
     isCheckingUpdate = true;
     document.getElementById("loading_issues").style.display = "block";
     document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Issues";
