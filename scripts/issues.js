@@ -193,6 +193,9 @@ var issues = (function () {
         } else if (issue.time_stats.total_time_spent > issue.time_stats.time_estimate) {
           // Issues with spend > estimate (report differently than the previous line)
           addIssueError(issue, "More spent time than estimated");
+        } else if ((issue.time_stats.total_time_spent < issue.time_stats.time_estimate) && issue.state === "closed") {
+          // Issues with spend > estimate (report differently than the previous line)
+          addIssueError(issue, "Unspent time on closed issue");
         }
       }
     }
