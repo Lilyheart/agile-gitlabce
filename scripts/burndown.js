@@ -370,11 +370,14 @@ var burndown = (function () {
       loggedSpent = spentTimeList.filter(row => row.issue === issue.iid).reduce((acc, cur) => acc + cur.spent, 0);
       gitlabSpent = issue.time_stats.total_time_spent / SECperHOUR;
 
+      loggedSpent = Math.round(loggedSpent * TWOdigitROUND) / TWOdigitROUND;
+      gitlabSpent = Math.round(gitlabSpent * TWOdigitROUND) / TWOdigitROUND;
+
       if (loggedSpent !== gitlabSpent) {
         date = new Date(issue.created_at);
         date = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
 
-        spentTimeList.push({date: date, spent: gitlabSpent, issue: issue.iid, author: issue.author.name});
+        spentTimeList.push({date: date, spent: gitlabSpent - loggedSpent, issue: issue.iid, author: issue.author.name});
       }
     });
 
@@ -623,6 +626,7 @@ var burndown = (function () {
           padding: 15
         },
         series: [{
+          zIndex: 3,
           name: "Ideal Burndown",
           color: "rgba(255,0,0,0.75)",
           marker: {
@@ -632,6 +636,7 @@ var burndown = (function () {
           data: idealEffort
         }, {
           type: "spline",
+          zIndex: 4,
           name: "Remaining Effort",
           color: "rgba(0, 100, 0, 0.75)",
           marker: {
@@ -640,6 +645,7 @@ var burndown = (function () {
           lineWidth: 2,
           data: remainEffort
         }, {
+          zIndex: 2,
           name: "Actual Effort Trend",
           color: "rgba(40, 40, 40, 0.25)",
           marker: {
@@ -650,6 +656,7 @@ var burndown = (function () {
           enableMouseTracking: false
         }, {
           type: "column",
+          zIndex: 1,
           name: "Completed Hours",
           color: "#4682b4",
           data: jsonToChartSeries(spentTimeList, "date", "spent", ["issue", selectedMilestone])
