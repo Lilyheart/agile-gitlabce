@@ -181,6 +181,10 @@ a, a:hover {
 .badge-primary {
   background-color: $color-primary-0;
 }
+.badge-light {
+  background-color: $color-error-inverse;
+  color: $color-primary-4;
+}
 
 /* SELECT STUFFS */
 

@@ -45,11 +45,16 @@ var issues = (function () {
     // Set visuals
     document.getElementById("error-counts").innerHTML = label;
 
+    if (errCount !== 0 && warnCount !== 0) {
+      label = errCount + "/" + warnCount;
+    } else {
+      label = issueErrorArr.length;
+    }
     if (errCount > 0) {
-      document.getElementById("errors-tab").innerHTML = "Errors";
+      document.getElementById("errors-tab").innerHTML = "Errors <span class='badge badge-light'>" + label + "</span>";
       document.getElementById("errors-tab").classList.add("error");
     } else if (warnCount > 0) {
-      document.getElementById("errors-tab").innerHTML = "Warnings";
+      document.getElementById("errors-tab").innerHTML = "Warnings <span class='badge badge-light'>" + label + "</span>";
       document.getElementById("errors-tab").classList.remove("error");
     }
 
