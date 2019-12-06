@@ -254,3 +254,10 @@ td a {
 .bg-primary{
   background-color: $color-primary-0 !important;
 }
+
+.panel-footer {
+  background-color: $color-error-inverse;
+  .btn {
+    @extend %inverse-color-text;
+  }
+}

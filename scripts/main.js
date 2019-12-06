@@ -398,7 +398,8 @@ function setFeedback() {
 }
 
 function setInit() {
-  let scrollAnimate = 500;
+  let survey,
+      scrollAnimate = 500;
 
   $("#estimate-type-dropdown").selectize();
 
@@ -408,6 +409,19 @@ function setInit() {
     $("html,body").animate({
       scrollTop: $card.offset().top
     }, scrollAnimate);
+  });
+
+  Survey.StylesManager.applyTheme("bootstrap");
+
+  function sendDataToServer(sendSurvey) {
+      //TODO Post as issue on Gitlab Repo
+      alert("The results are:" + JSON.stringify(sendSurvey.data));
+  }
+
+  survey = new Survey.Model(surveyJSON);
+  $("#surveyContainer").Survey({
+      model: survey,
+      onComplete: sendDataToServer
   });
 
   // $("#burndownchart-types").DataTable({

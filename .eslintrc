@@ -56,7 +56,9 @@
     "projects": true,
     "issues": true,
     "burndown": true,
-    "hours": true
+    "hours": true,
+    "Survey": true,
+    "surveyJSON": true
   },
   "rules": {
     "comma-dangle": 2,
