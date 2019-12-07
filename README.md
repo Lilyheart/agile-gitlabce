@@ -26,6 +26,9 @@ Not current accepting pull requests.
 
 ## History
 
+### [[0.2.8]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.8) - 2019-12-07
+Feedback survey for end of semester.
+
 ### [[0.2.7]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.7) - 2019-12-02
 New Burndown Chart type.
 

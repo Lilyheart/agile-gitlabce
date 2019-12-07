@@ -117,6 +117,13 @@ a, a:hover {
     }
   }
 }
+.btn-secondary {
+  background-color: $color-primary-0-disabled;
+  color: $color-primary-3;
+  &:not(:disabled):not(.disabled).active {
+    @extend %inverse-color-text;
+  }
+}
 .nav-pills {
   #{$a-tags} {
     color: $color-primary-0-inverse;
@@ -256,7 +263,7 @@ td a {
 }
 
 .panel-footer {
-  background-color: $color-error-inverse;
+  background-color: $color-primary-0-disabled;
   .btn {
     @extend %inverse-color-text;
   }
@@ -275,4 +282,7 @@ td a {
   0% { opacity: 1; }
   50% { opacity: .35; }
   100% { opacity: 1; }
+}
+.surveyclose {
+  color: $color-primary-3;
 }

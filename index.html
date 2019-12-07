@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="libraries/feedback.css?ver=2012">
     <!-- Local -->
     <link rel="stylesheet" href="libraries/selectize.bootstrap3.css?ver=v0.12.6">
-    <link rel="stylesheet" href="style/main.min.css?ver=0.2.7b" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="style/main.min.css?ver=0.2.8" media="screen" title="no title" charset="utf-8">
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
@@ -183,7 +183,12 @@
 					    <a class="nav-link active" id="faq-tab" data-toggle="tab" href="#faqtab" role="tab" aria-controls="faqtab" aria-selected="true" onclick="checkForUpdates()">FAQ</a>
 					  </li>
 					  <li class="nav-item d-none" id="survey-tab-item">
-					    <a class="nav-link survey-tab" id="survey-tab" data-toggle="tab" href="#surveytab" role="tab" aria-controls="surveytab" aria-selected="true" onclick="checkForUpdates()">Survey</a>
+					    <a class="nav-link survey-tab" id="survey-tab" data-toggle="tab" href="#surveytab" role="tab" aria-controls="surveytab" aria-selected="true" onclick="checkForUpdates()">
+                Survey
+                <button type="button" class="close surveyclose" aria-label="Close" onclick="document.getElementById('survey-tab-item').classList.add('d-none');">
+                  <span aria-hidden="true"> &times;</span>
+                </button>
+              </a>
 					  </li>
 					</ul>
 					<div class="tab-content" id="myTabContent">
@@ -314,12 +319,16 @@
 					  <div class="tab-pane fade show active" id="faqtab" role="tabpanel" aria-labelledby="faq-tab">
               <div id="faqtab-html">
                 <script>
-                  $("#faqtab-html").load("partials/faqtab.html?ver=0.2.7b");
+                  $("#faqtab-html").load("partials/faqtab.html?ver=0.2.8b");
                 </script>
               </div>
             </div>
-					  <div class="tab-pane fade" id="surveytab" role="tabpanel" aria-labelledby="survey-tab">
-              <div id="surveyContainer"></div>
+					  <div class="tab-pane fade pb-5" id="surveytab" role="tabpanel" aria-labelledby="survey-tab">
+              <div class="card">
+                <div class="card-body p-0">
+                  <div id="surveyContainer"></div>
+                </div>
+              </div>
             </div>
 					</div>
         </div>
@@ -346,17 +355,17 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js" integrity="sha256-my/qJggBjG+JoaR9MUSkYM+EpxVkxZRNn3KODs+el74=" crossorigin="anonymous"></script>
       <!-- Survey -->
       <script src="https://surveyjs.azureedge.net/1.1.23/survey.jquery.min.js"></script>
-      <script type="text/javascript" src="scripts/surveyJSON.js?ver=0.2.7e"></script>
+      <script type="text/javascript" src="scripts/surveyJSON.js?ver=0.2.8"></script>
       <!-- Local -->
       <script type="text/javascript" src="libraries/selectize.min.js?ver=v0.12.6"></script>
       <script type="text/javascript" src="libraries/defiant.min.js?ver=v2.2.6"></script>
-      <script type="text/javascript" src="scripts/survey.js?ver=0.2.7"></script>
-      <script type="text/javascript" src="scripts/projects.js?ver=0.2.7"></script>
-      <script type="text/javascript" src="scripts/issues.js?ver=0.2.7d"></script>
-      <script type="text/javascript" src="scripts/burndown.js?ver=0.2.7e"></script>
-      <script type="text/javascript" src="scripts/hours.js?ver=0.2.7"></script>
-      <script type="text/javascript" src="gitlab_servers.js?ver=0.2.7"></script>
-      <script type="text/javascript" src="scripts/main.js?ver=0.2.7b"></script>
+      <script type="text/javascript" src="scripts/survey.js?ver=0.2.8"></script>
+      <script type="text/javascript" src="scripts/projects.js?ver=0.2.8"></script>
+      <script type="text/javascript" src="scripts/issues.js?ver=0.2.8"></script>
+      <script type="text/javascript" src="scripts/burndown.js?ver=0.2.8"></script>
+      <script type="text/javascript" src="scripts/hours.js?ver=0.2.8"></script>
+      <script type="text/javascript" src="gitlab_servers.js?ver=0.2.8"></script>
+      <script type="text/javascript" src="scripts/main.js?ver=0.2.8"></script>
     </span>
   </body>
 </html>
