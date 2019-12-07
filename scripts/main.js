@@ -3,9 +3,10 @@ See Scripts folder for additional Scripts.
 This file contains general code and global variable declarations
 */
 
-var baseURL, currURL, serverDetails, gitlabKey, projectID, currProjectName, currProjecURL,
-    currProjStartDate, currUserName, projectList, lastUpdate, issueListArr,
-    issueListJSON, milestoneList, spentTimeList, estimateTimeList, paramDict,
+var baseURL, currURL, serverDetails, gitlabKey, feedbackRepo, projectID,
+    currProjectName, currProjecURL, currProjStartDate, currUserName, projectList,
+    lastUpdate, issueListArr, issueListJSON, milestoneList, spentTimeList,
+    estimateTimeList, paramDict,
     searchDict = {},
     isBookmark = false,
     isLoaded = false;
@@ -314,6 +315,7 @@ function restart() {
 
 function setupAuthenticate(server) {
   serverDetails = defiant.json.search( gitlabServers, '//*[id="' + server + '"]' )[0];
+  feedbackRepo = serverDetails.feedbackRepo;
 
   document.getElementById("base_url").value = serverDetails.baseURL;
 
@@ -398,8 +400,7 @@ function setFeedback() {
 }
 
 function setInit() {
-  let survey,
-      scrollAnimate = 500;
+  let scrollAnimate = 500;
 
   $("#estimate-type-dropdown").selectize();
 
@@ -409,19 +410,6 @@ function setInit() {
     $("html,body").animate({
       scrollTop: $card.offset().top
     }, scrollAnimate);
-  });
-
-  Survey.StylesManager.applyTheme("bootstrap");
-
-  function sendDataToServer(sendSurvey) {
-      //TODO Post as issue on Gitlab Repo
-      alert("The results are:" + JSON.stringify(sendSurvey.data));
-  }
-
-  survey = new Survey.Model(surveyJSON);
-  $("#surveyContainer").Survey({
-      model: survey,
-      onComplete: sendDataToServer
   });
 
   // $("#burndownchart-types").DataTable({

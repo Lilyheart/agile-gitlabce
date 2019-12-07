@@ -1,4 +1,5 @@
 var surveyJSON = {
+  "cookieName": "2019futureSurvey",
  "pages": [
   {
    "name": "page1",
@@ -58,7 +59,7 @@ var surveyJSON = {
      "elements": [
       {
        "type": "html",
-       "name": "question1",
+       "name": "futureOutline",
        "html": "  <h2>The Future</h2>\n\n    <p>In 2020, the website will be developed into a one-stop Scrum tool.  Several features will be added such as</p>\n    <ul>\n      <li>Managing Spent and Estimated time within the tool</li>\n      <li>Combinging several sprints into a release (aka Epic)</li>\n      <li>Managing User Stories that span several sprints</li>\n      <li>A more detailed breakdown of member information: Hours Assigned, Hours Completed and Percentage of assigned work completed</li>\n    </ul>"
       },
       {
@@ -203,23 +204,22 @@ var surveyJSON = {
    "elements": [
     {
      "type": "text",
-     "name": "question2",
+     "name": "annoying",
      "title": "What part(s) of the tool do you find annoying?"
     },
     {
      "type": "text",
-     "name": "question4",
+     "name": "helpful",
      "title": "What part(s) of the tool do you find the most helpful?"
     },
     {
      "type": "text",
-     "name": "question3",
+     "name": "wish",
      "title": "What else do you wish the website would do?"
     }
    ]
   }
  ],
- "cookieName": "agilesurvey",
  "showPageTitles": false,
  "showQuestionNumbers": "off"
 }

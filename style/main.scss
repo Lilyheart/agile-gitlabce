@@ -261,3 +261,18 @@ td a {
     @extend %inverse-color-text;
   }
 }
+
+.survey-tab {
+  -webkit-animation: flash linear 1.5s infinite;
+  animation: flash linear 1.5s infinite;
+}
+@-webkit-keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: .35; }
+  100% { opacity: 1; }
+}
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: .35; }
+  100% { opacity: 1; }
+}

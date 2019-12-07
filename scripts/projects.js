@@ -11,6 +11,8 @@ var projects = (function () {
     // projFilter = ["user", "all", "auto", "bookmarked"]
     let url, projectPages;
 
+    survey.surveyInit();
+
     // Build URL and get project list
     if (projFilter === "all" || currUserName === null) {
       url = baseURL + "projects?order_by=name&sort=asc&simple=true&" + gitlabKey;

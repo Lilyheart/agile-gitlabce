@@ -24,6 +24,7 @@
     "currURL": true,
     "serverDetails": true,
     "gitlabKey": true,
+    "feedbackRepo": true,
     "projectID": true,
     "currProjectName": true,
     "currProjecURL": true,
@@ -58,6 +59,7 @@
     "burndown": true,
     "hours": true,
     "Survey": true,
+    "survey": true,
     "surveyJSON": true
   },
   "rules": {
