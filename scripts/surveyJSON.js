@@ -6,7 +6,8 @@ var surveyJSON = {
    "elements": [
     {
      "type": "html",
-     "name": "Thanks for shopping with Waves Inc. We'd love to know a bit more about your experience with us."
+     "name": "survey",
+     "html": "<h2>Thank You</h2>\n<p>Thank you for taking the time to provide your feedback on this tool.  Your feedback will help set the future direction of the site.</p>"
     },
     {
      "type": "panel",
@@ -66,6 +67,7 @@ var surveyJSON = {
        "type": "dropdown",
        "name": "prio_1",
        "title": "What is your top priority?",
+       "isRequired": true,
        "hasOther": true,
        "choices": [
         {
@@ -91,6 +93,7 @@ var surveyJSON = {
        "name": "prio_2a",
        "visibleIf": "{prio_1} = \"time\"",
        "title": "What is your second priority?",
+       "isRequired": true,
        "hasOther": true,
        "choices": [
         {
@@ -112,6 +115,7 @@ var surveyJSON = {
        "name": "prio_2b",
        "visibleIf": "{prio_1} = \"epic\"",
        "title": "What is your second priority?",
+       "isRequired": true,
        "hasOther": true,
        "choices": [
         {
@@ -133,6 +137,7 @@ var surveyJSON = {
        "name": "prio_2c",
        "visibleIf": "{prio_1} = \"tasks\"",
        "title": "What is your second priority?",
+       "isRequired": true,
        "hasOther": true,
        "choices": [
         {
@@ -154,6 +159,7 @@ var surveyJSON = {
        "name": "prio_2d",
        "visibleIf": "{prio_1} = \"users\"",
        "title": "What is your second priority?",
+       "isRequired": true,
        "hasOther": true,
        "choices": [
         {
@@ -175,6 +181,7 @@ var surveyJSON = {
        "name": "prio_2e",
        "visibleIf": "{prio_1} = \"other\"",
        "title": "What is your second priority?",
+       "isRequired": true,
        "hasOther": true,
        "choices": [
         {

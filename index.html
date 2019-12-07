@@ -183,7 +183,12 @@
 					    <a class="nav-link active" id="faq-tab" data-toggle="tab" href="#faqtab" role="tab" aria-controls="faqtab" aria-selected="true" onclick="checkForUpdates()">FAQ</a>
 					  </li>
 					  <li class="nav-item d-none" id="survey-tab-item">
-					    <a class="nav-link survey-tab" id="survey-tab" data-toggle="tab" href="#surveytab" role="tab" aria-controls="surveytab" aria-selected="true" onclick="checkForUpdates()">Survey</a>
+					    <a class="nav-link survey-tab" id="survey-tab" data-toggle="tab" href="#surveytab" role="tab" aria-controls="surveytab" aria-selected="true" onclick="checkForUpdates()">
+                Survey
+                <button type="button" class="close surveyclose" aria-label="Close" onclick="document.getElementById('survey-tab-item').classList.add('d-none');">
+                  <span aria-hidden="true"> &times;</span>
+                </button>
+              </a>
 					  </li>
 					</ul>
 					<div class="tab-content" id="myTabContent">
@@ -318,8 +323,12 @@
                 </script>
               </div>
             </div>
-					  <div class="tab-pane fade" id="surveytab" role="tabpanel" aria-labelledby="survey-tab">
-              <div id="surveyContainer"></div>
+					  <div class="tab-pane fade pb-5" id="surveytab" role="tabpanel" aria-labelledby="survey-tab">
+              <div class="card">
+                <div class="card-body p-0">
+                  <div id="surveyContainer"></div>
+                </div>
+              </div>
             </div>
 					</div>
         </div>
