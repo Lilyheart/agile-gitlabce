@@ -76,6 +76,8 @@ var issues = (function () {
     }
     $("#issueerrorstable").DataTable({
       responsive: true,
+      searching: false,
+      lengthChange: false,
       data: issueErrorArr.filter(issue => issue.hasOwnProperty("error")),
       columns: [
         {title: "Issue", data: "error"},
@@ -120,6 +122,8 @@ var issues = (function () {
     }
     $("#issuewarningstable").DataTable({
       responsive: true,
+      searching: false,
+      lengthChange: false,
       data: issueErrorArr.filter(issue => issue.hasOwnProperty("warning")),
       columns: [
         {title: "Issue", data: "warning"},
