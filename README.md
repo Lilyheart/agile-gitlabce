@@ -26,6 +26,9 @@ Not current accepting pull requests.
 
 ## History
 
+### [[0.3.0]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.7) - 2020-02-20
+Added Releases [Beta].
+
 ### [[0.2.8]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.8) - 2019-12-07
 Feedback survey for end of semester.
 

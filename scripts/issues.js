@@ -376,7 +376,9 @@ var issues = (function () {
     setPhase("issue_end");
 
     burndown.setBurndownUnloaded();
+    release.setReleaseUnloaded();
     await burndown.updateBurndown("Auto");
+    await release.updateRelease("Auto");
   }
 
   return {

@@ -57,6 +57,7 @@
     "projects": true,
     "issues": true,
     "burndown": true,
+    "release": true,
     "hours": true,
     "Survey": true,
     "survey": true,
