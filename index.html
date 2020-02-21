@@ -25,6 +25,8 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <!-- For sorting sprints on the release tab -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
 
   <body>
@@ -176,6 +178,9 @@
             <li class="nav-item">
               <a class="nav-link disabled" id="burndown-tab" data-toggle="tab" href="#burndowntab" role="tab" aria-controls="burndowntab" aria-selected="false" onclick="checkForUpdates()">Burndown</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" id="release-tab" data-toggle="tab" href="#releasetab" role="tab" aria-controls="releasetab" aria-selected="false" onclick="checkForUpdates()">Release <span class="badge badge-secondary">Beta</span></a>
+            </li>
 					  <li class="nav-item d-none" id="error-tab-item">
 					    <a class="nav-link error" id="errors-tab" data-toggle="tab" href="#errorstab" role="tab" aria-controls="errorstab" aria-selected="false" onclick="checkForUpdates()">Errors</a>
 					  </li>
@@ -251,6 +256,43 @@
                     Time not included in this table include tasks such as writing up reports, meeting with clients, etc.
                   </p>
                 </div>
+              </div>
+            </div>
+					  <div class="tab-pane fade" id="releasetab" role="tabpanel" aria-labelledby="release-tab">
+              <div id="release-unavailable" style="display: none">
+                <p>
+									Release charts are only available when logged in using an API Key.
+								</p>
+              </div>
+              <div id="release" style="display: none">
+                <div id="release-selection" class="release-selection form-group row">
+                  <p class="col-sm-12">
+                    <span class="badge badge-primary">Hint</span> Click on three lines on the upper right of the chart to download, print, and view in full screen.
+                  </p>
+
+                  <label for="" class="col-sm-3 col-form-label">
+                    Release name (for chart):
+                  </label>
+                  <div class="col-sm-9 input-group mb-2">
+                    <input type="text" class="form-control" id="release-name" placeholder="" aria-label="Release Name" aria-describedby="basic-addon2" onchange="release.updateRelease('Auto')">
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"  onclick="release.updateRelease('Auto')">Update</span>
+                    </div>
+                  </div>
+
+                  <label for="release-dropdown" class="col-sm-3 col-form-label">
+                    Select Sprints:
+                    <a id="release-link" class="d-none" href="#" target="_blank">
+                      <i class="fa fa-external-link" aria-hidden="true"></i>
+                    </a>
+                  </label>
+                  <div class="col-sm-9 input-group">
+                    <input id="release-dropdown" type="text" name="release_id" class="form-control align-self-center" value="" onchange="release.updateRelease(this.value)">
+                    </input>
+                  </div>
+
+                </div>
+                <div id="release-chart" style="height: 400px"></div>
               </div>
             </div>
 					  <div class="tab-pane fade" id="errorstab" role="tabpanel" aria-labelledby="errors-tab">
@@ -342,11 +384,12 @@
       <script type="text/javascript" src="libraries/selectize.min.js?ver=v0.12.6"></script>
       <script type="text/javascript" src="libraries/defiant.min.js?ver=v2.2.6"></script>
       <script type="text/javascript" src="scripts/projects.js?ver=0.2.7"></script>
-      <script type="text/javascript" src="scripts/issues.js?ver=0.2.7d"></script>
+      <script type="text/javascript" src="scripts/issues.js?ver=0.3.0"></script>
       <script type="text/javascript" src="scripts/burndown.js?ver=0.2.7e"></script>
+      <script type="text/javascript" src="scripts/release.js?ver=0.3.0"></script>
       <script type="text/javascript" src="scripts/hours.js?ver=0.2.7"></script>
       <script type="text/javascript" src="gitlab_servers.js?ver=0.2.7"></script>
-      <script type="text/javascript" src="scripts/main.js?ver=0.2.7b"></script>
+      <script type="text/javascript" src="scripts/main.js?ver=0.3.0"></script>
     </span>
   </body>
 </html>

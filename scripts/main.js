@@ -196,6 +196,9 @@ function setPhase(newPhase) {
     document.getElementById("burndown-unavailable").style.display = "none";
     document.getElementById("burndown").style.display = "none";
     document.getElementById("show_hours").style.display = "none";
+
+    document.getElementById("release-unavailable").style.display = "none";
+    document.getElementById("release").style.display = "none";
   }
 
   if (newPhase === "oAuth") {
@@ -249,6 +252,10 @@ function setPhase(newPhase) {
     document.getElementById("burndown-tab").classList.add("disabled");
     $("#burndown_progress").attr("aria-valuenow", 0).css("width", 0 + "%");
 
+    // Setup release sections
+    document.getElementById("release-tab").classList.add("disabled");
+    $("#release_progress").attr("aria-valuenow", 0).css("width", 0 + "%");
+
     // Disable changing any options
     $("#base_url").prop("disabled", true);
     $("#gitlab_key").prop("disabled", true);
@@ -269,16 +276,24 @@ function setPhase(newPhase) {
 
   if (newPhase === "burndown_start") {
     document.getElementById("btnGetIssues").innerHTML = spinnerText + "&nbsp;&nbsp;Loading Burndown";
-    document.getElementById("burndown").style.display = "none";
     document.getElementById("show_hours").style.display = "none";
+    document.getElementById("burndown").style.display = "none";
     document.getElementById("loading_burndown").style.display = "block";
     document.getElementById("burndown-tab").classList.remove("disabled");
+
+    document.getElementById("release").style.display = "none";
+    // document.getElementById("loading_release").style.display = "block";
+    document.getElementById("release-tab").classList.remove("disabled");
   }
 
   if (newPhase === "burndown_end") {
     document.getElementById("loading_burndown").style.display = "none";
     document.getElementById("burndown").style.display = "block";
     document.getElementById("show_hours").style.display = "block";
+
+    // document.getElementById("loading_release").style.display = "none";
+    document.getElementById("release").style.display = "block";
+
     document.getElementById("btnGetIssues").innerHTML = "Reload Issues";
 
     isLoaded = true;
