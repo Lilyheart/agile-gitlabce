@@ -38,25 +38,17 @@ var hours = (function () {
       data: sprintHoursArr,
       columns: [
         {title: "Team member", data: "author"},
-        {title: "Hr Assigned", data: "assigned"},
-        {title: "Hr Completed*", data: "completed"},
-        {title: "Percent Complete"}
+        {title: "Hr Completed*", data: "completed"}
       ],
       columnDefs: [{
         render: function ( data, type, row ) {
-          // return Math.round((row.completed / row.assigned) * PERCENT) + "%";
-          return "Coming Soon";
-        },
-        targets: 3
-      }, {
-        render: function ( data, type, row ) {
           return +(data).toFixed(DECIMALPLACES);
         },
-        targets: 2
+        targets: 1
       }, {
         responsivePriority: 1, targets: 0
       }, {
-        responsivePriority: 2, targets: 2
+        responsivePriority: 2, targets: 1
       }],
       paging: false,
       bInfo: false
