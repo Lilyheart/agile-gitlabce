@@ -50,12 +50,14 @@ var issues = (function () {
     } else {
       label = issueErrorArr.length;
     }
-    if (errCount > 0) {
-      document.getElementById("errors-tab").innerHTML = "Errors <span class='badge badge-light'>" + label + "</span>";
-      document.getElementById("errors-tab").classList.add("error");
-    } else if (warnCount > 0) {
-      document.getElementById("errors-tab").innerHTML = "Warnings <span class='badge badge-light'>" + label + "</span>";
-      document.getElementById("errors-tab").classList.remove("error");
+    if (rootPage !== "report.html") {
+      if (errCount > 0) {
+        document.getElementById("errors-tab").innerHTML = "Errors <span class='badge badge-light'>" + label + "</span>";
+        document.getElementById("errors-tab").classList.add("error");
+      } else if (warnCount > 0) {
+        document.getElementById("errors-tab").innerHTML = "Warnings <span class='badge badge-light'>" + label + "</span>";
+        document.getElementById("errors-tab").classList.remove("error");
+      }
     }
 
     if (errCount > 0) {
@@ -162,8 +164,10 @@ var issues = (function () {
     });
 
     // Display tab
-    document.getElementById("errors-tab").classList.remove("disabled");
-    document.getElementById("error-tab-item").classList.remove("d-none");
+    if (rootPage !== "report.html") {
+      document.getElementById("errors-tab").classList.remove("disabled");
+      document.getElementById("error-tab-item").classList.remove("d-none");
+    }
   }
 
   function addIssueError(issue, errorMessage) {
@@ -185,8 +189,10 @@ var issues = (function () {
 
     issueErrorArr = [];
 
-    document.getElementById("errors-tab").classList.add("disabled");
-    document.getElementById("error-tab-item").classList.add("d-none");
+    if (rootPage !== "report.html") {
+      document.getElementById("errors-tab").classList.add("disabled");
+      document.getElementById("error-tab-item").classList.add("d-none");
+    }
 
     for (let issueIndex in issueListArr) {
       if (issueListArr.hasOwnProperty(issueIndex)) {
@@ -378,7 +384,11 @@ var issues = (function () {
     burndown.setBurndownUnloaded();
     release.setReleaseUnloaded();
     await burndown.updateBurndown("Auto");
-    await release.updateRelease("Auto");
+    if (rootPage !== "report.html") {
+      await release.updateRelease("Auto");
+    } else {
+      await report.loadReport();
+    }
   }
 
   return {

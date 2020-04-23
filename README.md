@@ -26,7 +26,12 @@ Not current accepting pull requests.
 
 ## History
 
-### [[0.3.0]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.7) - 2020-02-20
+### [[0.3.1]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.1) - 2020-04-23
+Added OpenGraph attributes.
+Hid Survey.
+Removed columns from hours table.
+
+### [[0.3.0]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.0) - 2020-02-20
 Added Releases [Beta].
 
 ### [[0.2.8]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.8) - 2019-12-07

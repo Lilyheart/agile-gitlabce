@@ -411,16 +411,18 @@ var burndown = (function () {
     }
 
     // Add selectize
-    $("#milestone-dropdown").selectize()[0].selectize.destroy();
-    $("#milestone-dropdown").selectize({
-      valueField: "iid",
-      labelField: "dropdownText",
-      searchField: "dropdownText",
-      options: Object.values(milestoneList),
-      disabledField: "disabled",
-      create: false
-    });
-    $("#milestone-dropdown").selectize()[0].selectize.setValue(selectedMilestone, false);
+    if (rootPage !== "report.html") {
+      $("#milestone-dropdown").selectize()[0].selectize.destroy();
+      $("#milestone-dropdown").selectize({
+        valueField: "iid",
+        labelField: "dropdownText",
+        searchField: "dropdownText",
+        options: Object.values(milestoneList),
+        disabledField: "disabled",
+        create: false
+      });
+      $("#milestone-dropdown").selectize()[0].selectize.setValue(selectedMilestone, false);
+    }
 
   }
 

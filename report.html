@@ -4,11 +4,11 @@
     <!-- Page Information -->
     <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agile Gitlab CE</title>
+    <title>Agile Gitlab CE - Generate Report</title>
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <!-- Open Graph -->
     <meta property="og:url"           content="https://lilyheart.github.io/agile-gitlabce/" />
-    <meta property="og:title"         content="Burndown for Gitlab CE" />
+    <meta property="og:title"         content="Student Reports for Gitlab CE" />
     <meta property="og:description"   content="This project is to fill in the missing gaps regarding the Agile/Scrum workflow in a CE Gitlab installation.  Utilizes the Gitlab API to generate additional reports such as Burndown charts and hours spent by team members." />
     <meta property="og:image"         content="https://lilyheart.github.io/agile-gitlabce/media/ase.jpg" />
     <meta property="og:image:type"    content="1510" />
@@ -71,9 +71,8 @@
         <div class="col-md-4 col-sm-12">
           <hr />
           <h3 class="pad-below">Gitlab Setup</h3>
+
           <div id="gitlab_auth">
-
-
             <ul class="nav nav-pills nav-justified mb-3" id="pills-tab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="gitlab_auth_oauth" data-toggle="pill" href="#pills-auth-oauth" role="tab" aria-controls="pills-auth-oauth" aria-selected="true">
@@ -184,91 +183,71 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-					<ul class="nav nav-tabs" id="myTab" role="tablist">
-					  <li class="nav-item">
-					    <a class="nav-link disabled" id="issues-tab" data-toggle="tab" href="#issuestab" role="tab" aria-controls="issuestab" aria-selected="false" onclick="checkForUpdates()">Issues</a>
-					  </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" id="burndown-tab" data-toggle="tab" href="#burndowntab" role="tab" aria-controls="burndowntab" aria-selected="false" onclick="checkForUpdates()">Burndown</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" id="release-tab" data-toggle="tab" href="#releasetab" role="tab" aria-controls="releasetab" aria-selected="false" onclick="checkForUpdates()">Release <span class="badge badge-secondary">Beta</span></a>
-            </li>
-					  <li class="nav-item d-none" id="error-tab-item">
-					    <a class="nav-link error" id="errors-tab" data-toggle="tab" href="#errorstab" role="tab" aria-controls="errorstab" aria-selected="false" onclick="checkForUpdates()">Errors</a>
-					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link active" id="faq-tab" data-toggle="tab" href="#faqtab" role="tab" aria-controls="faqtab" aria-selected="true" onclick="checkForUpdates()">FAQ</a>
-					  </li>
-					  <!-- <li class="nav-item d-none" id="survey-tab-item">
-					    <a class="nav-link survey-tab" id="survey-tab" data-toggle="tab" href="#surveytab" role="tab" aria-controls="surveytab" aria-selected="true" onclick="checkForUpdates()">
-                Survey
-                <button type="button" class="close surveyclose" aria-label="Close" onclick="document.getElementById('survey-tab-item').classList.add('d-none');">
-                  <span aria-hidden="true"> &times;</span>
+          <div id="loading_burndown" style="display: none">
+            Loading Sprints...
+            <div class="progress m-5"  style="height: 2rem;">
+              <div id="burndown_progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
+            </div>
+          </div>
+
+          <div id="project_report" class="d-none">
+            <h3>Project Summary</h3>
+            <div id="error-counts"></div> <!-- There are 3 errors and 1 warning. -->
+
+            <h3 class="mt-3">Project Details</h3>
+            <div id="issue_error_section" class="d-none">
+              <div class="alert alert-primary" role="alert" data-toggle="collapse" data-target="#issue_errors">
+                <h4 class="d-inline-flex">User Story Errors</h4>
+                <button type="button" class="h-100">
+                  <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
                 </button>
-              </a>
-					  </li> -->
-					</ul>
-					<div class="tab-content" id="myTabContent">
-					  <div class="tab-pane fade" id="issuestab" role="tabpanel" aria-labelledby="issues-tab">
-              <div id="loading_issues" style="display: none">
-                <div class="d-flex justify-content-center m-5">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    &nbsp;&nbsp;Loading Issues...
-                </div>
               </div>
-              <div id="gitlab_show_issues" style="display: none">
-                <table id="issuestable" class="table table-dark table-hover" style="width:100%;"></table>
+              <div id="issue_errors" class="collapse mb-5">
+                <p>Types of issues and possible solution ideas.</p>
+                <ul class="mb-4">
+                  <li><strong>Spent time with no estimate:</strong>
+                    <ul>
+                      <li>Add estimated time</li>
+                      <li>Remove incorrectly added spent time</li>
+                    </ul>
+                  </li>
+                  <li><strong>More spent time than estimated:</strong>
+                    <ul>
+                      <li>Correct estimated time</li>
+                      <li>Remove incorrectly added spent time</li>
+                    </ul>
+                  </li>
+                </ul>
+                <table id="issueerrorstable" class="table table-dark table-hover" style="width:100%;"></table>
               </div>
             </div>
-					  <div class="tab-pane fade" id="burndowntab" role="tabpanel" aria-labelledby="burndown-tab">
-              <div id="loading_burndown" style="display: none">
-                Loading Burndown...
-                <div class="progress m-5"  style="height: 2rem;">
-                  <div id="burndown_progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
-                </div>
+            <div id="issue_warning_section" class="d-none mb-3">
+              <div class="alert alert-primary mt-3" role="alert"  data-toggle="collapse" data-target="#issue_warning">
+                <h4 class="d-inline-flex">User Story Warnings</h4>
+                <button type="button" class="h-100">
+                  <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                </button>
               </div>
-              <div id="burndown-unavailable" style="display: none">
-                <p>
-									Burndown charts are only available when logged in using an API Key.
-								</p>
-              </div>
-              <div id="burndown" style="display: none">
-                <div id="milestone-selection" class="milestone-selection form-group row">
-                  <p class="col-sm-12">
-                    <span class="badge badge-primary">Hint</span> Click on three lines on the upper right of the chart to download, print, and view in full screen.
-                  </p>
-                  <label for="milestone-dropdown" class="col-sm-3 col-form-label">
-                    Show Milestone:
-                    <a id="milestone-link" class="d-none" href="#" target="_blank">
-                      <i class="fa fa-external-link" aria-hidden="true"></i>
-                    </a>
-                  </label>
-                  <div class="col-sm-9">
-                    <select id="milestone-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.updateBurndown(this.options[this.selectedIndex].value)">
-                    </select>
-                  </div>
-                  <label for="estimate-type-dropdown" class="col-sm-3 col-form-label">Estimate Type: <a href="#" data-target="#collapse-burndown-types" onclick="document.getElementById('faq-tab').click();$('#collapse-burndown-types').collapse('show')"><i class="fa fa-info-circle" aria-hidden="true"></i></a></label>
-                  <div class="col-sm-9">
-                    <select id="estimate-type-dropdown" class="align-self-center" name="milestone_id" onchange="burndown.setEstimateStyle(this.value)">
-                      <option value="Final">Use Final Estimate Only</option>
-                      <option value="Changes">Show Changes in Estimate</option>
-                    </select>
-                  </div>
-                </div>
-                <div id="burndown-chart" style="height: 400px"></div>
-                <hr />
-                <div class="alert alert-dark alert-dismissible fade show" role="alert">
-                  The following section is under development.
+              <div id="issue_warning" class="collapse">
+              <p>Types of issues and possible solution ideas.</p>
+                <ul class="mb-4">
+                  <li><strong>Missing estimate:</strong> </li>
                   <ul>
-                    <li>Hr Completed shows the actual total of time marked as spent by each user.</li>
-                    <li>Hr Assigned is not currently determined.
+                    <li>Close the issue</li>
+                    <li>Add an estimate</li>
                   </ul>
-                  If spent hours are assigned to the incorrect person, this can be fixed.  Please contact Lily Romano for more information.
-                  <button type="button" class="close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
+                </ul>
+                <table id="issuewarningstable" class="table table-dark table-hover" style="width:100%;"></table>
+              </div>
+            </div>
+            <div id="hours_section" class="mb-3">
+              <div class="alert alert-primary mt-3" role="alert"  data-toggle="collapse" data-target="#hours">
+                <h4 class="d-inline-flex">Total Hours Reported</h4>
+                <button type="button" class="h-100">
+                  <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                </button>
+              </div>
+              <div id="hours" class="collapse">
                 <div id="show_hours" style="display: none">
                   <table id="hourstable" class="table table-dark table-hover" style="width:100%;"></table>
                   <p>
@@ -279,113 +258,36 @@
                 </div>
               </div>
             </div>
-            <div class="tab-pane fade" id="releasetab" role="tabpanel" aria-labelledby="release-tab">
-              <div id="release-unavailable" style="display: none">
-                <p>
-                  Release charts are only available when logged in using an API Key.
-                </p>
+            <div id="sprint_burndowns_section" class="mb-3">
+              <div class="alert alert-primary" role="alert" data-toggle="collapse" data-target="#sprint_burndowns">
+                <h4 class="d-inline-flex">Sprint Burndown Charts</h4>
+                <button type="button" class="h-100">
+                  <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                </button>
               </div>
-              <div id="release" style="display: none">
-                <div id="release-selection" class="release-selection form-group row">
-                  <p class="col-sm-12">
-                    <span class="badge badge-primary">Hint</span> Click on three lines on the upper right of the chart to download, print, and view in full screen.
-                  </p>
-
-                  <label for="" class="col-sm-3 col-form-label">
-                    Release name (for chart):
-                  </label>
-                  <div class="col-sm-9 input-group mb-2">
-                    <input type="text" class="form-control" id="release-name" placeholder="" aria-label="Release Name" aria-describedby="basic-addon2" onchange="release.updateRelease('Auto')">
-                    <div class="input-group-append">
-                      <span class="input-group-text" id="basic-addon2"  onclick="release.updateRelease('Auto')">Update</span>
-                    </div>
-                  </div>
-
-                  <label for="release-dropdown" class="col-sm-3 col-form-label">
-                    Select Sprints:
-                    <a id="release-link" class="d-none" href="#" target="_blank">
-                      <i class="fa fa-external-link" aria-hidden="true"></i>
-                    </a>
-                  </label>
-                  <div class="col-sm-9 input-group">
-                    <input id="release-dropdown" type="text" name="release_id" class="form-control align-self-center" value="" onchange="release.updateRelease(this.value)">
-                    </input>
-                  </div>
-
-                </div>
-                <div id="release-chart" style="height: 400px"></div>
+              <div id="sprint_burndowns" class="collapse mb-5">
+                <p>Charts Here.</p>
               </div>
             </div>
-					  <div class="tab-pane fade" id="errorstab" role="tabpanel" aria-labelledby="errors-tab">
-              <p id="error-counts">
-                There are 0 errors and 0 warnings.
-              </p>
-              <p>
-                <span class="badge badge-primary">Hint</span> Click on the issue title to open the issue on Gitlab.
-              </p>
-
-              <div id="issue_error_section">
-                <div class="alert alert-primary" role="alert" data-toggle="collapse" data-target="#issue_errors">
-                  <h4 class="d-inline-flex">Errors</h4>
-                  <button type="button" class="h-100">
-                    <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
-                  </button>
-                </div>
-                <div id="issue_errors" class="collapse show mb-5">
-                  <p>Types of issues and possible solution ideas.</p>
-                  <ul class="mb-4">
-                    <li><strong>Spent time with no estimate:</strong>
-                      <ul>
-                        <li>Add estimated time</li>
-                        <li>Remove incorrectly added spent time</li>
-                      </ul>
-                    </li>
-                    <li><strong>More spent time than estimated:</strong>
-                      <ul>
-                        <li>Correct estimated time</li>
-                        <li>Remove incorrectly added spent time</li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <table id="issueerrorstable" class="table table-dark table-hover" style="width:100%;"></table>
-                </div>
+            <div id="project_burndown_section" class="mb-3">
+              <div class="alert alert-primary" role="alert" data-toggle="collapse" data-target="#project_burndown">
+                <h4 class="d-inline-flex">Project Burndown Chart</h4>
+                <button type="button" class="h-100">
+                  <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                </button>
               </div>
-
-              <div id="issue_warning_section" class="mb-3">
-                <div class="alert alert-primary mt-3" role="alert"  data-toggle="collapse" data-target="#issue_warning">
-                  <h4 class="d-inline-flex">Warnings</h4>
-                  <button type="button" class="h-100">
-                    <span aria-hidden="true" class="align-middle"><i class="fa fa-sort" aria-hidden="true"></i></span>
-                  </button>
-                </div>
-                <div id="issue_warning" class="collapse show">
-                <p>Types of issues and possible solution ideas.</p>
-                  <ul class="mb-4">
-                    <li><strong>Missing estimate:</strong> </li>
-                    <ul>
-                      <li>Close the issue</li>
-                      <li>Add an estimate</li>
-                    </ul>
-                  </ul>
-                  <table id="issuewarningstable" class="table table-dark table-hover" style="width:100%;"></table>
-                </div>
+              <div id="project_burndown" class="collapse mb-5">
+                <p>Charts Here.</p>
               </div>
             </div>
-					  <div class="tab-pane fade show active" id="faqtab" role="tabpanel" aria-labelledby="faq-tab">
-              <div id="faqtab-html">
-                <script>
-                  $("#faqtab-html").load("partials/faqtab.html?ver=0.2.8b");
-                </script>
-              </div>
-            </div>
-					  <!-- <div class="tab-pane fade pb-5" id="surveytab" role="tabpanel" aria-labelledby="survey-tab">
-              <div class="card">
-                <div class="card-body p-0">
-                  <div id="surveyContainer"></div>
-                </div>
-              </div>
-            </div> -->
-					</div>
+
+
+
+            <a id="milestone-link" class="d-none" href="#" target="_blank">
+              <i class="fa fa-external-link" aria-hidden="true"></i>
+            </a>
+
+          </div>
         </div>
       </div> <!-- end class="row" -->
     </div>
@@ -415,6 +317,7 @@
       <script type="text/javascript" src="libraries/selectize.min.js?ver=v0.12.6"></script>
       <script type="text/javascript" src="libraries/defiant.min.js?ver=v2.2.6"></script>
       <!-- <script type="text/javascript" src="scripts/survey.js?ver=0.2.8"></script> -->
+      <script type="text/javascript" src="scripts/report.js?ver=0.3.0"></script>
       <script type="text/javascript" src="scripts/projects.js?ver=0.2.8"></script>
       <script type="text/javascript" src="scripts/issues.js?ver=0.3.1"></script>
       <script type="text/javascript" src="scripts/burndown.js?ver=0.3.1"></script>
