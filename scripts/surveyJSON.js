@@ -228,6 +228,19 @@ var surveyJSON = {
      "type": "text",
      "name": "wish",
      "title": "What else do you wish the website would do?"
+    },
+    {
+      "type": "boolean",
+      "name": "isContact",
+      "title": "Would you like to be involved the next version of the tool?  This could be as easy as a quick interview after the semester ends or as involved as testing and informing the direction of the new website. (Note: toggle is buggy on some browsers, make sure your selection is correct.)",
+      "labelTrue": "Yes",
+      "labelFalse": "No"
+    },
+    {
+     "type": "text",
+     "name": "contact",
+     "visibleIf": "{isContact} = true",
+     "title": "Please enter your email address (an address you will check during the summer semester).  This email address will not be made public."
     }
    ]
   }

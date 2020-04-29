@@ -11,7 +11,7 @@ var projects = (function () {
     // projFilter = ["user", "all", "auto", "bookmarked"]
     let url, projectPages;
 
-    // survey.surveyInit();
+    survey.surveyInit();
 
     // Build URL and get project list
     if (projFilter === "all" || currUserName === null) {
