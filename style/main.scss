@@ -94,9 +94,13 @@ a, a:hover {
     @extend %inverse-color-text;
     border-color: $color-primary-0;
   }
-  &.btn {
+  &.btn-lg {
     font-weight: bold;
     letter-spacing: 3px;
+  }
+  &.btn-sm {
+    font-weight: 400;
+    letter-spacing: 0;
   }
   &:not(.active):not(button) {
     background-color: $color-primary-4;
@@ -118,6 +122,13 @@ a, a:hover {
   }
 }
 .btn-secondary {
+  background-color: $color-secondary-2-0;
+  color: $color-primary-0-inverse;
+  &:not(:disabled):not(.disabled).active {
+    @extend %inverse-color-text;
+  }
+}
+.btn-tertiary {
   background-color: $color-primary-0-disabled;
   color: $color-primary-3;
   &:not(:disabled):not(.disabled).active {
@@ -274,7 +285,7 @@ td a {
   animation: flash linear 1.5s infinite;
 }
 .sv_main.sv_main .sv-boolean__switch {
-  background-color: $color-primary-0; !important;
+  background-color: $color-primary-0 !important;
 }
 @-webkit-keyframes flash {
   0% { opacity: 1; }
@@ -288,4 +299,25 @@ td a {
 }
 .surveyclose {
   color: $color-primary-3;
+}
+
+/* KOFI Button */
+
+img.kofiimg {
+  height: 13px;
+  width: 20px;
+  padding-right: 5px;
+  animation: kofi-wiggle 3s infinite;
+}
+
+@keyframes kofi-wiggle {
+  0%{transform:rotate(0) scale(1)}
+  60%{transform:rotate(0) scale(1)}
+  75%{transform:rotate(0) scale(1.12)}
+  80%{transform:rotate(0) scale(1.1)}
+  84%{transform:rotate(-10deg) scale(1.1)}
+  88%{transform:rotate(10deg) scale(1.1)}
+  92%{transform:rotate(-10deg) scale(1.1)}
+  96%{transform:rotate(10deg) scale(1.1)}
+  100%{transform:rotate(0) scale(1)}
 }
