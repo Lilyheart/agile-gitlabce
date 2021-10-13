@@ -246,15 +246,16 @@ var burndown = (function () {
   }
 
   function parseNotes() {
-    let noteableIID, addSubRE, matchAddSub, tempSpentTimeList, spent,
-        estimateRE, matchEst, tempEstTimeList, estimate,
-        date, timeParts, timePart, dupDate;
+    let noteableIID, addSubREimplicit, addSubREexplicit, matchAddSub,
+        tempSpentTimeList, spent, estimateRE, matchEst, tempEstTimeList,
+        estimate, date, timeParts, timePart, dupDate;
     // let matchAddSub;
 
     // Go through notes to get changes in spend & estimates
     noteableIID = "Empty Note";
 
-    addSubRE = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
+    addSubREimplicit = /(added|subtracted) (.*) of time spent/;
+    addSubREexplicit = /(added|subtracted) (.*) of time spent at (.*)-(.*)-(.*)/;
     spentTimeList = [];
     tempSpentTimeList = [];
 
@@ -274,12 +275,30 @@ var burndown = (function () {
 
       // ******************************* SPENDS *******************************
 
-      matchAddSub = note.body.match(addSubRE);
+      matchAddSub = note.body.match(addSubREimplicit);
 
       // If time spent was added or subtracted
       spent = 0;
       if (matchAddSub !== null) {
-        date = Date.UTC(parseInt(matchAddSub[3], 10), parseInt(matchAddSub[4], 10) - 1, parseInt(matchAddSub[5], 10));
+        // Determine date
+        if (note.body.match(addSubREexplicit) !== null) {
+          matchAddSub = note.body.match(addSubREexplicit);
+
+          matchAddSub[3] = parseInt(matchAddSub[3], 10);
+          matchAddSub[4] = parseInt(matchAddSub[4], 10);
+          matchAddSub[5] = parseInt(matchAddSub[5], 10);
+        } else {
+          date = new Date(note.created_at);
+
+          matchAddSub[3] = date.getFullYear();
+          matchAddSub[4] = date.getMonth() + 1;
+          matchAddSub[5] = date.getDate();
+        }
+
+        date = Date.UTC(parseInt(matchAddSub[3], 10),
+                        parseInt(matchAddSub[4], 10) - 1,
+                        parseInt(matchAddSub[5], 10));
+
         timeParts = matchAddSub[2].split(" ");
         for (let timesIndex in timeParts) {
           if (timeParts.hasOwnProperty(timesIndex)) {

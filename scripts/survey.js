@@ -16,7 +16,7 @@ var survey = (function () {
       return;
     }
 
-    document.getElementById("survey-tab-item").classList.remove("d-none");
+    // document.getElementById("survey-tab-item").classList.remove("d-none");
 
     Survey.StylesManager.applyTheme("bootstrap");
 
@@ -31,7 +31,7 @@ var survey = (function () {
       };
       $.post(url, data, function(rData, status) {});
 
-      document.getElementById("survey-tab-item").classList.add("d-none");
+      // document.getElementById("survey-tab-item").classList.add("d-none");
     }
 
     $("#surveyContainer").Survey({
