@@ -450,7 +450,7 @@ $(document).ready(function() {
   rootPage = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
 
   if (rootPage !== "report.html") {
-    setFeedback();
+    // setFeedback();
     getAgilePlans();
     setInit();
   }

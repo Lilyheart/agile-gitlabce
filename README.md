@@ -26,8 +26,11 @@ Not current accepting pull requests.
 
 ## History
 
+### [[0.3.3]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.3) - 2021-10-28
+Removed feedback library and updated link to go directly to Bucknell's Gitlab.  This change will break the link for non-Bucknell users.
+
 ### [[0.3.2]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.2) - 2021-10-13
-Updated burndown date calculation to match GitLab changes 
+Updated burndown date calculation to match GitLab changes
 Hid Survey.
 
 ### [[0.3.1]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.1) - 2020-04-23

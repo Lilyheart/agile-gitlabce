@@ -40,7 +40,7 @@
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Feedback -->
-    <link rel="stylesheet" href="libraries/feedback.css?ver=2012">
+    <!-- <link rel="stylesheet" href="libraries/feedback.css?ver=2012"> -->
     <!-- Local -->
     <link rel="stylesheet" href="libraries/selectize.bootstrap3.css?ver=v0.12.6">
     <link rel="stylesheet" href="style/main.min.css?ver=0.2.8" media="screen" title="no title" charset="utf-8">
@@ -71,7 +71,9 @@
       <!-- Menu Bar -->
       <div id="stripe" class="stripe">
         <div class="dropdown">
-          <button id="feedback-link">Send Feedback</button>
+          <a href="https://gitlab.bucknell.edu/nrr004/agile-gitlab-feedback/-/issues/new?issue[title]=Feedback&issuable_template=feedback&issue[confidential]=true">
+            <button id="feedback-link">Send Feedback</button>
+          </a>
         </div>
       </div>
     </div>
@@ -391,7 +393,7 @@
 					  <div class="tab-pane fade show active" id="faqtab" role="tabpanel" aria-labelledby="faq-tab">
               <div id="faqtab-html">
                 <script>
-                  $("#faqtab-html").load("partials/faqtab.html?ver=0.3.2");
+                  $("#faqtab-html").load("partials/faqtab.html?ver=0.3.3");
                 </script>
               </div>
             </div>
@@ -423,8 +425,8 @@
       <!-- Bootstrap -->
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
       <!-- Feedback -->
-      <script type="text/javascript" src="libraries/feedback.js?ver=2012"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js" integrity="sha256-my/qJggBjG+JoaR9MUSkYM+EpxVkxZRNn3KODs+el74=" crossorigin="anonymous"></script>
+      <!-- <script type="text/javascript" src="libraries/feedback.js?ver=2012"></script> -->
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js" integrity="sha256-my/qJggBjG+JoaR9MUSkYM+EpxVkxZRNn3KODs+el74=" crossorigin="anonymous"></script> -->
       <!-- Survey -->
       <script src="libraries/survey.jquery.min.js?ver=1.1.23"></script>
       <script type="text/javascript" src="scripts/surveyJSON.js?ver=0.2.8"></script>
@@ -438,7 +440,7 @@
       <script type="text/javascript" src="scripts/release.js?ver=0.3.1"></script>
       <script type="text/javascript" src="scripts/hours.js?ver=0.3.1"></script>
       <script type="text/javascript" src="gitlab_servers.js?ver=0.2.8"></script>
-      <script type="text/javascript" src="scripts/main.js?ver=0.3.1"></script>
+      <script type="text/javascript" src="scripts/main.js?ver=0.3.3"></script>
     </span>
   </body>
 </html>
