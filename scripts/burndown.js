@@ -373,10 +373,10 @@ var burndown = (function () {
     for (let issue in tempSpentTimeList) {
       if (tempSpentTimeList.hasOwnProperty(issue)) {
         // **************************** CHECK DATE ****************************
-        if (tempSpentTimeList[issue].spent > 0 && new Date(tempSpentTimeList[issue].date) < currProjStartDate) {
-          noteableIID = tempSpentTimeList[issue].issue;
-          issues.addIssueError(issueListJSON[noteableIID], "Spend prior to project's creation date");
-        }
+        // if (tempSpentTimeList[issue].spent > 0 && new Date(tempSpentTimeList[issue].date) < currProjStartDate) {
+        //   noteableIID = tempSpentTimeList[issue].issue;
+        //   issues.addIssueError(issueListJSON[noteableIID], "Spend prior to project's creation date");
+        // }
       }
     }
 
