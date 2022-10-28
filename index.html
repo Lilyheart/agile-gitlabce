@@ -87,19 +87,19 @@
 
 
             <ul class="nav nav-pills nav-justified mb-3" id="pills-tab" role="tablist">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link active" id="gitlab_auth_oauth" data-toggle="pill" href="#pills-auth-oauth" role="tab" aria-controls="pills-auth-oauth" aria-selected="true">
                   Log in
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
-                <a class="nav-link" id="gitlab_auth_apikey" data-toggle="pill" href="#pills-auth-apikey" role="tab" aria-controls="pills-auth-apikey" aria-selected="false">
+                <a class="nav-link active" id="gitlab_auth_apikey" data-toggle="pill" href="#pills-auth-apikey" role="tab" aria-controls="pills-auth-apikey" aria-selected="false">
                   Api Key
                 </a>
               </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
-              <div class="tab-pane fade show active" id="pills-auth-oauth" role="tabpanel" aria-labelledby="gitlab_auth_oauth">
+              <!-- <div class="tab-pane fade show active" id="pills-auth-oauth" role="tabpanel" aria-labelledby="gitlab_auth_oauth">
                 <div id="">
                   <div class="form-group row">
                     <label for="auth-server-dropdown" class="col-sm-4 align-self-center col-form-label">Gitlab Website:</label>
@@ -119,8 +119,8 @@
                     </button>
                   </div>
                 </div>
-              </div>
-              <div class="tab-pane fade" id="pills-auth-apikey" role="tabpanel" aria-labelledby="gitlab_auth_apikey">
+              </div> -->
+              <div class="tab-pane fade show active" id="pills-auth-apikey" role="tabpanel" aria-labelledby="gitlab_auth_apikey">
                 <div class="form-group row">
                   <label for="base_url" class="col-sm-4 col-form-label">Gitlab URL:</label>
                   <div class="col-sm-8">
@@ -393,7 +393,7 @@
 					  <div class="tab-pane fade show active" id="faqtab" role="tabpanel" aria-labelledby="faq-tab">
               <div id="faqtab-html">
                 <script>
-                  $("#faqtab-html").load("partials/faqtab.html?ver=0.3.3");
+                  $("#faqtab-html").load("partials/faqtab.html?ver=0.3.4");
                 </script>
               </div>
             </div>

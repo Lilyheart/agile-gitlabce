@@ -26,6 +26,9 @@ Not current accepting pull requests.
 
 ## History
 
+### [[0.3.4]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.4) - 2022-10-28
+Disabled the OAuth login option due to [authentication changes made by GitLab](https://docs.gitlab.com/ee/update/deprecations.html#oauth-implicit-grant).  OAuth may be added back at a future date.
+
 ### [[0.3.3]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.3) - 2021-10-28
 Removed feedback library and updated link to go directly to Bucknell's Gitlab.  This change will break the link for non-Bucknell users.
 

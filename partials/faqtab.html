@@ -12,8 +12,9 @@
         <p>
           <ul>
             <!-- <li class="new">2021/MM/DD <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/vX.X.X">vX.X.X</a></u></strong>: XXXXXX <span class="badge badge-primary">New</span></li> -->
-            <li class="new">2021/10/28 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.3">v0.3.3</a></u></strong>: Updated <strong>"Send Feedback"</strong> link to go directly to feedback repository on Bucknell's GitLab<span class="badge badge-primary">New</span></li>
-            <li class="pb-3">2021/10/13 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.2">v0.3.2</a></u></strong>: Bug affecting calculating date to apply spent change has been fixed.  This is in result to a GitLab change in how spent time comments are published.</li>
+            <li class="new">2022/10/28 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.4">v0.3.4</a></u></strong>: Disabled OAuth login due to GitLab authentication changes. <span class="badge badge-primary">New</span></li>
+            <li class="">2021/10/28 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.3">v0.3.3</a></u></strong>: Updated <strong>"Send Feedback"</strong> link to go directly to feedback repository on Bucknell's GitLab</li>
+            <li class="">2021/10/13 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.2">v0.3.2</a></u></strong>: Bug affecting calculating date to apply spent change has been fixed.  This is in result to a GitLab change in how spent time comments are published.</li>
             <li class="">2020/02/20 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.0">v0.3.0</a></u></strong>: Now in Beta!!!  View a burndown chart of specific sprints <strong>[Release Tab]</strong>.  If you have any issues with it, find me or use the Send Feedback link above.</li>
             <!-- <li>2019/12/07 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.2.8">v0.2.8</a></u></strong>: Survey
               <p>I know we might be tired of feedback surveys, but I would appreciate it if you could take the time to complete the survey on the tab that will load once you are logged into your Gitlab from this page.</p>
@@ -44,10 +45,10 @@
           The website is continuously being improved, and new features are added regularly.  Feedback can be provided using the Send Feedback button above.
         </p>
         <div class="accordion" id="login-accordion">
-          <button class="btn btn-outline-secondary btn-block" data-toggle="collapse" href="#login-details">
+          <!-- <button class="btn btn-outline-secondary btn-block" data-toggle="collapse" href="#login-details">
             Log in
-          </button >
-          <div class="collapse show" id="login-details" data-parent="#login-accordion">
+          </button > -->
+          <!-- <div class="collapse show" id="login-details" data-parent="#login-accordion">
             The easiest way to authenticate is by logging into Gitlab through this application.  In the Gitlab setup, select the Log in button.
             <ul>
               <li>Select the specific GitLab website you want to access in the dropdown</li>
@@ -59,12 +60,12 @@
               <li>This will forward you to your Gitlab website.  If you are not already logged into the site, you will be prompted to log in</li>
               <li>The first time you log in, you will need to authorize AgileGitlab to use your account. AgileGitlab requests API access to your account to analyze the issue data. This access can be revoked following the steps later in this FAQ</li>
             </ul>
-          </div>
+          </div> -->
 
           <button class="btn btn-outline-secondary btn-block" data-toggle="collapse" href="#apikey-details">
-          API Key (for if you cannot or do not want to use the Log in method)
+          API Key
           </button >
-          <div class="collapse" id="apikey-details" data-parent="#login-accordion">
+          <div class="collapse show" id="apikey-details" data-parent="#login-accordion">
             <ul>
               <li>To find your Gitlab URL:</li>
               <ul>
