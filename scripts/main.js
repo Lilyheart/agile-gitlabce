@@ -29,7 +29,7 @@ $("#auth-server-dropdown").selectize({
   create: false
 });
 
-$("#auth-server-dropdown").selectize()[0].selectize.setValue("Bucknell", false);
+// $("#auth-server-dropdown").selectize()[0].selectize.setValue("Bucknell", false);
 
 function getHeaderValue(url, headerValue) {
   let request, arr, headerMap, parts, header, value;
@@ -216,11 +216,11 @@ function setPhase(newPhase) {
   if (newPhase === "project_start") {
     document.getElementById("loading_projects").style.display = "block";
     document.getElementById("gitlab_get_project").style.display = "none";
-    if ($("#gitlab_auth_oauth")[0].classList.contains("active")) {
-      $("#gitlab_auth_apikey")[0].classList.add("disabled");
-    } else {
-      $("#gitlab_auth_oauth")[0].classList.add("disabled");
-    }
+    // if ($("#gitlab_auth_oauth")[0].classList.contains("active")) {
+    //   $("#gitlab_auth_apikey")[0].classList.add("disabled");
+    // } else {
+    //   $("#gitlab_auth_oauth")[0].classList.add("disabled");
+    // }
 
     $("#btnGetProjects").prop("disabled", true);
     if (!isBookmark) {$("#collapse-project").collapse("show");}

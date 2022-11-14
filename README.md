@@ -26,6 +26,10 @@ Not current accepting pull requests.
 
 ## History
 
+### [[0.3.5]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.5) - 2022-11-14
+Updated directions on type of access token required
+Disabled additional OAuth code
+
 ### [[0.3.4]](https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.4) - 2022-10-28
 Disabled the OAuth login option due to [authentication changes made by GitLab](https://docs.gitlab.com/ee/update/deprecations.html#oauth-implicit-grant).  OAuth may be added back at a future date.
 

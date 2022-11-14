@@ -11,7 +11,8 @@
         <h3>New</h3>
         <p>
           <ul>
-            <!-- <li class="new">2021/MM/DD <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/vX.X.X">vX.X.X</a></u></strong>: XXXXXX <span class="badge badge-primary">New</span></li> -->
+            <!-- <li class="new">2022/MM/DD <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/vX.X.X">vX.X.X</a></u></strong>: XXXXXX <span class="badge badge-primary">New</span></li> -->
+            <li class="new">2022/11/14 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.5">v0.3.5</a></u></strong>: Updated authentication scope.  If you are using an old API key with <code>api</code> accesss, please create a new key with <code>read_api</code> <span class="badge badge-primary">New</span></li>
             <li class="new">2022/10/28 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.4">v0.3.4</a></u></strong>: Disabled OAuth login due to GitLab authentication changes. <span class="badge badge-primary">New</span></li>
             <li class="">2021/10/28 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.3">v0.3.3</a></u></strong>: Updated <strong>"Send Feedback"</strong> link to go directly to feedback repository on Bucknell's GitLab</li>
             <li class="">2021/10/13 <strong><u><a href="https://github.com/Lilyheart/agile-gitlabce/releases/tag/v0.3.2">v0.3.2</a></u></strong>: Bug affecting calculating date to apply spent change has been fixed.  This is in result to a GitLab change in how spent time comments are published.</li>
@@ -73,12 +74,12 @@
                 <li>The URL is in the form https://gitlab.example.com/api/v4</li>
                 <li>The to begin with, try adding /api/v4 to the end of the URL you use to access Gitlab.  If this doesn’t work, you will need to contact your Gitlab administrator to find out the API URL</li>
               </ul>
-              <li>To find your API Key:</li>
+              <li>To create your API Key:</li>
               <ul>
                 <li>Log into your Gitlab website</li>
-                <li>In the top left corner, click your profile image and select Settings</li>
+                <li>In the top left corner, click your profile image and select Preferences</li>
                 <li>On the left-hand side, select Access Tokens</li>
-                <li>Create a new token with API access.  You will need to store this token somewhere, as Gitlab will only display it once</li>
+                <li>Create a new token with <code>read_api</code> access.  You will need to store this token somewhere, as Gitlab will only display it once</li>
               </ul>
             </ul>
           </div>
